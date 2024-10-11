@@ -1,5 +1,6 @@
 #include "Library.hpp"
 
+
 // Function to read fvecs file and save output to a readable text file
 std::vector<std::vector<float>> fvecs_read(const std::string& filename, const std::string& output_filename, std::pair<int, int> bounds = {1, -1}) {
     std::ifstream file(filename, std::ios::binary);
@@ -53,7 +54,11 @@ std::vector<std::vector<float>> fvecs_read(const std::string& filename, const st
     }
 
     // Write the number of vectors and the length of each vector as the first two rows
-    output_file << num_vectors << " " << d << "\n";  // Number of vectors , space , Length of each vector
+    output_file << num_vectors << "\n";  // Number of vectors
+    output_file << d << "\n";            // Length of each vector
+
+    // Set precision and format for floating-point numbers
+    output_file << std::fixed << std::setprecision(3);  // Set to 6 decimal places
 
     // Write the vectors to the file
     for (const auto& vec : vectors) {
