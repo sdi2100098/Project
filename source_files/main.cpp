@@ -3,7 +3,7 @@
 
 int main(void){
 
-    std::string filename = "Datasets/siftsmall_base.fvecs";
+    std::string filename = "/siftsmall_base.fvecs";
     
     // // Read all vectors
     // std::vector<std::vector<float>> vectors = fvecs_read(filename);
