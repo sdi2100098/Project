@@ -53,8 +53,7 @@ std::vector<std::vector<float>> fvecs_read(const std::string& filename, const st
     }
 
     // Write the number of vectors and the length of each vector as the first two rows
-    output_file << num_vectors << "\n";  // Number of vectors
-    output_file << d << "\n";            // Length of each vector
+    output_file << num_vectors << " " << d << "\n";  // Number of vectors , space , Length of each vector
 
     // Write the vectors to the file
     for (const auto& vec : vectors) {
