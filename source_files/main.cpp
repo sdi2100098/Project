@@ -10,6 +10,5 @@ int main(void){
     // Read vectors and write to text file
     fvecs_read(input_filename, output_filename, {1, -1});  // Read all vectors
     std::cout << "Vectors have been written to " << output_filename << std::endl;
-    std::cout << "Hello" << std::endl;
     return 0;
 }
