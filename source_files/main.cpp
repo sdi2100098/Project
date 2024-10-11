@@ -1,18 +1,17 @@
-#include <iostream>
 #include "Library.hpp"
 
 int main(void){
 
-    // Example usage:
-    std::vector<std::vector<float>> vectors;
-    std::vector<float> myvector;
     std::string input_filename = "Datasets/siftsmall_base.fvecs";
     std::string output_filename = "siftsmall_base.txt";
     
-    // Read vectors and write to text file
-    vectors = fvecs_read(input_filename, output_filename, {1, -1});  // Read all vectors
-    myvector = vectors.front();
-    std::cout << "Vectors have been written to " << output_filename << std::endl;
-    std::cout << myvector.front() << std::endl;
+    int num_vectors=0;
+    int vector_dim=0;
+
+    // Read the vectors using the fvecs_read function
+
+    float** vectors = fvecs_read(input_filename, num_vectors, vector_dim,{1, -1});
+    WriteToTxtFile(vectors,output_filename,num_vectors,vector_dim);
+    
     return 0;
 }
