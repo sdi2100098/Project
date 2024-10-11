@@ -3,22 +3,13 @@
 
 int main(void){
 
-    std::string filename = "/siftsmall_base.fvecs";
+    // Example usage:
+    std::string input_filename = "Datasets/siftsmall_base.fvecs";
+    std::string output_filename = "output.txt";
     
-    // // Read all vectors
-    // std::vector<std::vector<float>> vectors = fvecs_read(filename);
-
-    // Example of reading a specific range of vectors (e.g., from 5 to 10)
-    std::pair<int, int> range = {5, 10};
-    std::vector<std::vector<float>> vectors_in_range = fvecs_read(filename, range);
-
-    // Example of printing the first vector
-    if (!vectors_in_range.empty()) {
-        for (const auto& value : vectors_in_range[0]) {
-            std::cout << value << " ";
-        }
-        std::cout << std::endl;
-    }
+    // Read vectors and write to text file
+    fvecs_read(input_filename, output_filename, {1, -1});  // Read all vectors
+    std::cout << "Vectors have been written to " << output_filename << std::endl;
 
     return 0;
 }

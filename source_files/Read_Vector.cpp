@@ -1,6 +1,6 @@
 #include "Library.hpp"
-
-std::vector<std::vector<float>> fvecs_read(const std::string& filename, std::pair<int, int> bounds = {1, -1}) {
+// Function to read fvecs file and save output to a readable text file
+std::vector<std::vector<float>> fvecs_read(const std::string& filename, const std::string& output_filename, std::pair<int, int> bounds = {1, -1}) {
     std::ifstream file(filename, std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "I/O error: Unable to open the file " << filename << std::endl;
@@ -36,6 +36,7 @@ std::vector<std::vector<float>> fvecs_read(const std::string& filename, std::pai
     // Prepare to store the vectors
     std::vector<std::vector<float>> vectors(num_vectors, std::vector<float>(d));
 
+    // Read vectors from the fvecs file
     for (int i = 0; i < num_vectors; ++i) {
         // Skip the dimension integer (already known)
         file.ignore(sizeof(int));
@@ -45,5 +46,21 @@ std::vector<std::vector<float>> fvecs_read(const std::string& filename, std::pai
     }
 
     file.close();
+
+    // Write vectors to a readable text file
+    std::ofstream output_file(output_filename);
+    if (!output_file.is_open()) {
+        std::cerr << "I/O error: Unable to open the output file " << output_filename << std::endl;
+        return {};
+    }
+
+    for (const auto& vec : vectors) {
+        for (float val : vec) {
+            output_file << val << " ";  // Write each value followed by a space
+        }
+        output_file << "\n";  // Newline after each vector
+    }
+
+    output_file.close();
     return vectors;
 }

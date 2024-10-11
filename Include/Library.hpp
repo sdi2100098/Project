@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 #include <cassert>
 
-std::vector<std::vector<float>> fvecs_read(const std::string&, std::pair<int, int> );
+std::vector<std::vector<float>> fvecs_read(const std::string& , const std::string& , std::pair<int, int> );
