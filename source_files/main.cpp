@@ -5,7 +5,7 @@ int main(void){
 
     // Example usage:
     std::string input_filename = "Datasets/siftsmall_base.fvecs";
-    std::string output_filename = "output.txt";
+    std::string output_filename = "siftsmall_base.txt";
     
     // Read vectors and write to text file
     fvecs_read(input_filename, output_filename, {1, -1});  // Read all vectors
