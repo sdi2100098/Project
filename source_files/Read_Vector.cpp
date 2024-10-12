@@ -1,77 +1,56 @@
 #include "Library.hpp"
-// Function to read fvecs file using dynamically allocated arrays
-float** fvecs_read(const std::string& filename, int& num_vectors, int& vector_dim, std::pair<int, int> bounds = {1, -1}) {
-    std::ifstream file(filename, std::ios::binary);
-    if (!file.is_open()) {
-        std::cerr << "I/O error: Unable to open the file " << filename << std::endl;
-        return nullptr;
+
+/* Function to read fvecs file using dynamically allocated arrays.If something goes wrong return NULL and exit the program else return the vector array */
+float **Read_Data(const char *file_path, int *rows, int *columns){
+
+    FILE *infile = fopen(file_path,"rb");
+
+    *rows = 0;
+    *columns = 0;
+
+    if(infile == NULL){
+        perror("Error opening file");
+        return NULL;
     }
 
-    // Read the dimension of the vectors (int)
-    int d;
-    file.read(reinterpret_cast<char*>(&d), sizeof(int));
-    int vec_size_in_bytes = sizeof(int) + d * sizeof(float);
-    vector_dim = d;  // Save the vector dimension for later use
+    int dimantion, garbage;
 
-    // Determine the number of vectors in the file
-    file.seekg(0, std::ios::end);
-    int total_bytes = file.tellg();
-    int total_vectors = total_bytes / vec_size_in_bytes;
+    /* read dimantion and compute the byte size of a vector */
+    fread(&dimantion,sizeof(int),1,infile);
+    *columns = dimantion;
+    unsigned int vecsize_bytes = sizeof(float) * (dimantion+1);
 
-    // Adjust the bounds
-    int start_idx = bounds.first;
-    int end_idx = (bounds.second == -1) ? total_vectors : bounds.second;
+    /* compute the size of the file in bytes and find the number of vectors */
+    fseek(infile, 0, SEEK_END);
+    int total_size_bytes = ftell(infile);
+    int vectors_number = total_size_bytes / vecsize_bytes;
+    *rows = vectors_number;
 
-    // Ensure valid indices
-    assert(start_idx >= 1 && end_idx <= total_vectors);
-    if (end_idx < start_idx) {
-        std::cerr << "Invalid range: end index is less than start index." << std::endl;
-        return nullptr;
+    /* alocate memmory for the vectors */
+    float **vector_arr = (float **)malloc(sizeof(float*) * vectors_number);
+    if(vector_arr == NULL)
+        goto memmory_error;
+
+    for(int i = 0; i < vectors_number; i++){
+        vector_arr[i] = (float *)malloc(sizeof(float) * dimantion);
+        if(vector_arr[i] == NULL) 
+            goto memmory_error;
     }
 
-    num_vectors = end_idx - start_idx + 1;
-
-    // Move to the starting position
-    file.seekg((start_idx - 1) * vec_size_in_bytes, std::ios::beg);
-
-    // Allocate memory for the array of pointers (each pointing to a vector)
-    float** vectors = (float**)malloc(num_vectors * sizeof(float*));
-    if (!vectors) {
-        std::cerr << "Memory allocation error for vectors array." << std::endl;
-        file.close();
-        return nullptr;
+    /* read the vectors and store it but ignore the dimantion */
+    fseek(infile, 0, SEEK_SET);
+    for(int i = 0; i < vectors_number; i++){
+        fread(&garbage,sizeof(int),1,infile);
+        fread(vector_arr[i],sizeof(float),dimantion,infile);
     }
 
-    // Allocate and read each vector
-    for (int i = 0; i < num_vectors; ++i) {
-        // Allocate memory for each vector (of size d)
-        vectors[i] = (float*)malloc(d * sizeof(float));
-        if (!vectors[i]) {
-            std::cerr << "Memory allocation error for vector " << i << std::endl;
-            // Free already allocated memory in case of failure
-            for (int j = 0; j < i; ++j) {
-                free(vectors[j]);
-            }
-            free(vectors);
-            file.close();
-            return nullptr;
-        }
+    fclose(infile);
+    return vector_arr;
 
-        // Skip the dimension integer (already known)
-        file.ignore(sizeof(int));
+    /* in case something goes wrong with memory */
+    memmory_error:
 
-        // Read the vector of floats
-        file.read(reinterpret_cast<char*>(vectors[i]), d * sizeof(float));
-    }
-
-    file.close();
-    return vectors;
-}
-
-// Function to free the dynamically allocated memory
-void free_fvecs(float** vectors, int num_vectors) {
-    for (int i = 0; i < num_vectors; ++i) {
-        free(vectors[i]);
-    }
-    free(vectors);
+    fclose(infile);
+    perror("No memmory");
+    return NULL;
 }

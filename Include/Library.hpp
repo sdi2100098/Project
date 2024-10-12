@@ -7,6 +7,6 @@
 #include <cstdlib>  // For malloc and free
 #include <cassert>  // For assert
 
-float** fvecs_read(const std::string& ,  int& , int&,std::pair<int, int> );
+float **Read_Data(const char *file_path, int *rows, int *columns);
 void free_fvecs(float **,int);
 int WriteToTxtFile(float **,std::string& ,int &,int &);
