@@ -5,7 +5,8 @@ int main(void){
     std::string input_filename = "Datasets/siftsmall_base.fvecs";
     std::string output_filename = "siftsmall_base.txt";
     int count = 0;
-    float ***vectors = (float***) malloc(2*sizeof(float **));
+    float **vectors_base ;
+    float **vectors_query;
     int *num_vectors = (int*) malloc(2*sizeof(int));
     int *vector_dim = (int*) malloc(2*sizeof(int));
 
@@ -15,9 +16,12 @@ int main(void){
             input_filename = "Datasets/siftsmall_query.fvecs";
             output_filename = "siftsmall_query.txt";
         }
-        vectors[count] = fvecs_read(input_filename, num_vectors[count], vector_dim[count],{1, -1});
+        if(!count)
+            vectors_base = fvecs_read(input_filename, num_vectors[count], vector_dim[count],{1, -1});
+        else
+            vectors_query = fvecs_read(input_filename, num_vectors[count], vector_dim[count],{1, -1});
         count ++;
     }
-    std::cout << *vectors[0][0] << std::endl << *(vectors+1)[0][0]<<std::endl ;
+    std::cout << vectors_base[0][0] << std::endl << vectors_query[0][0]<<std::endl ;
     return 0;
 }
