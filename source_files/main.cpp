@@ -11,13 +11,13 @@ int main(void){
 
     // Read the vectors using the fvecs_read function
     while (count < 2) {
-        std::cout << "Give path for file : " ;
+        std::cout << "Give path for file : " ; // Here the path is given from the user
         std::cin >> input_filename;
         if(!count)
             vectors_base = fvecs_read(input_filename, num_vectors[count], vector_dim[count],{1, -1});
         else
             vectors_query = fvecs_read(input_filename, num_vectors[count], vector_dim[count],{1, -1});
-        if(!vectors_base || !vectors_query){
+        if(!vectors_base || !vectors_query){ // In case the pointer is null print error message and retake the path
             std::cout << "You gave wrong path. Please try again!"<<std::endl;
             count--;
         }
