@@ -19,7 +19,5 @@ int WriteToTxtFile(float **vectors,std::string& output_filename,int &num_vectors
 
         output_file.close();
 
-        // Free the allocated memory
-        free_fvecs(vectors, num_vectors);
         return 0;
 }
