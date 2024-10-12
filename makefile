@@ -18,10 +18,6 @@ $(OBJ_DIR)/Read_Vector.o: $(SRC_DIR)/Read_Vector.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
 	g++ -c $(SRC_DIR)/Read_Vector.cpp -o $(OBJ_DIR)/Read_Vector.o -I$(INC_DIR)
 
-# Rule for WriteToTxtFile.o (if this function is in a separate file)
-$(OBJ_DIR)/Write_To_Txt.o: $(SRC_DIR)/Write_To_Txt.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -c $(SRC_DIR)/Write_To_Txt.cpp -o $(OBJ_DIR)/Write_To_Txt.o -I$(INC_DIR)
 
 # Rule to ensure DatasetsReadable directory is created
 $(OUT_DIR):

@@ -16,7 +16,6 @@ int main(void){
             output_filename = "siftsmall_query.txt";
         }
         vectors[count] = fvecs_read(input_filename, num_vectors[count], vector_dim[count],{1, -1});
-        WriteToTxtFile(vectors[count],output_filename,num_vectors[count],vector_dim[count]);
         count ++;
     }
     std::cout << *vectors[0][0] << std::endl << *(vectors+1)[0][0]<<std::endl ;
