@@ -10,3 +10,12 @@
 float **Read_Data(const char *file_path, int *rows, int *columns);
 void free_fvecs(float **,int);
 int WriteToTxtFile(float **,std::string& ,int &,int &);
+
+// typedef struct node { //node of each graph 
+//     float* vector;
+//     int* edges;
+
+
+// }node;
+
+// node* graph; //explenation of how the graph will look
