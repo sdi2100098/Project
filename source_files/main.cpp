@@ -24,8 +24,9 @@ int main(){
     // Sample example for the Euclidian Distance
     float vector_1[3] = {5,3,0};
     float vector_2[3] = {2,-2,sqrt(2)};
+    int vectorSize = 3;
     float distance = 0.0;
-    distance = EuclidianDistance(vector_1,vector_2,3);
+    distance = EuclidianDistance(vector_1,vector_2,vectorSize);
     std::cout << std::endl << "Calculate distance for two different vectors : ";
     std::cout << distance << std::endl;
     return 0;
