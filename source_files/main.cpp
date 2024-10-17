@@ -30,7 +30,10 @@ int main(){
             std :: cout << element << " ";
         std::cout << std::endl;
     }
-    
+    // n1 = size(base) , n2 = size(query) , d = vector_dimensions
+    // hash = floor (v0 * p^d + v1 * p^d-1 + ....)mod M -> unique key, Time complexity = O(n1 * d)
+    // Dictionary = {unique key : node} O(1)
+    // Time Complexity Total = O(n1 *d) + O(n2 *d) + O(1) = max(...) = O(n1 *d)
 
 
     // for(int i = 0; i < 5; i++){
