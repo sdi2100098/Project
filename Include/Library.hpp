@@ -28,7 +28,6 @@ typedef struct graph{
     int dimension;  /* columns */
 }Graph;
 
-
 typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */
     float** vectors_array;
     int number_of_vectors; /* rows */
@@ -39,7 +38,7 @@ typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */
 
 int Init_Graph_Data(const char *, Graph *);
 int Init_Query_Data(const char *, Query *);
-int GetRandomNumber(const int ,const int ,const int );
+int GetRandomNumber(const int ,const int );
 
 void free_fvecs(float **,int);
 float EuclidianDistance(const float *,const float *,const int );
