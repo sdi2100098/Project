@@ -1,9 +1,9 @@
+#include "Library.hpp"
 int GetRandomNumber(const int min,const int max,const int exclude){
     int number;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::unifrom_int_distribution<> distrib(min,max);
-    while(number==exclude)
-        number = distrib(gen);
+    srand(time(NULL)); // make the seed
+    do{
+        number = rand() % (max + 1 - min) + min; 
+    }while(number == exclude); // if number is the same as exclude repeat
     return number;
 }

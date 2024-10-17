@@ -12,7 +12,7 @@
 #include <cstdlib>  // For malloc and free
 #include <cassert>  // For assert
 #include <cmath> // for the sqrt and pow
-#include <random> // for random in range
+#include <time.h>
 #include <set>
 
 

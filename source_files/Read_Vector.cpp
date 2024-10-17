@@ -50,9 +50,9 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
     graph->dimension = dimension;
 
     for(int index = 0; index < graph->number_of_nodes; index++){
-        while(graph->nodes_array[i].edges.size() < graph->R) // while the size of set is smaller than R
+        while(graph->nodes_array[index].edges.size() < graph->R) // while the size of set is smaller than R
             random_number = GetRandomNumber(0,graph->number_of_nodes,index); // min = 0, max = number of Vectors, number to exclude is the index of the current node
-            graph->nodes_array[i].edges.insert(random_number) // insert the element
+            graph->nodes_array[index].edges.insert(random_number); // insert the element
         }
 
     /* All went well well */
