@@ -4,7 +4,6 @@
 #include <iostream>
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -13,11 +12,13 @@
 #include <cstdlib>  // For malloc and free
 #include <cassert>  // For assert
 #include <cmath> // for the sqrt and pow
+#include <random> // for random in range
+#include <set>
 
 
 typedef struct node { /* node of each graph */ 
     float* vector;
-    int* edges;
+    std::set<int> edges; // use set to have unique edges for every vector
 }node;
 
 typedef struct graph{
@@ -36,8 +37,9 @@ typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */
 
 
 
-int Init_Graph_Data(const char *file_path, Graph *graph);
-int Init_Query_Data(const char *file_path, Query *query);
+int Init_Graph_Data(const char *, Graph *);
+int Init_Query_Data(const char *, Query *);
+int GetRandomNumber(const int ,const int ,const int );
 
 void free_fvecs(float **,int);
 float EuclidianDistance(const float *,const float *,const int );

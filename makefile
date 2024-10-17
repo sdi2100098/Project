@@ -23,6 +23,11 @@ $(OBJ_DIR)/EuclidianDistance.o: $(SRC_DIR)/EuclidianDistance.cpp $(INC_DIR)/Libr
 	@mkdir -p $(OBJ_DIR)
 	g++ -c $(SRC_DIR)/EuclidianDistance.cpp -o $(OBJ_DIR)/EuclidianDistance.o -I$(INC_DIR)
 
+# Rule for GetRandomNumber.o
+$(OBJ_DIR)/GetRandomNumber.o: $(SRC_DIR)/GetRandomNumber.cpp $(INC_DIR)/Library.hpp
+	@mkdir -p $(OBJ_DIR)
+	g++ -c $(SRC_DIR)/GetRandomNumber.cpp -o $(OBJ_DIR)/GetRandomNumber.o -I$(INC_DIR)
+
 # Rule to ensure DatasetsReadable directory is created
 $(OUT_DIR):
 	@mkdir -p $(OUT_DIR)

@@ -10,7 +10,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
         return 1;
     }
 
-    int dimension, garbage;
+    int dimension, garbage,random_number;
 
     /* read dimension and compute the byte size of a vector */
     fread(&dimension,sizeof(int),1,infile);
@@ -33,8 +33,8 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
     for(int i = 0; i < vectors_number; i++){
         nodes_array[i].vector = (float *)malloc(dimension * sizeof(float));
         if(nodes_array[i].vector == NULL) goto memmory_error;
-        nodes_array[i].edges = (int *)malloc(graph->R * sizeof(int));
-        if(nodes_array[i].edges == NULL) goto memmory_error;
+        // nodes_array[i].edges = (int *)malloc(graph->R * sizeof(int));
+        // if(nodes_array[i].edges == NULL) goto memmory_error;
     }
 
     /* Initilize the Struct */
@@ -44,12 +44,16 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
         fread(nodes_array[i].vector,sizeof(float),dimension,infile);
     }
 
-    srand(time(NULL));  /* ready to create random edges */
-    
 
     graph->nodes_array = nodes_array;
     graph->number_of_nodes = vectors_number;
     graph->dimension = dimension;
+
+    for(int index = 0; index < graph->number_of_nodes; index++){
+        while(graph->nodes_array[i].edges.size() < graph->R) // while the size of set is smaller than R
+            random_number = GetRandomNumber(0,graph->number_of_nodes,index); // min = 0, max = number of Vectors, number to exclude is the index of the current node
+            graph->nodes_array[i].edges.insert(random_number) // insert the element
+        }
 
     /* All went well well */
     fclose(infile);
