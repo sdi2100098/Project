@@ -4,7 +4,7 @@
 
 int Hash(const float *vector_array,int dimension) {
     int hash = 0; //Initialize the hash 
-    for(int i = 0;i <= dimension-1;i--) {
+    for(int i = 0;i <= dimension-1;i++) {
         double d = (double)vector_array[i];//Covert the float to double for more accuracy
         hash = hash + (d * pow(P,i));
     }
