@@ -18,7 +18,7 @@
 
 typedef struct node { /* node of each graph */ 
     float* vector;
-    std::set<int> edges; // use set to have unique edges for every vector
+    std::set<int> edges ; // use set to have unique edges for every vector
 }node;
 
 typedef struct graph{

@@ -5,6 +5,7 @@ int main(){
     const char *base_filename = "Datasets/siftsmall_base.fvecs";
     const char *query_filename = "Datasets/siftsmall_query.fvecs";
     int count = 0;
+    int return_number;
     float **vectors_base ;
     float **vectors_query;
     int *num_vectors = (int*) malloc(2*sizeof(int));
@@ -18,10 +19,18 @@ int main(){
     
     Init_Query_Data(query_filename,&Q);
 
-    // G.nodes_array = Read_Data(,&G.number_of_nodes,); KLP
-
-    printf("METADATA rows:%d colums:%d\n",Q.number_of_vectors,Q.dimension);
-
+    return_number = Init_Graph_Data(base_filename,&G);
+    if (return_number)
+        std :: cout << "Problem" << std::endl;
+    std :: cout << "All good" << std :: endl;
+    std :: cout << "METADATA rows : " << Q.number_of_vectors <<  " colums:" <<  Q.dimension << std::endl ;
+    for(int index = 0; index < 10; index ++){
+        std::cout << "For index : " << index << std::endl;
+        for(auto &element : G.nodes_array[index].edges)
+            std :: cout << element << " ";
+        std::cout << std::endl;
+    }
+    
 
 
     // for(int i = 0; i < 5; i++){
