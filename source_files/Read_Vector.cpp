@@ -7,55 +7,60 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
 
     if(infile == NULL){
         perror("Error opening file");
-        return NULL;
+        return 1;
     }
 
-    int dimantion, garbage;
+    int dimension, garbage;
 
-    /* read dimantion and compute the byte size of a vector */
-    fread(&dimantion,sizeof(int),1,infile);
-    *columns = dimantion;
-    long vecsize_bytes = (sizeof(float) * (dimantion)) + sizeof(int);
+    /* read dimension and compute the byte size of a vector */
+    fread(&dimension,sizeof(int),1,infile);
+    long vecsize_bytes = (sizeof(float) * (dimension)) + sizeof(int);
 
     /* compute the size of the file in bytes and find the number of vectors */
     fseek(infile, 0, SEEK_END);
     long total_size_bytes = ftell(infile);
     int vectors_number = total_size_bytes / vecsize_bytes;
-    *rows = vectors_number;
 
 
 
     /* fvecs, create the graph */
     
     /* alocate memmory for the (nodes_array) */
-    node_array = (node*)malloc(vectors_number * sizeof(node));
-    if(node_array == NULL) goto memmory_error;
+    node* nodes_array = (node*)malloc(vectors_number * sizeof(node));
+    if(nodes_array == NULL) goto memmory_error;
 
-    /* for every node in node_array alocate memory for the vector and for the edges*/
+    /* for every node in nodes_array alocate memory for the vector and for the edges*/
     for(int i = 0; i < vectors_number; i++){
-        node_array[i].vector = (float *)malloc(dimantion * sizeof(float));
-        if(node_array[i].vector == NULL) goto memmory_error;
-        node_array[i].edges = (int *)malloc(R * sizeof(int));
-        if(node_array[i].edges == NULL) goto memmory_error;
+        nodes_array[i].vector = (float *)malloc(dimension * sizeof(float));
+        if(nodes_array[i].vector == NULL) goto memmory_error;
+        nodes_array[i].edges = (int *)malloc(graph->R * sizeof(int));
+        if(nodes_array[i].edges == NULL) goto memmory_error;
+    }
+
+    /* Initilize the Struct */
+    fseek(infile, 0, SEEK_SET);
+    for(int i = 0; i < vectors_number; i++){
+        fread(&garbage,sizeof(int),1,infile);
+        fread(nodes_array[i].vector,sizeof(float),dimension,infile);
     }
 
     srand(time(NULL));  /* ready to create random edges */
-    /*
-
-    Pntie kineze edo tha ftiakseis esi 
     
-    USE A FUCKING SET 
 
-    */
+    graph->nodes_array = nodes_array;
+    graph->number_of_nodes = vectors_number;
+    graph->dimension = dimension;
 
-
+    /* All went well well */
+    fclose(infile);
+    return 0; 
 
     /* in case something goes wrong with memory */
     memmory_error:
 
     fclose(infile);
     perror("No memmory");
-    return NULL;
+    return 1;
 }
 
 /*
@@ -73,7 +78,7 @@ int Init_Query_Data(const char *file_path, Query *query){
 
     int dimension, garbage, number_of_vectors;
 
-    /* read dimantion and compute the byte size of a vector */
+    /* read dimension and compute the byte size of a vector */
     fread(&dimension,sizeof(int),1,infile);
     long vecsize_bytes = (sizeof(float) * (dimension)) + sizeof(int);
 
