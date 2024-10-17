@@ -52,7 +52,11 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
     for(int index = 0; index < graph->number_of_nodes; index++){
         while(graph->nodes_array[index].edges.size() < graph->R) // while the size of set is smaller than R
             random_number = GetRandomNumber(0,graph->number_of_nodes,index); // min = 0, max = number of Vectors, number to exclude is the index of the current node
+            try{
             graph->nodes_array[index].edges.insert(random_number); // insert the element
+            }catch(const std::bad_alloc& error){
+                std::cerr<< "Memory Allocation Failed" << error.what() << std::endl;
+            }
         }
 
     /* All went well well */
