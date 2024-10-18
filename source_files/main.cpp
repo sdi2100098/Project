@@ -30,13 +30,12 @@ int main(){
             std :: cout << element << " ";
         std::cout << std::endl;
     }
-    int *array = (int *)malloc(G.number_of_nodes * sizeof(int));
+    std::vector<int> array;
     array = RandomPermutation(&G);
     std :: cout << "Random Permuation : ";
-    for(int i = 0; i < 100; i++){
-        std :: cout << array[i] << " " ;
-    }
-    std :: cout << std:: endl;
+    for(auto &element : array)
+        std :: cout << element << " ";
+    std :: cout << std::endl << "Count is : " << array.size() << std:: endl;
 
 
     // for(int i = 0; i < 5; i++){

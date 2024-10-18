@@ -1,13 +1,19 @@
 #include "Library.hpp"
 
-// NOTE : Needs fixing since We don't check if random Number exists in permuation table. Maybe do it with vector to check faster and easier
-int *RandomPermutation(Graph *G){
-    int *permutation = (int*)malloc(G->number_of_nodes * sizeof(int)); 
-    int maxVal = G->number_of_nodes;
-    int randomNumber;
-    for (int index = 0; index < maxVal; index ++){
-        randomNumber = GetRandomNumber(maxVal,index); // Get a random index but exclude the same index
-        permutation[index] = randomNumber;
+std::vector<int> RandomPermutation(Graph *G) {
+    int maxVal = G->number_of_nodes;  // Total number of nodes
+    std::vector<int> permutation(maxVal);  // Vector to store the permutation
+    
+    // Fill the vector with the values 0 to maxVal-1
+    for (int i = 0; i < maxVal; i++) 
+        permutation[i] = i;
+    
+    // Fisher-Yates shuffle to randomize the order
+    for (int i = maxVal - 1; i > 0; i--) {
+        // Generate a random number in the range [0, i]
+        int j = rand() % (i + 1);
+        std::swap(permutation[i], permutation[j]);  // Swap the current element with a random earlier element
     }
-    return permutation;
+    
+    return permutation;  // Return the random permutation
 }
