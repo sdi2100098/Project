@@ -43,5 +43,6 @@ int GetRandomNumber(const int ,const int );
 void free_fvecs(float **,int);
 float EuclidianDistance(const float *,const float *,const int );
 int* Greedy_Search(node *s,Query *query,int k,int L);
+int *RandomPermutation(Graph *);
 
 #endif
