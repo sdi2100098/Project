@@ -28,7 +28,7 @@ typedef struct graph{
     int dimension;  /* columns */
 }Graph;
 
-typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */
+typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */                                                                   //not true ! 
     float** vectors_array;
     int number_of_vectors; /* rows */
     int dimension; /* columns */
@@ -42,7 +42,7 @@ int GetRandomNumber(const int ,const int );
 
 void free_fvecs(float **,int);
 float EuclidianDistance(const float *,const float *,const int );
-int* Greedy_Search(node *s,Query *query,int k,int L);
+std::set<int> Greedy_Search(Graph *s,Query *query,int *k,int L,int index);
 std::vector<int> RandomPermutation(Graph *);
 
 #endif
