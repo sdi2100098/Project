@@ -5,11 +5,7 @@ int main(){
     const char *base_filename = "Datasets/siftsmall_base.fvecs";
     const char *query_filename = "Datasets/siftsmall_query.fvecs";
     int count = 0;
-    int return_number;
-    float **vectors_base ;
-    float **vectors_query;
-    int *num_vectors = (int*) malloc(2*sizeof(int));
-    int *vector_dim = (int*) malloc(2*sizeof(int));
+    int return_number, fun_result = -1;
     Graph G;
 
     //give the R VERY IMPORTANT
@@ -17,25 +13,45 @@ int main(){
 
     Query Q;
     
-    Init_Query_Data(query_filename,&Q);
 
-    return_number = Init_Graph_Data(base_filename,&G);
-    if (return_number)
-        std :: cout << "Problem" << std::endl;
-    std :: cout << "All good" << std :: endl;
-    std :: cout << "METADATA rows : " << Q.number_of_vectors <<  " colums:" <<  Q.dimension << std::endl ;
-    for(int index = 0; index < 10; index ++){
-        std::cout << "For index : " << index << std::endl;
-        for(auto &element : G.nodes_array[index].edges)
-            std :: cout << element << " ";
-        std::cout << std::endl;
-    }
-    std::vector<int> array;
-    array = RandomPermutation(&G);
-    std :: cout << "Random Permuation : ";
-    for(auto &element : array)
-        std :: cout << element << " ";
-    std :: cout << std::endl << "Count is : " << array.size() << std:: endl;
+    // fun_result = Init_Query_Data(query_filename,&Q);
+
+    // printf("%d\n",fun_result);
+
+    //if(fun_result == 1) return 1;
+    fun_result = Init_Graph_Data(base_filename,&G);
+
+
+    /* SEE HOW A SET IS WORKING VIA A FUNCTION */
+    std::set<int> x;
+    x.insert(10);
+    x.insert(3);
+    x.insert(20);
+
+    Test(&x);
+
+    std::set<int>::iterator it;
+    for(it = x.begin(); it != x.end(); it++)
+        printf("%d,",*it);
+    printf("\n");
+
+
+    // if (return_number)
+    //     std :: cout << "Problem" << std::endl;
+    // std :: cout << "All good" << std :: endl;
+    // std :: cout << "METADATA rows : " << Q.number_of_vectors <<  " colums:" <<  Q.dimension << std::endl ;
+    // for(int index = 0; index < 10; index ++){
+    //     std::cout << "For index : " << index << std::endl;
+    //     for(auto &element : G.nodes_array[index].edges)
+    //         std :: cout << element << " ";
+    //     std::cout << std::endl;
+    // }
+    // std::vector<int> array;
+    // array = RandomPermutation(&G);
+    // std :: cout << "Random Permuation : ";
+    // for(auto &element : array)
+    //     std :: cout << element << " ";
+    // std :: cout << std::endl << "Count is : " << array.size() << std:: endl;
 
 
     // for(int i = 0; i < 5; i++){

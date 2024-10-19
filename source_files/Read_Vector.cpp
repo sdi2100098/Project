@@ -10,40 +10,43 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
         return 1;
     }
 
-    int dimension, garbage,random_number;
+    int dimension, garbage, random_number, vectors_number;
+    size_t result_fread;
+    long total_size_bytes, vecsize_bytes;
+    node *nodes_array = NULL;
 
     /* read dimension and compute the byte size of a vector */
-    fread(&dimension,sizeof(int),1,infile);
-    long vecsize_bytes = (sizeof(float) * (dimension)) + sizeof(int);
+    result_fread = fread(&dimension,sizeof(int),1,infile);
+    if(result_fread != 1) goto fread_error;
+
+    vecsize_bytes = (sizeof(float) * (dimension)) + sizeof(int);
 
     /* compute the size of the file in bytes and find the number of vectors */
     fseek(infile, 0, SEEK_END);
-    long total_size_bytes = ftell(infile);
-    int vectors_number = total_size_bytes / vecsize_bytes;
-
-
+    total_size_bytes = ftell(infile);
+    vectors_number = total_size_bytes / vecsize_bytes;
 
     /* fvecs, create the graph */
     
     /* alocate memmory for the (nodes_array) */
-    node* nodes_array = (node*)malloc(vectors_number * sizeof(node));
+    nodes_array = (node*)malloc(vectors_number * sizeof(node));
     if(nodes_array == NULL) goto memmory_error;
 
     /* for every node in nodes_array alocate memory for the vector and for the edges*/
     for(int i = 0; i < vectors_number; i++){
         nodes_array[i].vector = (float *)malloc(dimension * sizeof(float));
         if(nodes_array[i].vector == NULL) goto memmory_error;
-        // nodes_array[i].edges = (int *)malloc(graph->R * sizeof(int));
-        // if(nodes_array[i].edges == NULL) goto memmory_error;
     }
 
     /* Initilize the Struct */
     fseek(infile, 0, SEEK_SET);
     for(int i = 0; i < vectors_number; i++){
-        fread(&garbage,sizeof(int),1,infile);
-        fread(nodes_array[i].vector,sizeof(float),dimension,infile);
-    }
+        result_fread = fread(&garbage,sizeof(int),1,infile);
+        if(result_fread != 1) goto fread_error;
 
+        result_fread = fread(nodes_array[i].vector,sizeof(float),dimension,infile);
+        if(result_fread != dimension) goto fread_error;
+    }
 
     graph->nodes_array = nodes_array;
     graph->number_of_nodes = vectors_number;
@@ -64,11 +67,18 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
     fclose(infile);
     return 0; 
 
+    /* ERRORS AREA */
+
     /* in case something goes wrong with memory */
     memmory_error:
-
     fclose(infile);
-    perror("No memmory");
+    perror("No memmory in FUN(Init_Graph_Data)");
+    return 1;
+
+    /* in case something goes wrong with fread */
+    fread_error:
+    fclose(infile);
+    perror("Fread error in FUN(Init_Graph_Data)");
     return 1;
 }
 
