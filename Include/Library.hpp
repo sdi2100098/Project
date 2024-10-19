@@ -41,7 +41,7 @@ int Init_Query_Data(const char *, Query *);
 int GetRandomNumber(const int ,const int );
 
 void free_fvecs(float **,int);
-float EuclidianDistance(const float *,const float *,const int );
+double EuclidianDistance(const float *,const float *,const int );
 std::set<int> Greedy_Search(Graph *,Query *,int *,int ,int );
 std::vector<int> RandomPermutation(Graph *);
 
