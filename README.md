@@ -2,4 +2,8 @@
 Nearest Neighbor Search
 
 
-The output file contains the vectors in a readable state. In the first row you can detext the number of Vectors and the length of each Vector 
+To run the program with testing follow these Instruction : 
+make
+make test
+./build
+./run_tests
