@@ -45,4 +45,8 @@ float EuclidianDistance(const float *,const float *,const int );
 std::set<int> Greedy_Search(Graph *,Query *,int *,int ,int );
 std::vector<int> RandomPermutation(Graph *);
 
+
+// Functions For Testing
+void Test_RandomPermutation();
+
 #endif
