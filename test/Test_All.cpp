@@ -27,9 +27,18 @@ void Test_EuclideanDistance(){
     TEST_ASSERT(abs(98.31397043632872-Distance)<0.00001);
 
 }
+
+void Test_RandomNumber(){
+    int number,exclude,maxVal;
+    exclude = 10;
+    maxVal = 100;
+    number = GetRandomNumber(maxVal,exclude);
+    TEST_ASSERT(number!=exclude);
+}
     
 TEST_LIST = {
     {"Random Permutation",Test_RandomPermutation},
     {"EculideanDistance",Test_EuclideanDistance},
+    {"Random Number",Test_RandomNumber},
     {NULL,NULL}
 };
