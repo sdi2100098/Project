@@ -24,7 +24,7 @@ void Test_EuclideanDistance(){
     float Secondvector[Size] = {35.538892,38.504338,79.524579,32.751777,32.773157,55.701575,16.653934,23.826345,52.985472,88.023222};
     Distance = EuclidianDistance(Firstvector,Secondvector,Size);
 
-    TEST_ASSERT(Distance>98 && Distance <99);
+    TEST_ASSERT(abs(98.31397043632872-Distance)<0.00001);
 
 }
     
