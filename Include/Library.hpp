@@ -42,7 +42,7 @@ int GetRandomNumber(const int ,const int );
 
 void free_fvecs(float **,int);
 float EuclidianDistance(const float *,const float *,const int );
-std::set<int> Greedy_Search(Graph *s,Query *query,int *k,int L,int index);
+std::set<int> Greedy_Search(Graph *,Query *,int *,int ,int );
 std::vector<int> RandomPermutation(Graph *);
 
 #endif

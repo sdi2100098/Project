@@ -8,7 +8,6 @@ std::vector<int> RandomPermutation(Graph *G) {
     for (int i = 0; i < maxVal; i++) 
         permutation[i] = i;
     
-    // Fisher-Yates shuffle to randomize the order
     for (int i = maxVal - 1; i > 0; i--) {
         // Generate a random number in the range [0, i]
         int j = rand() % (i + 1);
