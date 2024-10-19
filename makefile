@@ -9,14 +9,15 @@ TEST_DIR = test
 build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o
 	g++ -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o
 
-# Target to build the tests
-test: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/Test_RandomPermutation.o
-	g++ -o run_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/Test_RandomPermutation.o -I$(INC_DIR) -I$(TEST_DIR)
+# Target to build and run all tests in one file
+test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/Test_All.o
+	g++ -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm
+	./run_all_tests
 
-# Rule for Test_RandomPermutation.o (Test file)
-$(OBJ_DIR)/Test_RandomPermutation.o: $(TEST_DIR)/Test_RandomPermutation.cpp $(INC_DIR)/Library.hpp
+# Rule for Test_All.o (Combined test file)
+$(OBJ_DIR)/Test_All.o: $(TEST_DIR)/Test_All.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
-	g++ -c $(TEST_DIR)/Test_RandomPermutation.cpp -o $(OBJ_DIR)/Test_RandomPermutation.o -I$(INC_DIR) -I$(TEST_DIR)
+	g++ -c $(TEST_DIR)/Test_All.cpp -o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR)
 
 # Rule for main.o
 $(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp $(INC_DIR)/Library.hpp
@@ -31,7 +32,7 @@ $(OBJ_DIR)/Read_Vector.o: $(SRC_DIR)/Read_Vector.cpp $(INC_DIR)/Library.hpp
 # Rule for EuclidianDistance.o
 $(OBJ_DIR)/EuclidianDistance.o: $(SRC_DIR)/EuclidianDistance.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
-	g++ -c $(SRC_DIR)/EuclidianDistance.cpp -o $(OBJ_DIR)/EuclidianDistance.o -I$(INC_DIR)
+	g++ -c $(SRC_DIR)/EuclidianDistance.cpp -o $(OBJ_DIR)/EuclidianDistance.o -I$(INC_DIR) -lm
 
 # Rule for GetRandomNumber.o
 $(OBJ_DIR)/GetRandomNumber.o: $(SRC_DIR)/GetRandomNumber.cpp $(INC_DIR)/Library.hpp

@@ -11,7 +11,7 @@
 #include <iomanip>  // Include this header for std::fixed and std::setprecision
 #include <cstdlib>  // For malloc and free
 #include <cassert>  // For assert
-#include <cmath> // for the sqrt and pow
+#include <math.h> // for the sqrt and pow
 #include <time.h>
 #include <set>
 
@@ -48,5 +48,6 @@ std::vector<int> RandomPermutation(Graph *);
 
 // Functions For Testing
 void Test_RandomPermutation();
+void Test_EuclideanDistance();
 
 #endif
