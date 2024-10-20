@@ -48,6 +48,11 @@ int main(){
         std::cout << L_element << " ";
     std :: cout << std::endl;
     std::cout << "L Set Size : " << GreedyFunction->L.size() << std::endl;
+    std::cout << "Printing number of edges before : " << G.nodes_array[15].edges.size();
+    std::cout << std::endl;
+    Robust_Prune(15,GreedyFunction->V,1.2,&G);
+    std::cout << "Printing number of edges after Robust Prune : " << G.nodes_array[15].edges.size();
+    std::cout<<std::endl;
 
 
     // if (return_number)

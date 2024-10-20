@@ -47,7 +47,7 @@ int GetRandomNumber(const int ,const int );
 
 void free_fvecs(float **,int);
 double EuclidianDistance(const float *,const float *,const int );
-void Robust_Prune(int, std::set<int> *, float, Graph *);
+void Robust_Prune(int, std::set<int> &, float, Graph *);
 result_greedy* Greedy_Search(Graph *,const float *,int ,int );
 std::vector<int> RandomPermutation(Graph *);
 
