@@ -46,7 +46,7 @@ void Robust_Prune(int, std::set<int> *, float, Graph *);
 std::set<int> Greedy_Search(Graph *,const float *,int *,int );
 std::vector<int> RandomPermutation(Graph *);
 
-void Test(std::set<int> *x);
+
 
 
 // Functions For Testing

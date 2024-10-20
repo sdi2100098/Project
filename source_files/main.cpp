@@ -9,7 +9,7 @@ int main(){
     Graph G;
 
     //give the R VERY IMPORTANT
-    G.R = 2;
+    G.R = 3;
 
     Query Q;
     
@@ -22,18 +22,16 @@ int main(){
     fun_result = Init_Graph_Data(base_filename,&G);
 
 
-    /* SEE HOW A SET IS WORKING VIA A FUNCTION */
-    std::set<int> x;
-    x.insert(10);
-    x.insert(3);
-    x.insert(20);
 
-    Test(&x);
+    std::set<int> test_set;
+    test_set.insert(0);
+    test_set.insert(30);
+    test_set.insert(40);
 
-    std::set<int>::iterator it;
-    for(it = x.begin(); it != x.end(); it++)
-        printf("%d,",*it);
-    printf("\n");
+    Robust_Prune(1,&test_set,1.1,&G);
+
+    //printf("After Pnure %d\n",G.nodes_array[1].edges.size());
+
 
 
     // if (return_number)
