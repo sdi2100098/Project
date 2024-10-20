@@ -9,7 +9,7 @@ int main(){
     Graph G;
 
     //give the R VERY IMPORTANT
-    G.R = 2;
+    G.R = 65;
 
     Query Q;
     
@@ -34,6 +34,15 @@ int main(){
     for(it = x.begin(); it != x.end(); it++)
         printf("%d,",*it);
     printf("\n");
+
+    result_greedy GreedyFunction;
+    GreedyFunction = Greedy_Search(&G,G.nodes_array[10].vector,65,80);
+    for(auto &V_element : GreedyFunction.V)
+        std::cout << V_element << " ";
+    std::cout << std::endl;
+    for(auto &L_element : GreedyFunction.L)
+        std::cout << L_element << " ";
+    std :: cout << std::endl;
 
 
     // if (return_number)
