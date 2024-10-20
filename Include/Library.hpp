@@ -14,7 +14,8 @@
 #include <math.h> // for the sqrt and pow
 #include <time.h>
 #include <set>
-
+#include <limits>
+#include <algorithm>
 
 typedef struct node { /* node of each graph */ 
     float* vector;
@@ -34,7 +35,10 @@ typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */       
     int dimension; /* columns */
 }Query;
 
-
+typedef struct result_GreedySearch {
+    std::set<int> V;
+    std::vector<int> L;
+}result_greedy;
 
 int Init_Graph_Data(const char *, Graph *);
 int Init_Query_Data(const char *, Query *);
@@ -43,7 +47,7 @@ int GetRandomNumber(const int ,const int );
 void free_fvecs(float **,int);
 double EuclidianDistance(const float *,const float *,const int );
 void Robust_Prune(int, std::set<int> *, float, Graph *);
-std::set<int> Greedy_Search(Graph *,const float *,int *,int );
+result_greedy Greedy_Search(Graph *,const float *,int *,int );
 std::vector<int> RandomPermutation(Graph *);
 
 void Test(std::set<int> *x);
