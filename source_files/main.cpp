@@ -22,18 +22,18 @@ int main(){
     fun_result = Init_Graph_Data(base_filename,&G);
 
 
-    // /* SEE HOW A SET IS WORKING VIA A FUNCTION */
-    // std::set<int> x;
-    // x.insert(10);
-    // x.insert(3);
-    // x.insert(20);
+    /* SEE HOW A SET IS WORKING VIA A FUNCTION */
+    std::set<int> x;
+    x.insert(10);
+    x.insert(3);
+    x.insert(20);
 
-    // Test(&x);
+    Test(&x);
 
-    // std::set<int>::iterator it;
-    // for(it = x.begin(); it != x.end(); it++)
-    //     printf("%d,",*it);
-    // printf("\n");
+    std::set<int>::iterator it;
+    for(it = x.begin(); it != x.end(); it++)
+        printf("%d,",*it);
+    printf("\n");
 
     std::cout << "Now Printing Results from Greedy Function " << std::endl;
     result_greedy *GreedyFunction = new result_greedy;
