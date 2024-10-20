@@ -1,24 +1,23 @@
 #include "Library.hpp"
 
-std::set<int> Greedy_Search(Graph *s,const float *x_q,int *k,int L,int index) {
-    std::set<int>V = {};
-    std::set<int>set_L = {};
-    set_L.insert(index);
+std::set<int> Greedy_Search(Graph *s,const float *x_q,int &k,int L) {
+    std::set<int>V = {}; //Initialize the sets
+    std::set<int>set_L = {}; 
+    set_L.insert(0); //Insert s
     while (true) {
-        float min;
-        for(int i=0;i <set_L.size();i++) {
-            float p = EuclidianDistance(s->nodes_array[index].vector,x_q,s->dimension);
-            if(i == 0) {
+        float min = 1000000000000;
+        int minvalue;
+        for(int value : set_L) {
+            float p = EuclidianDistance(s->nodes_array[value].vector,x_q,s->dimension);
+            if(min > p) {
                 min = p;
-            }
-            else {
-                if(min > p) {
-                    min = p;
-                }
+                minvalue = value;
             }
         }
-        V.insert(index);
-        set_L = s->nodes_array[index].edges;
+        V.insert(minvalue);
+        set_L.clear();
+        set_L.insert(s->nodes_array[minvalue].edges.begin(),s->nodes_array[minvalue].edges.end());
     }
+    k = set_L.size();
     return V;
 }
