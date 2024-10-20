@@ -16,7 +16,8 @@ typedef struct Data{
 
 Medoid thread_result[MAX_THREAD];
 
-void *Medoid_Find(Data *data){
+void *Medoid_Find(void *d){
+    Data *data=(Data*)d;
     double sum = 0.0;
     int Min_index;
 
