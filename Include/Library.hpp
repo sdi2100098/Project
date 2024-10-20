@@ -38,7 +38,7 @@ typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */       
 
 typedef struct result_GreedySearch {
     std::set<int> V;
-    std::vector<int> L;
+    std::set<int> L;
 }result_greedy;
 
 int Init_Graph_Data(const char *, Graph *);
@@ -48,7 +48,7 @@ int GetRandomNumber(const int ,const int );
 void free_fvecs(float **,int);
 double EuclidianDistance(const float *,const float *,const int );
 void Robust_Prune(int, std::set<int> *, float, Graph *);
-result_greedy Greedy_Search(Graph *,const float *,int ,int );
+result_greedy* Greedy_Search(Graph *,const float *,int ,int );
 std::vector<int> RandomPermutation(Graph *);
 
 void Test(std::set<int> *x);

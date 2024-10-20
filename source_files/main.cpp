@@ -22,27 +22,32 @@ int main(){
     fun_result = Init_Graph_Data(base_filename,&G);
 
 
-    /* SEE HOW A SET IS WORKING VIA A FUNCTION */
-    std::set<int> x;
-    x.insert(10);
-    x.insert(3);
-    x.insert(20);
+    // /* SEE HOW A SET IS WORKING VIA A FUNCTION */
+    // std::set<int> x;
+    // x.insert(10);
+    // x.insert(3);
+    // x.insert(20);
 
-    Test(&x);
+    // Test(&x);
 
-    std::set<int>::iterator it;
-    for(it = x.begin(); it != x.end(); it++)
-        printf("%d,",*it);
-    printf("\n");
+    // std::set<int>::iterator it;
+    // for(it = x.begin(); it != x.end(); it++)
+    //     printf("%d,",*it);
+    // printf("\n");
 
-    result_greedy GreedyFunction;
-    GreedyFunction = Greedy_Search(&G,G.nodes_array[10].vector,65,80);
-    for(auto &V_element : GreedyFunction.V)
+    std::cout << "Now Printing Results from Greedy Function " << std::endl;
+    result_greedy *GreedyFunction = new result_greedy;
+    GreedyFunction = Greedy_Search(&G,G.nodes_array[15].vector,65,80);
+    std::cout << "Visited Nodes : ";
+    for(auto &V_element : GreedyFunction->V)
         std::cout << V_element << " ";
     std::cout << std::endl;
-    for(auto &L_element : GreedyFunction.L)
+    std::cout << "Visited Nodes Size : " << GreedyFunction->V.size() << std::endl;
+    std::cout << "L Set : ";
+    for(auto &L_element : GreedyFunction->L)
         std::cout << L_element << " ";
     std :: cout << std::endl;
+    std::cout << "L Set Size : " << GreedyFunction->L.size() << std::endl;
 
 
     // if (return_number)
@@ -85,5 +90,6 @@ int main(){
     // distance = EuclidianDistance(vector_1,vector_2,vectorSize);
     // std::cout << std::endl << "Calculate distance for two different vectors : ";
     // std::cout << distance << std::endl;
+    delete GreedyFunction;
     return 0;
 }

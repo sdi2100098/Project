@@ -1,73 +1,73 @@
 #include "Library.hpp"
 
-result_greedy Greedy_Search(Graph *s, const float *x_q, int k, int L) {
-    std::set<int> V; // Initialize the visited set
-    std::vector<int> vector_L; // Candidate set L
-    vector_L.push_back(0); // Assuming s->start node is 0 (this should be dynamic)
+result_greedy* Greedy_Search(Graph *s, const float *x_q, int k, int L) {
+    int minvalue,count = 0;
+    double min, p;
+    std::set<int> V; // Visited nodes
+    std::set<int> Lset; 
+    std::vector<int> temp_vector;
+    std::vector<int> result={0};
 
-    std::vector<int> result; // Initialize result vector to store differences
+    // Initialize Lset with the starting node
+    Lset.insert(0); 
 
-    // Main loop
-    while (!vector_L.empty()) {
-        double min_distance = std::numeric_limits<double>::infinity();
-        int closest_node = -1;
-
-        // Find the closest node in vector_L that hasn't been visited
-        for (int node : vector_L) {
-            double dist = EuclidianDistance(s->nodes_array[node].vector, x_q, s->dimension);
-            if (dist < min_distance) {
-                min_distance = dist;
-                closest_node = node;
+    // Continue until Lset is empty
+    while (!result.empty()) {
+        // Reset temp vector for this iteration
+        temp_vector.clear();
+        min = std::numeric_limits<double>::infinity();
+        
+        // Find the closest node in Lset
+        for (int value : result) {
+            p = EuclidianDistance(s->nodes_array[value].vector, x_q, s->dimension);
+            if (min > p) {
+                min = p;
+                minvalue = value;
             }
         }
 
-        // Add closest node to visited set
-        V.insert(closest_node);
+        // Insert the found closest node into the visited set
+        V.insert(minvalue);
 
-        // Expand the search space by adding the neighbors (edges) of the closest node
-        vector_L.insert(vector_L.end(), 
-            s->nodes_array[closest_node].edges.begin(), 
-            s->nodes_array[closest_node].edges.end());
+        for (auto &OutEdge : s->nodes_array[minvalue].edges) 
+            Lset.insert(OutEdge);
 
-        // If vector_L has grown beyond the limit L, retain the closest L points
-        if (vector_L.size() > L) {
-            std::vector<int> temp_vector;
-            for (int i = 0; i < L; ++i) {
-                double min_distance = std::numeric_limits<double>::infinity();
-                int closest_temp_node = -1;
-
-                // Find the closest point in vector_L
-                for (int node : vector_L) {
-                    double dist = EuclidianDistance(s->nodes_array[node].vector, x_q, s->dimension);
-                    if (dist < min_distance) {
-                        min_distance = dist;
-                        closest_temp_node = node;
+        // If Lset exceeds L, prune it
+        if (Lset.size() > L) {
+            while(1){
+                min = std::numeric_limits<double>::infinity();
+                for (int value : Lset) {
+                    p = EuclidianDistance(s->nodes_array[value].vector, x_q, s->dimension);
+                    if (min > p) {
+                        min = p;
+                        minvalue = value;
                     }
                 }
-
-                // Add this closest node to the temp_vector and remove it from vector_L
-                temp_vector.push_back(closest_temp_node);
-                vector_L.erase(std::remove(vector_L.begin(), vector_L.end(), closest_temp_node), vector_L.end());
+                temp_vector.push_back(minvalue);
+                Lset.erase(minvalue);
+                if(temp_vector.size()==L)
+                    break;
             }
-
-            // Replace vector_L with the closest L nodes
-            vector_L = temp_vector;
+            // Clear Lset and add back only the closest L elements
+            Lset.clear();
+            for (auto &element : temp_vector)
+                Lset.insert(element);
         }
 
-        // Calculate the set difference: vector_L - V (i.e., unvisited nodes)
+        // Prepare result for closest neighbors (Optional)
         result.clear();
-        std::set_difference(vector_L.begin(), vector_L.end(), V.begin(), V.end(), std::back_inserter(result));
+        std::set_difference(Lset.begin(), Lset.end(), V.begin(), V.end(), std::back_inserter(result));
 
-        // If the result is empty, stop the loop
-        if (result.empty()) {
-            break;
-        }
     }
 
-    // Prepare the result to return
-    result_greedy result_g;
-    result_g.L = vector_L; // Final set of nodes
-    result_g.V = V;        // Visited nodes set
-
+    // Prepare the result structure to return
+    result_greedy* result_g = new result_greedy;
+    for(auto &LsetElement : Lset){
+        result_g->L.insert(LsetElement);
+        count++;
+        if(count==k)
+            break;
+    }
+    result_g->V = V;
     return result_g;
 }
