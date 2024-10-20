@@ -28,7 +28,7 @@ int main(){
     x.insert(3);
     x.insert(20);
 
-    Test(&x);
+    
 
     std::set<int>::iterator it;
     for(it = x.begin(); it != x.end(); it++)
