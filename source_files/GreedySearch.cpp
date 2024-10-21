@@ -59,14 +59,28 @@ result_greedy* Greedy_Search(Graph *s, const float *x_q, int k, int L) {
         std::set_difference(Lset.begin(), Lset.end(), V.begin(), V.end(), std::back_inserter(result));
 
     }
+    temp_vector.clear();
+    while(1){
+        min = std::numeric_limits<double>::infinity();
+        for (int value : Lset) {
+            p = EuclidianDistance(s->nodes_array[value].vector, x_q, s->dimension);
+            if (min > p) {
+                min = p;
+                minvalue = value;
+            }
+        }
+        temp_vector.push_back(minvalue);
+        Lset.erase(minvalue);
+        if(temp_vector.size() == k)
+            break;
+    }
+    
 
     // Prepare the result structure to return
     result_greedy* result_g = new result_greedy;
-    for(auto &LsetElement : Lset){
+    
+    for(auto &LsetElement : temp_vector){
         result_g->L.insert(LsetElement);
-        count++;
-        if(count==k)
-            break;
     }
     result_g->V = V;
     return result_g;
