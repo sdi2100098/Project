@@ -6,8 +6,8 @@ OUT_DIR = DatasetsReadable
 TEST_DIR = test
 
 # Target to build the executable
-build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o
-	g++ -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o
+build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o
+	g++ -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o
 
 # Target to build and run all tests in one file
 test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Test_All.o
@@ -53,6 +53,11 @@ $(OBJ_DIR)/GreedySearch.o: $(SRC_DIR)/GreedySearch.cpp $(INC_DIR)/Library.hpp
 $(OBJ_DIR)/Robust_Prune.o: $(SRC_DIR)/Robust_Prune.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
 	g++ -c $(SRC_DIR)/Robust_Prune.cpp -o $(OBJ_DIR)/Robust_Prune.o -I$(INC_DIR)
+
+# Rule for Delete_Graph.o
+$(OBJ_DIR)/Delete_Graph.o: $(SRC_DIR)/Delete_Graph.cpp $(INC_DIR)/Library.hpp
+	@mkdir -p $(OBJ_DIR)
+	g++ -c $(SRC_DIR)/Delete_Graph.cpp -o $(OBJ_DIR)/Delete_Graph.o -I$(INC_DIR)
 
 # Rule to ensure DatasetsReadable directory is created
 $(OUT_DIR):

@@ -55,7 +55,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph){
     srand(time(NULL)); // make the seed
     for(int index = 0; index < graph->number_of_nodes; index++){
         graph->nodes_array[index].edges = {}; // we need to Initialize the set . Otherwise we have undefined behaviour
-        while(graph->nodes_array[index].edges.size() < graph->R){ // while the size of set is smaller than R
+        while((int)graph->nodes_array[index].edges.size() < graph->R){ // while the size of set is smaller than R
             random_number = GetRandomNumber(graph->number_of_nodes,index); // min = 0, max = number of Vectors, number to exclude is the index of the current node
             try{
                 graph->nodes_array[index].edges.insert(random_number); // insert the element
