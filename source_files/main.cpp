@@ -9,7 +9,7 @@ int main(){
     Graph G;
 
     //give the R VERY IMPORTANT
-    G.R = 100;
+    G.R = 20;
 
     Query Q;
     
@@ -37,7 +37,7 @@ int main(){
 
     std::cout << "Now Printing Results from Greedy Function " << std::endl;
     result_greedy *GreedyFunction = new result_greedy;
-    GreedyFunction = Greedy_Search(&G,G.nodes_array[15].vector,100,120);
+    GreedyFunction = Greedy_Search(&G,G.nodes_array[15].vector,20,30);
     std::cout << "Visited Nodes : ";
     for(auto &V_element : GreedyFunction->V)
         std::cout << V_element << " ";
@@ -50,7 +50,7 @@ int main(){
     std::cout << "L Set Size : " << GreedyFunction->L.size() << std::endl;
     std::cout << "Printing number of edges before : " << G.nodes_array[15].edges.size();
     std::cout << std::endl;
-    Robust_Prune(15,GreedyFunction->V,1.2,&G);
+    Robust_Prune(15,&(GreedyFunction->V),1.1,&G);
     std::cout << "Printing number of edges after Robust Prune : " << G.nodes_array[15].edges.size();
     std::cout<<std::endl;
 
