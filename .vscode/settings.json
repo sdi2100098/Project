@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.html": "html",
         "iostream": "cpp",
         "cstdlib": "cpp",
         "vector": "cpp",
@@ -49,6 +50,9 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "map": "cpp",
+        "ranges": "cpp",
+        "cinttypes": "cpp"
     }
 }

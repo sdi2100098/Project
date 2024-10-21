@@ -2,70 +2,82 @@
 #include <pthread.h>
 #define MAX_THREAD 5
 
-typedef struct Medoid{
+typedef struct Medoid
+{
     double Distance;
     int NodeArrayPos;
-}Medoid;
+} Medoid;
 
-typedef struct Data{
+typedef struct Data
+{
     Graph *G;
     int start;
     int end;
     int Thread_Result_Index;
-}Data;
+} Data;
 
 Medoid thread_result[MAX_THREAD];
 
-void *Medoid_Find(void *d){
-    Data *data=(Data*)d;
+void *Medoid_Find(void *d)
+{
+    Data *data = (Data *)d;
     double sum = 0.0;
     int Min_index;
 
     // Init Min
     double min = 99999999999.0;
-    for(int i = data->start; i<data->end; i++){
+    for (int i = data->start; i < data->end; i++)
+    {
 
-        for(int j = i+1; j<data->end; j++){
-            sum += EuclidianDistance(data->G->nodes_array[i].vector,data->G->nodes_array[j].vector,data->G->dimension); // Sum the distances
-        }   
+        for (int j = i + 1; j < data->end; j++)
+        {
+            sum += EuclidianDistance(data->G->nodes_array[i].vector, data->G->nodes_array[j].vector, data->G->dimension); // Sum the distances
+        }
         // Recalculate Min and save index of Medoid
-        if (sum < min){
+        if (sum < min)
+        {
             min = sum;
             Min_index = i;
         }
     }
-    thread_result[data->Thread_Result_Index].Distance = min; // Save min Distance
+    thread_result[data->Thread_Result_Index].Distance = min;           // Save min Distance
     thread_result[data->Thread_Result_Index].NodeArrayPos = Min_index; // Save Position of Vector with min Distance
-    
-    pthread_exit(0);  // Exit the thread
+
+    pthread_exit(0); // Exit the thread
 }
 
-Medoid CallThread(Graph *graph){
+Medoid CallThread(Graph *graph)
+{
     // Create and Init Graph
     // Create Data Array and initialize it
     Data D[MAX_THREAD];
-    for(int i = 0; i<MAX_THREAD; i++){
+    for (int i = 0; i < MAX_THREAD; i++)
+    {
         D[i].G = graph;
-        D[i].start = i * (graph->number_of_nodes/MAX_THREAD);
-        D[i].end = D[i].start + (graph->number_of_nodes/MAX_THREAD);
+        D[i].start = i * (graph->number_of_nodes / MAX_THREAD);
+        D[i].end = D[i].start + (graph->number_of_nodes / MAX_THREAD);
         D[i].Thread_Result_Index = i;
     }
-    
+
     pthread_t Thread_Array[MAX_THREAD];
-    for(int i = 0; i<MAX_THREAD; i++){
-        pthread_create(&Thread_Array[i],NULL,&Medoid_Find,&D[i]);
+    for (int i = 0; i < MAX_THREAD; i++)
+    {
+        pthread_create(&Thread_Array[i], NULL, &Medoid_Find, &D[i]);
     }
-    for(int i=0; i<MAX_THREAD; i++){
-        pthread_join(Thread_Array[i],NULL);
+    for (int i = 0; i < MAX_THREAD; i++)
+    {
+        pthread_join(Thread_Array[i], NULL);
     }
     double resultMin = thread_result[0].Distance;
     int resultIndexMin = thread_result[0].NodeArrayPos;
-    for(int i = 1; i<MAX_THREAD; i++){
-        if(thread_result[i].Distance < resultMin){
+    for (int i = 1; i < MAX_THREAD; i++)
+    {
+        if (thread_result[i].Distance < resultMin)
+        {
             resultMin = thread_result[i].Distance;
             resultIndexMin = thread_result[i].NodeArrayPos;
         }
     }
-    Medoid Result = {.Distance = resultMin,.NodeArrayPos = resultIndexMin};
+    Medoid Result = {.Distance = resultMin, .NodeArrayPos = resultIndexMin};
     return Result;
 }

@@ -1,8 +1,10 @@
 #include "Library.hpp"
-int GetRandomNumber(const int max,const int exclude){
+int GetRandomNumber(const int max, const int exclude)
+{
     int number;
-    do{
+    do
+    {
         number = rand() % max;
-    }while(number == exclude); // if number is the same as exclude repeat
+    } while (number == exclude); // if number is the same as exclude repeat
     return number;
 }

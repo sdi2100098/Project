@@ -8,55 +8,60 @@
 #include <vector>
 #include <string>
 #include <cassert>
-#include <iomanip>  // Include this header for std::fixed and std::setprecision
-#include <cstdlib>  // For malloc and free
-#include <cassert>  // For assert
-#include <math.h> // for the sqrt and pow
+#include <iomanip> // Include this header for std::fixed and std::setprecision
+#include <cstdlib> // For malloc and free
+#include <cassert> // For assert
+#include <math.h>  // for the sqrt and pow
 #include <time.h>
 #include <set>
 #include <limits>
 #include <algorithm>
 #include <iterator>
 
-typedef struct node { /* node of each graph */ 
-    float* vector;
+typedef struct node
+{ /* node of each graph */
+    float *vector;
     std::set<int> edges; // use set to have unique edges for every vector
-}node;
+} node;
 
-typedef struct graph{
-    node* nodes_array; /* WTF HASH MAP */
-    int R; /* out-degree number */
+typedef struct graph
+{
+    node *nodes_array;   /* WTF HASH MAP */
+    int R;               /* out-degree number */
     int number_of_nodes; /* rows */
-    int dimension;  /* columns */
-}Graph;
+    int dimension;       /* columns */
+} Graph;
 
-typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */                                                                   //not true ! 
-    float** vectors_array;
+typedef struct query
+{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */ // not true !
+    float **vectors_array;
     int number_of_vectors; /* rows */
-    int dimension; /* columns */
-}Query;
+    int dimension;         /* columns */
+} Query;
 
-typedef struct result_GreedySearch {
+typedef struct result_GreedySearch
+{
     std::set<int> V;
     std::set<int> L;
-}result_greedy;
+} result_greedy;
 
 int Init_Graph_Data(const char *, Graph *);
 int Init_Query_Data(const char *, Query *);
-int GetRandomNumber(const int ,const int );
+int GetRandomNumber(const int, const int);
 
-double EuclidianDistance(const float *,const float *,const int );
+double EuclidianDistance(const float *, const float *, const int);
 void Robust_Prune(int, std::set<int> *, float, Graph *);
-result_greedy* Greedy_Search(Graph *,const float *,int ,int );
+int Argument_Min_Distance(Graph *, std::set<int> *, int);
+void Set_Difference(std::set<int> *, std::set<int> *, std::set<int> *);
+result_greedy *Greedy_Search(Graph *, int, int, int);
 std::vector<int> RandomPermutation(Graph *);
-
 
 /* Function to Free memmory */
 void Delete_Graph(Graph *);
 
-
 // Functions For Testing
 void Test_RandomPermutation();
 void Test_EuclideanDistance();
+void Test_Set_Difference();
 
 #endif

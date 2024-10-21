@@ -6,12 +6,12 @@ OUT_DIR = DatasetsReadable
 TEST_DIR = test
 
 # Target to build the executable
-build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o
-	g++ -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o
+build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o
+	g++ -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o
 
 # Target to build and run all tests in one file
-test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Test_All.o
-	g++ -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm
+test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Test_All.o
+	g++ -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm
 	./run_all_tests
 
 # Rule for Test_All.o (Combined test file)
@@ -58,6 +58,17 @@ $(OBJ_DIR)/Robust_Prune.o: $(SRC_DIR)/Robust_Prune.cpp $(INC_DIR)/Library.hpp
 $(OBJ_DIR)/Delete_Graph.o: $(SRC_DIR)/Delete_Graph.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
 	g++ -c $(SRC_DIR)/Delete_Graph.cpp -o $(OBJ_DIR)/Delete_Graph.o -I$(INC_DIR)
+
+# Rule for Argument_Min_Distance.o
+$(OBJ_DIR)/Argument_Min_Distance.o: $(SRC_DIR)/Argument_Min_Distance.cpp $(INC_DIR)/Library.hpp
+	@mkdir -p $(OBJ_DIR)
+	g++ -c $(SRC_DIR)/Argument_Min_Distance.cpp -o $(OBJ_DIR)/Argument_Min_Distance.o -I$(INC_DIR)
+
+# Rule for Set_Difference.o
+$(OBJ_DIR)/Set_Difference.o: $(SRC_DIR)/Set_Difference.cpp $(INC_DIR)/Library.hpp
+	@mkdir -p $(OBJ_DIR)
+	g++ -c $(SRC_DIR)/Set_Difference.cpp -o $(OBJ_DIR)/Set_Difference.o -I$(INC_DIR)
+
 
 # Rule to ensure DatasetsReadable directory is created
 $(OUT_DIR):
