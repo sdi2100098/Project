@@ -34,8 +34,8 @@ int main()
     // }
     // std::cout << "Count : " << count << std ::endl;
 
-    return_number = Medoid(&G);
-    std::cout << return_number;
+    // return_number = Medoid(&G);
+    // std::cout << return_number;
 
     std::cout << "Now Printing Results from Greedy Function " << std::endl;
     result_greedy *GreedyFunction = NULL;
