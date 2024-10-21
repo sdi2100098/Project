@@ -52,6 +52,7 @@ int GetRandomNumber(const int, const int);
 double EuclidianDistance(const float *, const float *, const int);
 void Robust_Prune(int, std::set<int> *, float, Graph *);
 int Argument_Min_Distance(Graph *, std::set<int> *, int);
+int Medoid(Graph *);
 void Set_Difference(std::set<int> *, std::set<int> *, std::set<int> *);
 result_greedy *Greedy_Search(Graph *, int, int, int);
 std::vector<int> RandomPermutation(Graph *);
