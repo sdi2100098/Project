@@ -62,10 +62,10 @@ Medoid CallThread(Graph *graph){
     int resultIndexMin = thread_result[0].NodeArrayPos;
     for(int i = 1; i<MAX_THREAD; i++){
         if(thread_result[i].Distance < resultMin){
-            reusltMin = thread_result[i].Distance;
+            resultMin = thread_result[i].Distance;
             resultIndexMin = thread_result[i].NodeArrayPos;
         }
     }
-    Medoid Result = {.resultMin,.resultIndexMin};
+    Medoid Result = {.Distance = resultMin,.NodeArrayPos = resultIndexMin};
     return Result;
 }
