@@ -37,6 +37,8 @@ int main()
     // return_number = Medoid(&G);
     // std::cout << return_number;
 
+    check = CallThread(&G);
+    std ::cout << "Medoid : " << check << std::endl;
     std::cout << "Now Printing Results from Greedy Function " << std::endl;
     result_greedy *GreedyFunction = NULL;
     GreedyFunction = Greedy_Search(&G, 15, 20, 30);

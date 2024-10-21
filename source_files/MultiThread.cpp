@@ -2,11 +2,11 @@
 #include <pthread.h>
 #define MAX_THREAD 5
 
-typedef struct Medoid
+typedef struct medoid
 {
     double Distance;
     int NodeArrayPos;
-} Medoid;
+} medoid;
 
 typedef struct Data
 {
@@ -16,20 +16,20 @@ typedef struct Data
     int Thread_Result_Index;
 } Data;
 
-Medoid thread_result[MAX_THREAD];
+medoid thread_result[MAX_THREAD];
 
 void *Medoid_Find(void *d)
 {
     Data *data = (Data *)d;
-    double sum = 0.0;
+    double sum;
     int Min_index;
 
     // Init Min
-    double min = 99999999999.0;
+    double min = std::numeric_limits<double>::max();
     for (int i = data->start; i < data->end; i++)
     {
-
-        for (int j = i + 1; j < data->end; j++)
+        sum = 0.0;
+        for (int j = 0; j < data->G->number_of_nodes; j++)
         {
             sum += EuclidianDistance(data->G->nodes_array[i].vector, data->G->nodes_array[j].vector, data->G->dimension); // Sum the distances
         }
@@ -46,7 +46,7 @@ void *Medoid_Find(void *d)
     pthread_exit(0); // Exit the thread
 }
 
-Medoid CallThread(Graph *graph)
+int CallThread(Graph *graph)
 {
     // Create and Init Graph
     // Create Data Array and initialize it
@@ -78,6 +78,6 @@ Medoid CallThread(Graph *graph)
             resultIndexMin = thread_result[i].NodeArrayPos;
         }
     }
-    Medoid Result = {.Distance = resultMin, .NodeArrayPos = resultIndexMin};
-    return Result;
+    medoid Result = {.Distance = resultMin, .NodeArrayPos = resultIndexMin};
+    return Result.NodeArrayPos;
 }

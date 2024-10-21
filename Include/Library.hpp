@@ -54,6 +54,8 @@ void Robust_Prune(int, std::set<int> *, float, Graph *);
 int Argument_Min_Distance(Graph *, std::set<int> *, int);
 int Medoid(Graph *);
 void Set_Difference(std::set<int> *, std::set<int> *, std::set<int> *);
+int CallThread(Graph *);
+void *Medoid_Find(void *);
 result_greedy *Greedy_Search(Graph *, int, int, int);
 std::vector<int> RandomPermutation(Graph *);
 
