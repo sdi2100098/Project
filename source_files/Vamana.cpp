@@ -36,5 +36,6 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
                 G->nodes_array[j].edges.insert(Random_Permutation_Index); // Nout(j) <- Nout(j) U σ(i)
         }
     }
+    delete GreedyReturnValue;
     return result;
 }
