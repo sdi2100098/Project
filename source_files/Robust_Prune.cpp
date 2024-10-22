@@ -20,7 +20,7 @@ void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
     { /* V != 0 */
 
         /* p* <- arg min[for p'in V compute d(p,p')] */
-        p_star = Argument_Min_Distance(G, V, p);
+        p_star = Argument_Min_Distance(G, V, G->nodes_array[p].vector);
 
         G->nodes_array[p].edges.insert(p_star); /* Nout(p) <- Nout(p) U {p*} */
 

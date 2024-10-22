@@ -24,7 +24,7 @@ int main()
     // std ::cout << "Medoid : " << check << std::endl;
     std::cout << "Now Printing Results from Greedy Function " << std::endl;
     result_greedy *GreedyFunction = NULL;
-    GreedyFunction = Greedy_Search(&G, 2176, 100, 150, 8736);
+    GreedyFunction = Greedy_Search(&G, G.nodes_array[2176].vector, 100, 150, 8736);
     std::cout << "Visited Nodes : ";
     for (auto &V_element : GreedyFunction->V)
         std::cout << V_element << " ";

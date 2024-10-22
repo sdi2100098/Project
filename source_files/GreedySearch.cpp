@@ -1,6 +1,6 @@
 #include "Library.hpp"
 
-result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s)
+result_greedy *Greedy_Search(Graph *G, float *xq, int k, int L, int s)
 {
     int minvalue;
     std::set<int> V; // Visited nodes

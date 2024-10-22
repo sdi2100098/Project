@@ -61,7 +61,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
     graph->number_of_nodes = vectors_number;
     graph->dimension = dimension;
 
-    srand(time(NULL)); // make the seed
+    // srand(time(NULL)); // make the seed
     for (int index = 0; index < graph->number_of_nodes; index++)
     {
         graph->nodes_array[index].edges = {}; // we need to Initialize the set . Otherwise we have undefined behaviour
