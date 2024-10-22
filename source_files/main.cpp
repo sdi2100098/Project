@@ -9,56 +9,38 @@ int main()
     int return_number, fun_result = -1, fun_result_query, check = 0;
     Graph G;
 
-    // give the R VERY IMPORTANT
-    G.R = 20;
-
     Query Q;
 
     // fun_result_query = Init_Query_Data(query_filename, &Q);
 
-    // printf("%d\n",fun_result);
-
-    // if(fun_result == 1) return 1;
-    fun_result = Init_Graph_Data(base_filename, &G);
-
-    // for (int j = 0; j < G.number_of_nodes; j++)
-    // {
-    //     float *vector_1 = G.nodes_array[j].vector;
-    //     float *vector_2 = Q.vectors_array[0];
-    //     if (EuclidianDistance(vector_1, vector_2, G.dimension) < 277.0)
-    //     {
-    //         count++;
-    //         std ::cout << "Index : " << j;
-    //         std ::cout << std ::endl;
-    //     }
-    // }
-    // std::cout << "Count : " << count << std ::endl;
-
-    // return_number = Medoid(&G);
-    // std::cout << return_number;
-
-    check = CallThread(&G);
-    std ::cout << "Medoid : " << check << std::endl;
-    std::cout << "Now Printing Results from Greedy Function " << std::endl;
-    result_greedy *GreedyFunction = NULL;
-    GreedyFunction = Greedy_Search(&G, 15, 20, 30);
-    std::cout << "Visited Nodes : ";
-    for (auto &V_element : GreedyFunction->V)
-        std::cout << V_element << " ";
-    std::cout << std::endl;
-    std::cout << "Visited Nodes Size : " << GreedyFunction->V.size() << std::endl;
-    std::cout << "L Set : ";
-    for (auto &L_element : GreedyFunction->L)
-        std::cout << L_element << " ";
-    std ::cout << std::endl;
-    std::cout << "L Set Size : " << GreedyFunction->L.size() << std::endl;
-    std::cout << "Printing number of edges before : " << G.nodes_array[15].edges.size();
-    std::cout << std::endl;
-    Robust_Prune(15, &(GreedyFunction->V), 1.1, &G);
-    std::cout << "Printing number of edges after Robust Prune : " << G.nodes_array[15].edges.size();
+    // L = 30, R = 20
+    fun_result = Vamana(base_filename, &G, 30, 20);
+    std::cout << "Check if all went well : " << fun_result << std::endl;
+    std::cout << "Printing number of edges after Vamana : " << G.nodes_array[15].edges.size();
     std::cout << std::endl;
 
-    delete GreedyFunction;
+    // check = CallThread(&G);
+    // std ::cout << "Medoid : " << check << std::endl;
+    // std::cout << "Now Printing Results from Greedy Function " << std::endl;
+    // result_greedy *GreedyFunction = NULL;
+    // GreedyFunction = Greedy_Search(&G, 15, 20, 30);
+    // std::cout << "Visited Nodes : ";
+    // for (auto &V_element : GreedyFunction->V)
+    //     std::cout << V_element << " ";
+    // std::cout << std::endl;
+    // std::cout << "Visited Nodes Size : " << GreedyFunction->V.size() << std::endl;
+    // std::cout << "L Set : ";
+    // for (auto &L_element : GreedyFunction->L)
+    //     std::cout << L_element << " ";
+    // std ::cout << std::endl;
+    // std::cout << "L Set Size : " << GreedyFunction->L.size() << std::endl;
+    // std::cout << "Printing number of edges before : " << G.nodes_array[15].edges.size();
+    // std::cout << std::endl;
+    // Robust_Prune(15, &(GreedyFunction->V), 1.1, &G);
+    // std::cout << "Printing number of edges after Robust Prune : " << G.nodes_array[15].edges.size();
+    // std::cout << std::endl;
+
+    // delete GreedyFunction;
 
     Delete_Graph(&G);
 

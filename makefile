@@ -6,8 +6,8 @@ OUT_DIR = DatasetsReadable
 TEST_DIR = test
 
 # Target to build the executable
-build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o
-	g++ -pthread -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o
+build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o
+	g++ -pthread -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o
 
 # Target to build and run all tests in one file
 test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Test_All.o
@@ -78,6 +78,11 @@ $(OBJ_DIR)/Medoid.o: $(SRC_DIR)/Medoid.cpp $(INC_DIR)/Library.hpp
 $(OBJ_DIR)/MultiThread.o: $(SRC_DIR)/MultiThread.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
 	g++ -c $(SRC_DIR)/MultiThread.cpp -o $(OBJ_DIR)/MultiThread.o -I$(INC_DIR)
+
+# Rule for Vamana.o
+$(OBJ_DIR)/Vamana.o: $(SRC_DIR)/Vamana.cpp $(INC_DIR)/Library.hpp
+	@mkdir -p $(OBJ_DIR)
+	g++ -c $(SRC_DIR)/Vamana.cpp -o $(OBJ_DIR)/Vamana.o -I$(INC_DIR)
 
 
 # Rule to ensure DatasetsReadable directory is created
