@@ -10,14 +10,8 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
 
     G->R = R;
     result = Init_Graph_Data(file_path, G); // Create a random R-regular directed graph
-
-    // s = CallThread(G);
-    s = 8736; // Find the Medoid
-    std::cout << "Medoid : " << s << std::endl;
+    s = CallThread(G);
     RandomPerm = RandomPermutation(G); // Get a Random Permutation
-
-    std::cout << "Printing number of edges before Vamana : " << G->nodes_array[15].edges.size();
-    std::cout << std::endl;
 
     for (int i = 0; i < G->number_of_nodes; i++)
     {
