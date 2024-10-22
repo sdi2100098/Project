@@ -57,7 +57,7 @@ int Medoid(Graph *);
 void Set_Difference(std::set<int> *, std::set<int> *, std::set<int> *);
 int CallThread(Graph *);
 void *Medoid_Find(void *);
-result_greedy *Greedy_Search(Graph *, int, int, int);
+result_greedy *Greedy_Search(Graph *, int, int, int, int);
 std::vector<int> RandomPermutation(Graph *);
 
 /* Function to Free memmory */

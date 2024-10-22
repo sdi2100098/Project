@@ -1,27 +1,27 @@
 #include "Library.hpp"
 
-result_greedy *Greedy_Search(Graph *s, int xq, int k, int L)
+result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s)
 {
     int minvalue;
     std::set<int> V; // Visited nodes
     std::set<int> Lset;
     std::vector<int> temp_vector;
-    std::set<int> difference_L_V = {0};
+    std::set<int> difference_L_V = {s};
 
     // Initialize Lset with the starting node
-    Lset.insert(0);
+    Lset.insert(s);
 
     // Continue until Lset is empty
     while (!difference_L_V.empty())
     {
         // Reset temp vector for this iteration
         temp_vector.clear();
-        minvalue = Argument_Min_Distance(s, &difference_L_V, xq);
+        minvalue = Argument_Min_Distance(G, &difference_L_V, xq);
 
         // Insert the found closest node into the visited set
         V.insert(minvalue);
 
-        for (auto &OutEdge : s->nodes_array[minvalue].edges)
+        for (auto &OutEdge : G->nodes_array[minvalue].edges)
             Lset.insert(OutEdge);
 
         // If Lset exceeds L, prune it
@@ -29,7 +29,7 @@ result_greedy *Greedy_Search(Graph *s, int xq, int k, int L)
         {
             while (1)
             {
-                minvalue = Argument_Min_Distance(s, &Lset, xq);
+                minvalue = Argument_Min_Distance(G, &Lset, xq);
                 temp_vector.push_back(minvalue);
                 Lset.erase(minvalue);
                 if (temp_vector.size() == L)
@@ -49,7 +49,7 @@ result_greedy *Greedy_Search(Graph *s, int xq, int k, int L)
     temp_vector.clear();
     while (1)
     {
-        minvalue = Argument_Min_Distance(s, &Lset, xq);
+        minvalue = Argument_Min_Distance(G, &Lset, xq);
         temp_vector.push_back(minvalue);
         Lset.erase(minvalue);
         if (temp_vector.size() == k)
