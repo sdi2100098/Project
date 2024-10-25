@@ -1,6 +1,26 @@
 #include "acutest.h"
 #include "Library.hpp"
 
+void Test_Init_Graph()
+{
+    const char *base_filename = "Datasets/siftsmall_base.fvecs";
+    Graph G;
+    G.R = 4;
+    int Return_Number = Init_Graph_Data(base_filename, &G);
+
+    TEST_ASSERT((&G) != NULL);          // Test that the Graph isn't equal to NULL
+    TEST_ASSERT(G.nodes_array != NULL); // Test that the array of Nodes isn't equal to NULL
+    for (int i = 0; i < G.number_of_nodes; i++)
+    {
+        TEST_ASSERT(G.nodes_array[i].vector != NULL);      // Test that the vector for all nodes aren't equal to NULL
+        TEST_ASSERT(G.nodes_array[i].edges.size() == G.R); // Test that the size of the set is in fact equal to R
+    }
+    TEST_ASSERT(!Return_Number); // If everything went fine it should return zero
+    Delete_Graph(&G);            // Free the memory
+}
+
+// void Test_Init_Query -> Job For my sweet Friends Gripioths and Koyvelas
+
 void Test_Set_Difference()
 {
     std::set<int> Set_1 = {};
@@ -18,7 +38,10 @@ void Test_Set_Difference()
 void Test_RandomPermutation()
 {
     Graph G;
-    G.number_of_nodes = 100; // Initliaze the number of nodes for the test
+    G.R = 2; // Initialize R
+    const char *base_filename = "Datasets/siftsmall_base.fvecs";
+
+    int Return_Number = Init_Graph_Data(base_filename, &G);
     std::vector<int> permutation = RandomPermutation(&G);
 
     std::vector<bool> Testvector(G.number_of_nodes, false);
@@ -30,6 +53,7 @@ void Test_RandomPermutation()
     }
     for (int i = 0; i < permutation.size(); i++)
         TEST_ASSERT(Testvector[i] == true);
+    Delete_Graph(&G);
 }
 
 void Test_EuclideanDistance()
@@ -53,6 +77,7 @@ void Test_RandomNumber()
 }
 
 TEST_LIST = {
+    {"Initialization of Graph", Test_Init_Graph},
     {"Random Permutation", Test_RandomPermutation},
     {"EculideanDistance", Test_EuclideanDistance},
     {"Random Number", Test_RandomNumber},

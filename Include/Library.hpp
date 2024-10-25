@@ -64,8 +64,10 @@ std::vector<int> RandomPermutation(Graph *);
 void Delete_Graph(Graph *);
 
 // Functions For Testing
+void Test_RandomNumber();
 void Test_RandomPermutation();
 void Test_EuclideanDistance();
 void Test_Set_Difference();
+void Test_Init_Graph();
 
 #endif
