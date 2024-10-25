@@ -3,7 +3,7 @@
 
 void Test_Init_Graph()
 {
-    const char *base_filename = "Datasets/siftsmall_base.fvecs";
+    const char *base_filename = "Datasets/Small_Set/siftsmall_base.fvecs";
     Graph G;
     G.R = 4;
     int Return_Number = Init_Graph_Data(base_filename, &G);
@@ -39,7 +39,7 @@ void Test_RandomPermutation()
 {
     Graph G;
     G.R = 2; // Initialize R
-    const char *base_filename = "Datasets/siftsmall_base.fvecs";
+    const char *base_filename = "Datasets/Small_Set/siftsmall_base.fvecs";
 
     int Return_Number = Init_Graph_Data(base_filename, &G);
     std::vector<int> permutation = RandomPermutation(&G);
