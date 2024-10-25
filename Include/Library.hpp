@@ -69,5 +69,6 @@ void Test_RandomPermutation();
 void Test_EuclideanDistance();
 void Test_Set_Difference();
 void Test_Init_Graph();
+void Test_Medoid();
 
 #endif

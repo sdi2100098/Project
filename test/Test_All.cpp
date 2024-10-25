@@ -3,7 +3,7 @@
 
 void Test_Init_Graph()
 {
-    const char *base_filename = "Datasets/Small_Set/siftsmall_base.fvecs";
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G;
     G.R = 4;
     int Return_Number = Init_Graph_Data(base_filename, &G);
@@ -21,6 +21,16 @@ void Test_Init_Graph()
 
 // void Test_Init_Query -> Job For my sweet Friends Gripioths and Koyvelas
 
+void Test_Medoid()
+{
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
+    Graph G;
+    G.R = 4;
+    int Return_Number = Init_Graph_Data(base_filename, &G);
+    int MedoidResult = CallThread(&G);
+    TEST_ASSERT(MedoidResult == 4); // We know that the vector with index 4 is the Medoid
+    Delete_Graph(&G);
+}
 void Test_Set_Difference()
 {
     std::set<int> Set_1 = {};
@@ -39,7 +49,7 @@ void Test_RandomPermutation()
 {
     Graph G;
     G.R = 2; // Initialize R
-    const char *base_filename = "Datasets/Small_Set/siftsmall_base.fvecs";
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
 
     int Return_Number = Init_Graph_Data(base_filename, &G);
     std::vector<int> permutation = RandomPermutation(&G);
@@ -78,6 +88,7 @@ void Test_RandomNumber()
 
 TEST_LIST = {
     {"Initialization of Graph", Test_Init_Graph},
+    {"Medoid", Test_Medoid},
     {"Random Permutation", Test_RandomPermutation},
     {"EculideanDistance", Test_EuclideanDistance},
     {"Random Number", Test_RandomNumber},
