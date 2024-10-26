@@ -4,8 +4,7 @@
 void Test_Init_Graph()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G;
-    G.R = 2;
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
     int Return_Number = Init_Graph_Data(base_filename, &G);
 
     TEST_ASSERT(!Return_Number);          // If everything went fine it should return zero
@@ -25,8 +24,7 @@ void Test_Init_Graph()
 void Test_Medoid()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G;
-    G.R = 2;
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
     int Return_Number = Init_Graph_Data(base_filename, &G);
     int MedoidResult = Medoid(&G);
     TEST_ASSERT(MedoidResult == 4); // We know that the vector with index 4 is the Medoid
@@ -36,8 +34,7 @@ void Test_Medoid()
 void Test_Argument_Min_Distance()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G;
-    G.R = 2;
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
     int Return_Number = Init_Graph_Data(base_filename, &G);
     std::vector<int> Closest_neighbors;
     int count = 0;
@@ -109,8 +106,7 @@ void Test_Set_Difference()
 
 void Test_RandomPermutation()
 {
-    Graph G;
-    G.R = 4; // Initialize R
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
 
     int Return_Number = Init_Graph_Data(base_filename, &G);
