@@ -8,7 +8,7 @@ void Test_Init_Graph()
     G.R = 2;
     int Return_Number = Init_Graph_Data(base_filename, &G);
 
-    TEST_ASSERT((&G) != NULL);            // Test that the Graph isn't equal to NULL
+    TEST_ASSERT(!Return_Number);          // If everything went fine it should return zero
     TEST_ASSERT(G.nodes_array != NULL);   // Test that the array of Nodes isn't equal to NULL
     TEST_ASSERT(G.number_of_nodes == 10); // We know that we have 10 vectors in 2-dimensional space
     TEST_ASSERT(G.dimension == 2);
@@ -17,8 +17,7 @@ void Test_Init_Graph()
         TEST_ASSERT(G.nodes_array[i].vector != NULL);      // Test that the vector for all nodes aren't equal to NULL
         TEST_ASSERT(G.nodes_array[i].edges.size() == G.R); // Test that the size of the set is in fact equal to R
     }
-    TEST_ASSERT(!Return_Number); // If everything went fine it should return zero
-    Delete_Graph(&G);            // Free the memory
+    Delete_Graph(&G); // Free the memory
 }
 
 // void Test_Init_Query -> Job For my sweet Friends Gripioths and Koyvelas
