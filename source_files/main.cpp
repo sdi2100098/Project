@@ -2,15 +2,13 @@
 
 int main()
 {
-
+    srand(time(NULL)); // make the seed
     const char *base_filename = "Datasets/Small_Set/siftsmall_base.fvecs";
     const char *query_filename = "Datasets/Small_Set/siftsmall_query.fvecs";
     int count = 0;
     int return_number, fun_result = -1, fun_result_query, check = 0;
     Graph G;
-
     Query Q;
-    G.R = 200;
     // fun_result_query = Init_Graph_Data(base_filename, &G);
     // fun_result = Init_Query_Data(query_filename, &Q);
 

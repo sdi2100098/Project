@@ -70,5 +70,5 @@ void Test_EuclideanDistance();
 void Test_Set_Difference();
 void Test_Init_Graph();
 void Test_Medoid();
-
+void Test_Argument_Min_Distance();
 #endif

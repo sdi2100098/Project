@@ -5,11 +5,13 @@ void Test_Init_Graph()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G;
-    G.R = 4;
+    G.R = 2;
     int Return_Number = Init_Graph_Data(base_filename, &G);
 
-    TEST_ASSERT((&G) != NULL);          // Test that the Graph isn't equal to NULL
-    TEST_ASSERT(G.nodes_array != NULL); // Test that the array of Nodes isn't equal to NULL
+    TEST_ASSERT((&G) != NULL);            // Test that the Graph isn't equal to NULL
+    TEST_ASSERT(G.nodes_array != NULL);   // Test that the array of Nodes isn't equal to NULL
+    TEST_ASSERT(G.number_of_nodes == 10); // We know that we have 10 vectors in 2-dimensional space
+    TEST_ASSERT(G.dimension == 2);
     for (int i = 0; i < G.number_of_nodes; i++)
     {
         TEST_ASSERT(G.nodes_array[i].vector != NULL);      // Test that the vector for all nodes aren't equal to NULL
@@ -25,11 +27,72 @@ void Test_Medoid()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G;
-    G.R = 4;
+    G.R = 2;
     int Return_Number = Init_Graph_Data(base_filename, &G);
-    int MedoidResult = CallThread(&G);
+    int MedoidResult = Medoid(&G);
     TEST_ASSERT(MedoidResult == 4); // We know that the vector with index 4 is the Medoid
     Delete_Graph(&G);
+}
+
+void Test_Argument_Min_Distance()
+{
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
+    Graph G;
+    G.R = 2;
+    int Return_Number = Init_Graph_Data(base_filename, &G);
+    std::vector<int> Closest_neighbors;
+    int count = 0;
+    for (int i = 0; i < G.number_of_nodes; i++)
+    {
+        int index = Argument_Min_Distance(&G, &(G.nodes_array[i].edges), G.nodes_array[i].vector);
+        Closest_neighbors.push_back(index);
+    }
+    for (auto &element : Closest_neighbors)
+    {
+        switch (count)
+        {
+        case 0:
+            TEST_ASSERT(element == 3);
+            break;
+
+        case 1:
+            TEST_ASSERT(element == 7);
+            break;
+
+        case 2:
+            TEST_ASSERT(element == 5);
+            break;
+
+        case 3:
+            TEST_ASSERT(element == 6);
+            break;
+
+        case 4:
+            TEST_ASSERT(element == 9);
+            break;
+
+        case 5:
+            TEST_ASSERT(element == 7);
+            break;
+
+        case 6:
+            TEST_ASSERT(element == 9);
+            break;
+
+        case 7:
+            TEST_ASSERT(element == 6);
+            break;
+
+        case 8:
+            TEST_ASSERT(element == 0);
+            break;
+
+        case 9:
+            TEST_ASSERT(element == 6);
+            break;
+        }
+        count++;
+    }
 }
 void Test_Set_Difference()
 {
@@ -48,7 +111,7 @@ void Test_Set_Difference()
 void Test_RandomPermutation()
 {
     Graph G;
-    G.R = 2; // Initialize R
+    G.R = 4; // Initialize R
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
 
     int Return_Number = Init_Graph_Data(base_filename, &G);
@@ -93,4 +156,5 @@ TEST_LIST = {
     {"EculideanDistance", Test_EuclideanDistance},
     {"Random Number", Test_RandomNumber},
     {"Set_Difference", Test_Set_Difference},
+    {"Argument Min Distance", Test_Argument_Min_Distance},
     {NULL, NULL}};
