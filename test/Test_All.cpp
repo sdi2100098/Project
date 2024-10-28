@@ -161,6 +161,7 @@ void Test_RandomNumber()
 
 TEST_LIST = {
     {"Initialization of Graph", Test_Init_Graph},
+    {"Initialization of Query", Test_Init_Query},
     {"Medoid", Test_Medoid},
     {"Random Permutation", Test_RandomPermutation},
     {"EculideanDistance", Test_EuclideanDistance},
