@@ -62,6 +62,7 @@ std::vector<int> RandomPermutation(Graph *);
 
 /* Function to Free memmory */
 void Delete_Graph(Graph *);
+void Delete_Query(Query *);
 
 // Functions For Testing
 void Test_RandomNumber();
@@ -69,6 +70,7 @@ void Test_RandomPermutation();
 void Test_EuclideanDistance();
 void Test_Set_Difference();
 void Test_Init_Graph();
+void Test_Init_Query();
 void Test_Medoid();
 void Test_Argument_Min_Distance();
 #endif

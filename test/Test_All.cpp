@@ -19,7 +19,24 @@ void Test_Init_Graph()
     Delete_Graph(&G); // Free the memory
 }
 
-// void Test_Init_Query -> Job For my sweet Friends Gripioths and Koyvelas
+void Test_Init_Query() 
+{
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
+    Query Q = {.vectors_array = NULL, .number_of_vectors = 0, .dimension = 0};
+    int Return_Number = Init_Query_Data(base_filename,&Q);
+
+    TEST_ASSERT(!Return_Number);
+    TEST_ASSERT(Q.number_of_vectors == 10);
+    TEST_ASSERT(Q.dimension == 2);
+    for(int i = 0; i < Q.number_of_vectors; i++) 
+    {
+        for(int j = 0; j < Q.dimension; j++)
+        {
+            TEST_ASSERT(Q.vectors_array[i][j] != NULL);
+        }
+    }
+    Delete_Query(&Q);
+}
 
 void Test_Medoid()
 {
