@@ -26,14 +26,12 @@ void Test_Init_Query()
     int Return_Number = Init_Query_Data(base_filename,&Q);
 
     TEST_ASSERT(!Return_Number);
-    TEST_ASSERT(Q.number_of_vectors == 10);
+    TEST_ASSERT(Q.vectors_array != NULL); // Checking that the array is not NULL
+    TEST_ASSERT(Q.number_of_vectors == 10); // We know that we have 10 vectors in 2-dimensional space
     TEST_ASSERT(Q.dimension == 2);
     for(int i = 0; i < Q.number_of_vectors; i++) 
     {
-        for(int j = 0; j < Q.dimension; j++)
-        {
-            TEST_ASSERT(Q.vectors_array[i][j] != NULL);
-        }
+            TEST_ASSERT(Q.vectors_array[i] != NULL); //Check for every vector that it is not NULL
     }
     Delete_Query(&Q);
 }
