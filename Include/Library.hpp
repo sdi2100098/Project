@@ -73,4 +73,5 @@ void Test_Init_Graph();
 void Test_Init_Query();
 void Test_Medoid();
 void Test_Argument_Min_Distance();
+void Test_Greedy_Search();
 #endif

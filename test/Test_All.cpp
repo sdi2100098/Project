@@ -159,6 +159,21 @@ void Test_RandomNumber()
     TEST_ASSERT(number != exclude);
 }
 
+void Test_Greedy_Search()
+{
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
+    int Return_Number = Init_Graph_Data(base_filename, &G);
+    result_greedy *res = NULL; // Initialize the results we are going to get from the greedy
+    float *temp_xq = new float[2]{5.0, 5.0}; // Query is going to have the value of the center of the graph
+    res = Greedy_Search(&G,temp_xq,2,5,4); // Calling Greedy_Search for the k=2,L=5 and s=4
+    std::set<int> V = {0,3,4,6,9}; // What V will contain given the above
+    std::set<int> L = {0,9}; // What L will contain given the above
+    TEST_ASSERT(res->V == V);
+    TEST_ASSERT(res->L == L);
+    Delete_Graph(&G);
+}
+
 TEST_LIST = {
     {"Initialization of Graph", Test_Init_Graph},
     {"Initialization of Query", Test_Init_Query},
@@ -168,4 +183,5 @@ TEST_LIST = {
     {"Random Number", Test_RandomNumber},
     {"Set_Difference", Test_Set_Difference},
     {"Argument Min Distance", Test_Argument_Min_Distance},
+    {"Greedy_Search", Test_Greedy_Search},
     {NULL, NULL}};
