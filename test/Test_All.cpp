@@ -191,6 +191,10 @@ void Test_Robust_Prune(){
     TEST_ASSERT(G.nodes_array[0].edges == right_result);
 }
 
+void Test_Vamana(){
+    
+}
+
 TEST_LIST = {
     {"Initialization of Graph", Test_Init_Graph},
     {"Initialization of Query", Test_Init_Query},
@@ -202,4 +206,5 @@ TEST_LIST = {
     {"Argument Min Distance", Test_Argument_Min_Distance},
     {"Greedy_Search", Test_Greedy_Search},
     {"Robust Prune", Test_Robust_Prune},
+    {"Vamana",Test_Vamana},
     {NULL, NULL}};

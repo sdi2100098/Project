@@ -76,4 +76,5 @@ void Test_Medoid();
 void Test_Argument_Min_Distance();
 void Test_Greedy_Search();
 void Test_Robust_Prune();
+void Test_Vamana();
 #endif
