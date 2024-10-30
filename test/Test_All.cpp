@@ -105,6 +105,7 @@ void Test_Argument_Min_Distance()
         count++;
     }
 }
+
 void Test_Set_Difference()
 {
     std::set<int> Set_1 = {};
@@ -172,6 +173,22 @@ void Test_Greedy_Search()
     TEST_ASSERT(res->V == V);
     TEST_ASSERT(res->L == L);
     Delete_Graph(&G);
+    free(res);
+    delete temp_xq;
+}
+
+void Test_Robust_Prune(){
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
+    Graph G = {.nodes_array = NULL, .R = 5, .number_of_nodes = 0, .dimension = 0};
+    
+    Init_Graph_Data(base_filename,&G);
+
+    std::set<int> test_set = {0,5,9};
+    Robust_Prune(0,&test_set,1,&G);
+
+    std::set<int> right_result = {7,9};
+
+    TEST_ASSERT(G.nodes_array[0].edges == right_result);
 }
 
 TEST_LIST = {
@@ -184,4 +201,5 @@ TEST_LIST = {
     {"Set_Difference", Test_Set_Difference},
     {"Argument Min Distance", Test_Argument_Min_Distance},
     {"Greedy_Search", Test_Greedy_Search},
+    {"Robust Prune", Test_Robust_Prune},
     {NULL, NULL}};

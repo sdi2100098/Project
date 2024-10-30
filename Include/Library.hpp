@@ -59,6 +59,7 @@ int CallThread(Graph *);
 void *Medoid_Find(void *);
 result_greedy *Greedy_Search(Graph *, float *, int, int, int);
 std::vector<int> RandomPermutation(Graph *);
+int Right_Exec(int ,char **);
 
 /* Function to Free memmory */
 void Delete_Graph(Graph *);
@@ -74,4 +75,5 @@ void Test_Init_Query();
 void Test_Medoid();
 void Test_Argument_Min_Distance();
 void Test_Greedy_Search();
+void Test_Robust_Prune();
 #endif
