@@ -192,7 +192,17 @@ void Test_Robust_Prune(){
 }
 
 void Test_Vamana(){
+    srand(time(NULL)); // make the seed
+    int fun_result,R=5,L=8,k=3;
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
+    Graph G;
+    fun_result = Vamana(base_filename, &G, L, R);
+    CreateKNNGraphBruteForce(G,k); 
+
+    TEST_ASSERT(fun_result == 0);
     
+    for(int index = 0 ; index < G.number_of_nodes ; index++)
+        TEST_ASSERT(G.nodes_array[index].edges.size() <= R); 
 }
 
 TEST_LIST = {

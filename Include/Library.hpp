@@ -45,6 +45,7 @@ typedef struct result_GreedySearch
     std::set<int> L;
 } result_greedy;
 
+void CreateKNNGraphBruteForce(Graph ,int);
 int Init_Graph_Data(const char *, Graph *);
 int Init_Query_Data(const char *, Query *);
 int GetRandomNumber(const int, const int);

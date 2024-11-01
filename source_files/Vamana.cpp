@@ -4,6 +4,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
 {
     int result, s, Random_Permutation_Index, Size;
     float a = 1.1;
+    int k = 2;
     float *vector;
     std::vector<int> RandomPerm;
     result_greedy *GreedyReturnValue = NULL; // Will have the L set and V set obtained from Greedy
@@ -17,7 +18,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
     {
         Random_Permutation_Index = RandomPerm[i];
         vector = G->nodes_array[Random_Permutation_Index].vector;
-        GreedyReturnValue = Greedy_Search(G, vector, 1, L, s);                 // [L,V] <- GreedySearch(s,x_s(i),1,L)
+        GreedyReturnValue = Greedy_Search(G, vector, k, L, s);                 // [L,V] <- GreedySearch(s,x_s(i),1,L)
         Robust_Prune(Random_Permutation_Index, &(GreedyReturnValue->V), a, G); // RobustPrune(σ(i),V,a,R)
         for (auto &j : G->nodes_array[Random_Permutation_Index].edges)         // for all points j in Nout(σ(i))
         {
