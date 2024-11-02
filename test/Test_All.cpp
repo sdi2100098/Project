@@ -19,19 +19,19 @@ void Test_Init_Graph()
     Delete_Graph(&G); // Free the memory
 }
 
-void Test_Init_Query() 
+void Test_Init_Query()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Query Q = {.vectors_array = NULL, .number_of_vectors = 0, .dimension = 0};
-    int Return_Number = Init_Query_Data(base_filename,&Q);
+    int Return_Number = Init_Query_Data(base_filename, &Q);
 
     TEST_ASSERT(!Return_Number);
-    TEST_ASSERT(Q.vectors_array != NULL); // Checking that the array is not NULL
+    TEST_ASSERT(Q.vectors_array != NULL);   // Checking that the array is not NULL
     TEST_ASSERT(Q.number_of_vectors == 10); // We know that we have 10 vectors in 2-dimensional space
     TEST_ASSERT(Q.dimension == 2);
-    for(int i = 0; i < Q.number_of_vectors; i++) 
+    for (int i = 0; i < Q.number_of_vectors; i++)
     {
-            TEST_ASSERT(Q.vectors_array[i] != NULL); //Check for every vector that it is not NULL
+        TEST_ASSERT(Q.vectors_array[i] != NULL); // Check for every vector that it is not NULL
     }
     Delete_Query(&Q);
 }
@@ -165,11 +165,11 @@ void Test_Greedy_Search()
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
     int Return_Number = Init_Graph_Data(base_filename, &G);
-    result_greedy *res = NULL; // Initialize the results we are going to get from the greedy
-    float *temp_xq = new float[2]{5.0, 5.0}; // Query is going to have the value of the center of the graph
-    res = Greedy_Search(&G,temp_xq,2,5,4); // Calling Greedy_Search for the k=2,L=5 and s=4
-    std::set<int> V = {0,3,4,6,9}; // What V will contain given the above
-    std::set<int> L = {0,9}; // What L will contain given the above
+    result_greedy *res = NULL;                 // Initialize the results we are going to get from the greedy
+    float *temp_xq = new float[2]{5.0, 5.0};   // Query is going to have the value of the center of the graph
+    res = Greedy_Search(&G, temp_xq, 2, 5, 4); // Calling Greedy_Search for the k=2,L=5 and s=4
+    std::set<int> V = {0, 3, 4, 6, 9};         // What V will contain given the above
+    std::set<int> L = {0, 9};                  // What L will contain given the above
     TEST_ASSERT(res->V == V);
     TEST_ASSERT(res->L == L);
     Delete_Graph(&G);
@@ -177,54 +177,58 @@ void Test_Greedy_Search()
     delete temp_xq;
 }
 
-void Test_Robust_Prune(){
+void Test_Robust_Prune()
+{
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 5, .number_of_nodes = 0, .dimension = 0};
-    
-    Init_Graph_Data(base_filename,&G);
 
-    std::set<int> test_set = {0,5,9};
-    Robust_Prune(0,&test_set,1,&G);
+    Init_Graph_Data(base_filename, &G);
 
-    std::set<int> right_result = {7,9};
+    std::set<int> test_set = {0, 5, 9};
+    Robust_Prune(0, &test_set, 1, &G);
+
+    std::set<int> right_result = {7, 9};
 
     TEST_ASSERT(G.nodes_array[0].edges == right_result);
 }
 
-void Test_Vamana(){
+void Test_Vamana()
+{
     srand(time(NULL)); // make the seed
-    int fun_result,R=8,L=10,k=7,s,accuracy=0;
-    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs",*output_filename = "Datasets/Test_Set/Test_groundtruth.txt";
+    int fun_result, R = 9, L = 10, k = 7, s, accuracy = 0;
+    double total_accuracy = 0.0;
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs", *output_filename = "Datasets/Test_Set/Test_groundtruth.txt";
     std::vector<std::vector<int>> groundtruth;
     Graph G;
     fun_result = Vamana(base_filename, &G, L, R);
     groundtruth = ReadFileTXT(output_filename);
     s = Medoid(&G);
     result_greedy *Results;
-    
-    for (int i = 0; i < G.number_of_nodes; i++) {
-        if (i >= groundtruth.size()) {
+
+    for (int i = 0; i < G.number_of_nodes; i++)
+    {
+        if (i >= groundtruth.size())
+        {
             break;
         }
 
         Results = Greedy_Search(&G, G.nodes_array[i].vector, k, L, s);
-        const std::vector<int>& groundtruth_row = groundtruth[i];
+        const std::vector<int> &groundtruth_row = groundtruth[i];
+        accuracy = 0;
 
-        for (int groundtruth_elem : groundtruth_row) {
-            if (Results->L.find(groundtruth_elem) != Results->L.end()) {
+        for (int groundtruth_elem : groundtruth_row)
+        {
+            if (Results->L.find(groundtruth_elem) != Results->L.end())
                 accuracy++;
-            }
         }
-
-        delete Results; 
-    }   
+        total_accuracy = (double)accuracy / groundtruth_row.size();
+        TEST_ASSERT(total_accuracy > 0.85); // Accuracy not better than 85% for such small dataset
+        delete Results;
+    }
     TEST_ASSERT(fun_result == 0);
-    
-    for(int index = 0 ; index < G.number_of_nodes ; index++)
+
+    for (int index = 0; index < G.number_of_nodes; index++)
         TEST_ASSERT(G.nodes_array[index].edges.size() <= R);
-
-    TEST_ASSERT(abs(0.85-(accuracy/(groundtruth.size() * groundtruth.front().size()))) < 1); // Accuracy not better than 85% for such small dataset
-
 }
 
 TEST_LIST = {
@@ -238,5 +242,5 @@ TEST_LIST = {
     {"Argument Min Distance", Test_Argument_Min_Distance},
     {"Greedy_Search", Test_Greedy_Search},
     {"Robust Prune", Test_Robust_Prune},
-    {"Vamana",Test_Vamana},
+    {"Vamana", Test_Vamana},
     {NULL, NULL}};

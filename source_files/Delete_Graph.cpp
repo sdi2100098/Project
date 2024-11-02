@@ -13,11 +13,11 @@ void Delete_Graph(Graph *G)
     free(G->nodes_array);
 }
 
-void Delete_Query(Query *Q) 
+void Delete_Query(Query *Q)
 {
-    for(int i = 0; i < Q->number_of_vectors; i++)
+    for (int i = 0; i < Q->number_of_vectors; i++)
     {
-            free(Q->vectors_array[i]);
+        free(Q->vectors_array[i]);
     }
     free(Q->vectors_array);
 }

@@ -45,7 +45,7 @@ typedef struct result_GreedySearch
     std::set<int> L;
 } result_greedy;
 
-void CreateKNNGraphBruteForce(Graph ,int,const char *);
+void CreateKNNGraphBruteForce(Graph, int, const char *);
 int Init_Graph_Data(const char *, Graph *);
 int Init_Query_Data(const char *, Query *);
 std::vector<std::vector<int>> ReadFileTXT(const char *);
@@ -61,7 +61,7 @@ int CallThread(Graph *);
 void *Medoid_Find(void *);
 result_greedy *Greedy_Search(Graph *, float *, int, int, int);
 std::vector<int> RandomPermutation(Graph *);
-int Right_Exec(int ,char **);
+int Right_Exec(int, char **);
 
 /* Function to Free memmory */
 void Delete_Graph(Graph *);
