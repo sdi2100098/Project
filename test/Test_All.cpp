@@ -36,6 +36,29 @@ void Test_Init_Query()
     Delete_Query(&Q);
 }
 
+void Test_Init_GroundTruth(){
+    // const char *base_fiflename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
+    // groundTruth GT = {.array = NULL,.size = 0};
+
+    // int Return_Number = Init_Ground_Truth_Data(base_fiflename,&GT);
+
+    // TEST_ASSERT(!Return_Number);
+    // TEST_ASSERT(GT.array != NULL);
+    // TEST_ASSERT(GT.size == 100);
+
+    // for(int i = 0; i<GT.size; i++)
+    //     TEST_ASSERT(GT.array[i] != NULL);
+    // Delete_GroundTruth(&GT);
+}
+
+
+void TestReadTxt(){
+    const char *outputfilename = "Datasets/Test_Set/Test_groundtruth.txt";
+    std::vector<std::vector<int>> result = ReadFileTXT(outputfilename);
+    TEST_ASSERT(result.size()>0);
+}
+
+
 void Test_Medoid()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
@@ -234,6 +257,8 @@ void Test_Vamana()
 TEST_LIST = {
     {"Initialization of Graph", Test_Init_Graph},
     {"Initialization of Query", Test_Init_Query},
+    {"Initialization of Ground Truth",Test_Init_GroundTruth},
+    {"Read TXT", TestReadTxt},
     {"Medoid", Test_Medoid},
     {"Random Permutation", Test_RandomPermutation},
     {"EculideanDistance", Test_EuclideanDistance},

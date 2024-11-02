@@ -2,20 +2,24 @@
 
 int Vamana(const char *file_path, Graph *G, int L, int R)
 {
+    const char *query_filename = "Datasets/Small_Set/siftsmall_query.fvecs";
+    const char *ground_truth_filename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
     int result, s, Random_Permutation_Index, Size;
-    float a = 1.1;
-    int k = 2;
+    float a = 1.2;
+    int k = 100;
     float *vector;
     std::vector<int> RandomPerm;
     result_greedy *GreedyReturnValue = NULL; // Will have the L set and V set obtained from Greedy
 
     G->R = R;
     result = Init_Graph_Data(file_path, G); // Create a random R-regular directed graph
-    s = Medoid(G);                          // Use the slow medoid
+    //s = Medoid(G);
+    s = 8736;                          // Use the slow medoid
     RandomPerm = RandomPermutation(G);      // Get a Random Permutation
 
     for (int i = 0; i < G->number_of_nodes; i++)
     {
+        std::cout << i << std::endl;
         Random_Permutation_Index = RandomPerm[i];
         vector = G->nodes_array[Random_Permutation_Index].vector;
         GreedyReturnValue = Greedy_Search(G, vector, k, L, s);                 // [L,V] <- GreedySearch(s,x_s(i),1,L)
@@ -33,5 +37,6 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
         }
     }
     delete GreedyReturnValue;
+    result = GroundTruth(query_filename,ground_truth_filename,G,100,20,s);
     return result;
 }

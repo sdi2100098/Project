@@ -185,3 +185,43 @@ std::vector<std::vector<int>> ReadFileTXT(const char *filename)
     fclose(file);
     return info;
 }
+
+int Init_Ground_Truth_Data(const char *file_path,groundTruth *GT){
+    FILE *infile = fopen(file_path,"rb");
+    if(infile == NULL){
+        perror("Error opening Ground Truth");
+        return 1;
+    }
+    int size,garbage;
+    int **array=NULL;
+
+    fread(&size,sizeof(int),1,infile);
+    fseek(infile,0,SEEK_SET);
+
+    array = (int **)malloc(sizeof(int *) * size);
+    if(array == NULL){
+        perror("Allocation error in Init Ground Truth Data");
+        fclose(infile);
+        return 1;
+    }
+    for(int i = 0; i<size; i++){
+        array[i] = (int*)malloc(sizeof(int) * size);
+        if(array[i]==NULL){
+            perror("Allocation error in Init Ground Truth Data");
+            fclose(infile);
+            return 1;
+        }
+    }
+
+    for(int i = 0; i<size; i++){
+        fread(&garbage,sizeof(int),1,infile);
+        fread(array[i],sizeof(int),size,infile);
+    }
+
+    GT->array = array;
+    GT->size = size;
+
+
+    fclose(infile);
+    return 0;
+}

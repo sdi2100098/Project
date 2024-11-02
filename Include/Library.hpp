@@ -39,6 +39,11 @@ typedef struct query
     int dimension;         /* columns */
 } Query;
 
+typedef struct groundTruth{
+    int **array;
+    int size;
+}groundTruth;
+
 typedef struct result_GreedySearch
 {
     std::set<int> V;
@@ -48,6 +53,7 @@ typedef struct result_GreedySearch
 void CreateKNNGraphBruteForce(Graph, int, const char *);
 int Init_Graph_Data(const char *, Graph *);
 int Init_Query_Data(const char *, Query *);
+int Init_Ground_Truth_Data(const char *,groundTruth *);
 std::vector<std::vector<int>> ReadFileTXT(const char *);
 int GetRandomNumber(const int, const int);
 
@@ -62,10 +68,12 @@ void *Medoid_Find(void *);
 result_greedy *Greedy_Search(Graph *, float *, int, int, int);
 std::vector<int> RandomPermutation(Graph *);
 int Right_Exec(int, char **);
+int GroundTruth(const char *,const char * ,Graph *,int , int , int );
 
 /* Function to Free memmory */
 void Delete_Graph(Graph *);
 void Delete_Query(Query *);
+void Delete_GroundTruth(groundTruth *);
 
 // Functions For Testing
 void Test_RandomNumber();
@@ -74,6 +82,8 @@ void Test_EuclideanDistance();
 void Test_Set_Difference();
 void Test_Init_Graph();
 void Test_Init_Query();
+void Test_Init_GroundTruth();
+void TestReadTxt();
 void Test_Medoid();
 void Test_Argument_Min_Distance();
 void Test_Greedy_Search();

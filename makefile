@@ -6,12 +6,12 @@ OUT_DIR = DatasetsReadable
 TEST_DIR = test
 
 # Target to build the executable
-build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o
-	g++ -pthread -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o
+build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o
+	g++ -pthread -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o
 
 # Target to build and run all tests in one file
-test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o
-	g++ -pthread -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm
+test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o $(OBJ_DIR)/Test_All.o
+	g++ -pthread -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm
 	./run_all_tests
 
 # Rule for Test_All.o (Combined test file)
@@ -93,6 +93,11 @@ $(OBJ_DIR)/Right_Exec.o: $(SRC_DIR)/Right_Exec.cpp $(INC_DIR)/Library.hpp
 $(OBJ_DIR)/KNNG_BruteForce.o: $(SRC_DIR)/KNNG_BruteForce.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
 	g++ -c $(SRC_DIR)/KNNG_BruteForce.cpp -o $(OBJ_DIR)/KNNG_BruteForce.o -I$(INC_DIR)
+
+# Rule for GroundTruth.o
+$(OBJ_DIR)/GroundTruth.o: $(SRC_DIR)/GroundTruth.cpp $(INC_DIR)/Library.hpp
+	@mkdir -p $(OBJ_DIR)
+	g++ -c $(SRC_DIR)/GroundTruth.cpp -o $(OBJ_DIR)/GroundTruth.o -I$(INC_DIR)
 
 # Rule to ensure DatasetsReadable directory is created
 $(OUT_DIR):
