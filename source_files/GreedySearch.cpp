@@ -35,8 +35,12 @@ result_greedy *Greedy_Search(Graph *G, float *xq, int k, int L, int s){
             for(std::set<std::pair<double,int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; i++,it++){
                 Temp.insert({it->first,it->second});
             }
+
             L_kal.clear();
-            L_kal = Temp;
+            for(std::set<std::pair<double,int>>::iterator it = Temp.begin(); it != Temp.end(); it++){
+                L_kal.insert({it->first,it->second});
+            }
+
         }
         Difference_L_V.clear();
         Set_Difference(&L_kal,&V,&Difference_L_V);

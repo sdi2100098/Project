@@ -20,7 +20,7 @@ int main(int argv, char **argc)
 
     fun_result = Vamana(base_filename, &G, 150, 15);
 
-    //Delete_Graph(&G);
+    Delete_Graph(&G);
 
     return 0;
 }

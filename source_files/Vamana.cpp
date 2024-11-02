@@ -18,26 +18,38 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
     s = 8736;                          // Use the slow medoid
     RandomPerm = RandomPermutation(G);      // Get a Random Permutation
 
+    int flag = 1000, kapa = 0;
+
     for (int i = 0; i < G->number_of_nodes; i++)
     {
         Random_Permutation_Index = RandomPerm[i];
         vector = G->nodes_array[Random_Permutation_Index].vector;
         GreedyReturnValue = Greedy_Search(G, vector, 1, L, s); // [L,V] <- GreedySearch(s,x_s(i),1,L)
-        std::cout << "Print Greedy : " << i << std::endl;
+
+        kapa++;
+        if(kapa == flag){
+            printf("%d\n",flag);
+            flag += 1000;
+        }
+
+
         Robust_Prune(Random_Permutation_Index, &(GreedyReturnValue->V), a, G); // RobustPrune(σ(i),V,a,R)
+        delete GreedyReturnValue;
         for (auto &j : G->nodes_array[Random_Permutation_Index].edges)         // for all points j in Nout(σ(i))
         {
             TempSet = G->nodes_array[j].edges;
             TempSet.insert(Random_Permutation_Index); // If it exists in the set size remains the same else it increases by one
             Size = TempSet.size();
 
-            if (Size > R) // if |Nout(j) U {σ(i)}| > R
+            if (Size > R){ // if |Nout(j) U {σ(i)}| > R
                 Robust_Prune(j, &(TempSet), a, G);
+                G->nodes_array[j].edges.clear();
+                G->nodes_array[j].edges = TempSet;
+            }
             else
                 G->nodes_array[j].edges.insert(Random_Permutation_Index); // Nout(j) <- Nout(j) U σ(i)
         }
     }
-    delete GreedyReturnValue;
-    //result = GroundTruth(query_filename,ground_truth_filename,G,100,15,s);
+    result = GroundTruth(query_filename,ground_truth_filename,G,100,15,s);
     return result;
 }
