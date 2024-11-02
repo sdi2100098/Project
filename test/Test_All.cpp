@@ -193,16 +193,38 @@ void Test_Robust_Prune(){
 
 void Test_Vamana(){
     srand(time(NULL)); // make the seed
-    int fun_result,R=5,L=8,k=3;
-    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
+    int fun_result,R=8,L=10,k=7,s,accuracy=0;
+    const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs",*output_filename = "Datasets/Test_Set/Test_groundtruth.txt";
+    std::vector<std::vector<int>> groundtruth;
     Graph G;
     fun_result = Vamana(base_filename, &G, L, R);
-    CreateKNNGraphBruteForce(G,k); 
+    groundtruth = ReadFileTXT(output_filename);
+    s = Medoid(&G);
+    result_greedy *Results;
+    
+    for (int i = 0; i < G.number_of_nodes; i++) {
+        if (i >= groundtruth.size()) {
+            break;
+        }
 
+        Results = Greedy_Search(&G, G.nodes_array[i].vector, k, L, s);
+        const std::vector<int>& groundtruth_row = groundtruth[i];
+
+        for (int groundtruth_elem : groundtruth_row) {
+            if (Results->L.find(groundtruth_elem) != Results->L.end()) {
+                accuracy++;
+            }
+        }
+
+        delete Results; 
+    }   
     TEST_ASSERT(fun_result == 0);
     
     for(int index = 0 ; index < G.number_of_nodes ; index++)
-        TEST_ASSERT(G.nodes_array[index].edges.size() <= R); 
+        TEST_ASSERT(G.nodes_array[index].edges.size() <= R);
+
+    TEST_ASSERT(abs(0.85-(accuracy/(groundtruth.size() * groundtruth.front().size()))) < 1); // Accuracy not better than 85% for such small dataset
+
 }
 
 TEST_LIST = {

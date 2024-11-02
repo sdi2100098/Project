@@ -1,7 +1,7 @@
 #include "Library.hpp"
 
-void CreateKNNGraphBruteForce(Graph G,int k){
-    FILE *output_file = fopen("Datasets/Test_Set/Test_groundtruth.txt","w");
+void CreateKNNGraphBruteForce(Graph G,int k,const char *filename){
+    FILE *output_file = fopen(filename,"w");
     if(output_file == NULL){
         perror("Error oopening file");
         return;
@@ -17,7 +17,6 @@ void CreateKNNGraphBruteForce(Graph G,int k){
         }
         std::sort(closest_neighbors.begin(),closest_neighbors.end());
         for(int l = 0; l < k ; l++){
-            G.nodes_array[i].edges.insert(closest_neighbors[l].second);
             fprintf(output_file, "%d ", closest_neighbors[l].second);
         }
         fprintf(output_file, "\n");

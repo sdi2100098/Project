@@ -45,9 +45,10 @@ typedef struct result_GreedySearch
     std::set<int> L;
 } result_greedy;
 
-void CreateKNNGraphBruteForce(Graph ,int);
+void CreateKNNGraphBruteForce(Graph ,int,const char *);
 int Init_Graph_Data(const char *, Graph *);
 int Init_Query_Data(const char *, Query *);
+std::vector<std::vector<int>> ReadFileTXT(const char *);
 int GetRandomNumber(const int, const int);
 
 double EuclidianDistance(const float *, const float *, const int);
