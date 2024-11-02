@@ -1,5 +1,6 @@
 #include "Library.hpp"
 
+#if 1 == 0
 int GroundTruth(const char *Query_path,const char *Ground_Truth_path,Graph *G,int k , int L , int s){
     int result,sum;
     groundTruth GT = {.array=NULL,.size = 0};
@@ -29,4 +30,4 @@ int GroundTruth(const char *Query_path,const char *Ground_Truth_path,Graph *G,in
     Delete_GroundTruth(&GT);
     return 0;
 }
-
+#endif

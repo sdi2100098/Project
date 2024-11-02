@@ -1,67 +1,58 @@
 #include "Library.hpp"
 
-result_greedy *Greedy_Search(Graph *G, float *xq, int k, int L, int s)
-{
-    int minvalue;
-    std::set<int> V; // Visited nodes
-    std::set<std::pair<double,int>> Lset;
-    std::vector<int> temp_vector;
-    std::set<int> difference_L_V = {s};
+result_greedy *Greedy_Search(Graph *G, float *xq, int k, int L, int s){
+    
+    /* Initialize L <- {s} and V <- 0 */
+    std::set<std::pair<double,int>> L_kal = {{0,s}};
+    std::set<std::pair<double,int>> Temp = {{}};
+    std::set<int> V = {};
+    std::set<int> Difference_L_V = {s};
 
-    // Initialize Lset with the starting node
-    Lset.insert({0,s});
-    V.clear();
+    int p_star, i;
+    double distance;
 
-    // Continue until Lset is empty
-    while (!difference_L_V.empty())
-    {
-        // Reset temp vector for this iteration
-        temp_vector.clear();
-        minvalue = Argument_Min_Distance(G, &difference_L_V, xq);
+    /* while L\V != 0 */
+    while(Difference_L_V.size() != 0){
+        i = 0;
 
-        // Insert the found closest node into the visited set
-        V.insert(minvalue);
+        /* p* <- atg min d(Xp,Xq) for p in L\V */
+        p_star = Argument_Min_Distance(G,&Difference_L_V,xq);
 
-        for (auto &OutEdge : G->nodes_array[minvalue].edges)
-            Lset.insert(OutEdge);
-
-        // If Lset exceeds L, prune it
-        if (Lset.size() > L)
-        {
-            while (1)
-            {
-                minvalue = Argument_Min_Distance(G, &Lset, xq);
-                temp_vector.push_back(minvalue);
-                Lset.erase(minvalue);
-                if (temp_vector.size() == L)
-                    break;
-            }
-
-            // Clear Lset and add back only the closest L elements
-            Lset.clear();
-            for (auto &element : temp_vector)
-                Lset.insert(element);
+        /* L <- L U Nout(p*) (with the distances)*/
+        for(std::set<int>::iterator it = G->nodes_array[p_star].edges.begin(); it != G->nodes_array[p_star].edges.end(); it++){
+            distance = EuclidianDistance(G->nodes_array[*it].vector,xq,G->dimension);
+            L_kal.insert({distance,*it});
         }
 
-        // Prepare difference_L_V for closest neighbors (Optional)
-        difference_L_V.clear();
-        Set_Difference(&Lset, &V, &difference_L_V);
-    }
-    temp_vector.clear();
-    while (1)
-    {
-        minvalue = Argument_Min_Distance(G, &Lset, xq);
-        temp_vector.push_back(minvalue);
-        Lset.erase(minvalue);
-        if (temp_vector.size() == k)
-            break;
+        /* V <- V U {p*} */
+        V.insert(p_star);
+
+        /* |L kaligrafiko| > L */
+        if(L_kal.size() > L){
+            
+            Temp.clear();
+            /* L kaligrafiko retain closest L points to Xq */
+            for(std::set<std::pair<double,int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; i++,it++){
+                Temp.insert({it->first,it->second});
+            }
+            L_kal.clear();
+            L_kal = Temp;
+        }
+        Difference_L_V.clear();
+        Set_Difference(&L_kal,&V,&Difference_L_V);
     }
 
-    // Prepare the result structure to return
-    result_greedy *result_g = new result_greedy;
+    result_greedy *RG = new result_greedy;
 
-    for (auto &LsetElement : temp_vector)
-        result_g->L.insert(LsetElement);
-    result_g->V = V;
-    return result_g;
+    i = 0;
+    /* closect k points from L kaligrafiko + V */
+    for(std::set<std::pair<double,int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < k; i++,it++){
+        RG->L.insert({it->first,it->second});
+    }
+    RG->V = V;
+
+    return RG;
 }
+
+
+

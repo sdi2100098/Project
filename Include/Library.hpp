@@ -47,7 +47,7 @@ typedef struct groundTruth{
 typedef struct result_GreedySearch
 {
     std::set<int> V;
-    std::set<int> L;
+    std::set<std::pair<double,int>> L;
 } result_greedy;
 
 void CreateKNNGraphBruteForce(Graph, int, const char *);
@@ -62,7 +62,7 @@ void Robust_Prune(int, std::set<int> *, float, Graph *);
 int Vamana(const char *, Graph *, int, int);
 int Argument_Min_Distance(Graph *, std::set<int> *, float *);
 int Medoid(Graph *);
-void Set_Difference(std::set<int> *, std::set<int> *, std::set<int> *);
+void Set_Difference(std::set<std::pair<double,int>> *, std::set<int> *, std::set<int> *);
 int CallThread(Graph *);
 void *Medoid_Find(void *);
 result_greedy *Greedy_Search(Graph *, float *, int, int, int);

@@ -38,6 +38,6 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
         }
     }
     delete GreedyReturnValue;
-    result = GroundTruth(query_filename,ground_truth_filename,G,100,15,s);
+    //result = GroundTruth(query_filename,ground_truth_filename,G,100,15,s);
     return result;
 }
