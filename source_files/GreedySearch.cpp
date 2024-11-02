@@ -4,12 +4,13 @@ result_greedy *Greedy_Search(Graph *G, float *xq, int k, int L, int s)
 {
     int minvalue;
     std::set<int> V; // Visited nodes
-    std::set<int> Lset;
+    std::set<std::pair<double,int>> Lset;
     std::vector<int> temp_vector;
     std::set<int> difference_L_V = {s};
 
     // Initialize Lset with the starting node
-    Lset.insert(s);
+    Lset.insert({0,s});
+    V.clear();
 
     // Continue until Lset is empty
     while (!difference_L_V.empty())
