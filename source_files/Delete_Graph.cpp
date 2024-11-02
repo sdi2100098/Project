@@ -15,6 +15,7 @@ void Delete_Graph(Graph *G)
 
 void Delete_Query(Query *Q)
 {
+    // Free memory for the query (float**)
     for (int i = 0; i < Q->number_of_vectors; i++)
     {
         free(Q->vectors_array[i]);
@@ -23,6 +24,7 @@ void Delete_Query(Query *Q)
 }
 
 void Delete_GroundTruth(groundTruth *GT){
+    // Free memory for the groundtruth (int**)
     for(int i = 0; i<GT->size; i++){
         free(GT->array[i]);
     }
