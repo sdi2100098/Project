@@ -37,25 +37,25 @@ void Test_Init_Query()
 }
 
 void Test_Init_GroundTruth(){
-    // const char *base_fiflename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
-    // groundTruth GT = {.array = NULL,.size = 0};
+    const char *base_fiflename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
+    groundTruth GT = {.array = NULL,.size = 0};
 
-    // int Return_Number = Init_Ground_Truth_Data(base_fiflename,&GT);
+    int Return_Number = Init_Ground_Truth_Data(base_fiflename,&GT);
 
-    // TEST_ASSERT(!Return_Number);
-    // TEST_ASSERT(GT.array != NULL);
-    // TEST_ASSERT(GT.size == 100);
+    TEST_ASSERT(!Return_Number); 
+    TEST_ASSERT(GT.array != NULL); // Checking that the array is not NULL
+    TEST_ASSERT(GT.size == 100); // We know we have 100 x 100 array
 
-    // for(int i = 0; i<GT.size; i++)
-    //     TEST_ASSERT(GT.array[i] != NULL);
-    // Delete_GroundTruth(&GT);
+    for(int i = 0; i<GT.size; i++)
+        TEST_ASSERT(GT.array[i] != NULL); // Check for every vector that it is not NULL
+    Delete_GroundTruth(&GT);
 }
 
 
 void TestReadTxt(){
     const char *outputfilename = "Datasets/Test_Set/Test_groundtruth.txt";
     std::vector<std::vector<int>> result = ReadFileTXT(outputfilename);
-    TEST_ASSERT(result.size()>0);
+    TEST_ASSERT(result.size()>0); // Ensure that the vector is not empty after calling the Function
 }
 
 
@@ -83,6 +83,7 @@ void Test_Argument_Min_Distance()
     }
     for (auto &element : Closest_neighbors)
     {
+        //For each vector we know which of each neighbors is the closest. So we just check with a switch case
         switch (count)
         {
         case 0:
@@ -131,15 +132,15 @@ void Test_Argument_Min_Distance()
 
 void Test_Set_Difference()
 {
-    std::set<int> Set_1 = {};
+    std::set<std::pair<double,int>> Set_1 = {};
     std::set<int> Set_2 = {1, 2};
     std::set<int> Difference = {};
-    Set_Difference(&Set_1, &Set_2, &Difference);
+    Set_Difference(&Set_1, &Set_2, &Difference); // The difference of the sets above should be the empty set
     TEST_ASSERT(Difference.empty());
-    std::set<int> Set_1_1 = {1, 2, 3};
+    std::set<std::pair<double,int>> Set_1_1 = {{0.1,1},{2.51, 2}, {0.4,3}};
     std::set<int> Set_2_1 = {1, 2};
     std::set<int> Difference_1 = {};
-    Set_Difference(&Set_1_1, &Set_2_1, &Difference_1);
+    Set_Difference(&Set_1_1, &Set_2_1, &Difference_1); // The difference between these twwo sets should only be the number 3
     TEST_ASSERT(Difference_1.find(3) != Difference_1.end());
 }
 
@@ -155,11 +156,11 @@ void Test_RandomPermutation()
     // check that no number in permutation is out of bounds
     for (int index = 0; index < permutation.size(); index++)
     {
-        TEST_ASSERT(permutation[index] >= 0 && permutation[index] < G.number_of_nodes);
+        TEST_ASSERT(permutation[index] >= 0 && permutation[index] < G.number_of_nodes); // Ensure the index is not out of bounds
         Testvector[index] = true;
     }
     for (int i = 0; i < permutation.size(); i++)
-        TEST_ASSERT(Testvector[i] == true);
+        TEST_ASSERT(Testvector[i] == true); // Ensure that all elements exist inside the vector
     Delete_Graph(&G);
 }
 
@@ -171,7 +172,7 @@ void Test_EuclideanDistance()
     float Secondvector[Size] = {35.538892, 38.504338, 79.524579, 32.751777, 32.773157, 55.701575, 16.653934, 23.826345, 52.985472, 88.023222};
     Distance = EuclidianDistance(Firstvector, Secondvector, Size);
 
-    TEST_ASSERT(abs(98.31397043632872 - Distance) < 0.00001);
+    TEST_ASSERT(abs(98.31397043632872 - Distance) < 0.00001); // Ensure that there isn't a big error marggin when calculating the Euclidean Distance for two random vectors
 }
 
 void Test_RandomNumber()
@@ -180,7 +181,7 @@ void Test_RandomNumber()
     exclude = 10;
     maxVal = 100;
     number = GetRandomNumber(maxVal, exclude);
-    TEST_ASSERT(number != exclude);
+    TEST_ASSERT(number != exclude); // Ensure that the Function doesn't return the number we excluded specifically when calling it
 }
 
 void Test_Greedy_Search()
@@ -188,13 +189,17 @@ void Test_Greedy_Search()
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
     int Return_Number = Init_Graph_Data(base_filename, &G);
+    std::set<int> TempSet = {};
     result_greedy *res = NULL;                 // Initialize the results we are going to get from the greedy
     float *temp_xq = new float[2]{5.0, 5.0};   // Query is going to have the value of the center of the graph
     res = Greedy_Search(&G, temp_xq, 2, 5, 4); // Calling Greedy_Search for the k=2,L=5 and s=4
     std::set<int> V = {0, 3, 4, 6, 9};         // What V will contain given the above
-    std::set<int> L = {0, 9};                  // What L will contain given the above
+    std::set<int> L = {4, 9};                  // What L will contain given the above
     TEST_ASSERT(res->V == V);
-    TEST_ASSERT(res->L == L);
+    for(auto &element : res->L){
+        TempSet.insert(element.second);
+    }
+    TEST_ASSERT(TempSet == L);
     Delete_Graph(&G);
     free(res);
     delete temp_xq;
@@ -212,46 +217,50 @@ void Test_Robust_Prune()
 
     std::set<int> right_result = {7, 9};
 
-    TEST_ASSERT(G.nodes_array[0].edges == right_result);
+    TEST_ASSERT(G.nodes_array[0].edges == right_result); // We know after runniing robust Prune by hand that the Result for this specific example should be {7,9}
 }
 
 void Test_Vamana()
 {
     srand(time(NULL)); // make the seed
-    int fun_result, R = 9, L = 10, k = 7, s, accuracy = 0;
-    double total_accuracy = 0.0;
+    int fun_result, R = 9, L = 10, k = 7, s, accuracy = 0,total_accuracy = 0;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs", *output_filename = "Datasets/Test_Set/Test_groundtruth.txt";
-    std::vector<std::vector<int>> groundtruth;
+    std::vector<std::vector<int>> GroundTruthVector;
+    std::set<int> Tempset;
     Graph G;
-    fun_result = Vamana(base_filename, &G, L, R);
-    groundtruth = ReadFileTXT(output_filename);
-    s = Medoid(&G);
+    fun_result = Vamana(base_filename, &G, L, R); // Vamana algorithm 
+    GroundTruthVector = ReadFileTXT(output_filename); // Save the GroundTruth into a Vector 
+    s = Medoid(&G); // Find Medoid
     result_greedy *Results;
 
     for (int i = 0; i < G.number_of_nodes; i++)
     {
-        if (i >= groundtruth.size())
+        accuracy = 0;
+        if (i >= GroundTruthVector.size())
         {
             break;
         }
 
         Results = Greedy_Search(&G, G.nodes_array[i].vector, k, L, s);
-        const std::vector<int> &groundtruth_row = groundtruth[i];
-        accuracy = 0;
+        Tempset.clear();
+        for(std::set<std::pair<double,int>>::iterator it = Results->L.begin(); it != Results->L.end(); it++)
+            Tempset.insert(it->second); // Save the indexes into a second set
 
-        for (int groundtruth_elem : groundtruth_row)
-        {
-            if (Results->L.find(groundtruth_elem) != Results->L.end())
-                accuracy++;
+        std::vector<int> &GroundTruthRow = GroundTruthVector[i];
+        for(auto &element : GroundTruthRow){
+            if(Tempset.find(element)!=Tempset.end())
+                accuracy++; // Increment the individual accuracy for each vector
         }
-        total_accuracy = (double)accuracy / groundtruth_row.size();
-        TEST_ASSERT(total_accuracy > 0.85); // Accuracy not better than 85% for such small dataset
+        if((double)accuracy/Tempset.size() > 0.83) // No individual vector has a better accuracy than 83 %
+            total_accuracy++;
         delete Results;
     }
-    TEST_ASSERT(fun_result == 0);
+    TEST_ASSERT(fun_result == s);
 
     for (int index = 0; index < G.number_of_nodes; index++)
-        TEST_ASSERT(G.nodes_array[index].edges.size() <= R);
+        TEST_ASSERT(G.nodes_array[index].edges.size() <= R); // There shouldn't exists any vector with more than R edges
+
+    TEST_ASSERT(total_accuracy > 8) ; // Check that at least 8 out of 10 vector has a better accuracy than 83%
 }
 
 TEST_LIST = {

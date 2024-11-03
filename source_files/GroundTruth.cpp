@@ -1,7 +1,5 @@
 #include "Library.hpp"
 
-#if 1 == 1
-
 int GroundTruth(const char *Query_path,const char *Ground_Truth_path,Graph *G,int k , int L , int s){
 
     std::set<int> Temp_Set = {};
@@ -48,4 +46,3 @@ int GroundTruth(const char *Query_path,const char *Ground_Truth_path,Graph *G,in
     return 0;
 }
 
-#endif

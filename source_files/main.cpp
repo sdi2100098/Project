@@ -6,7 +6,7 @@ int main(int argv, char **argc)
     const char *base_filename = "Datasets/Small_Set/siftsmall_base.fvecs";
     const char *query_filename = "Datasets/Small_Set/siftsmall_query.fvecs";
     const char *ground_truth_filename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
-    int count = 0;
+    int count = 0,s;
     int return_number, fun_result = -1, fun_result_query, check = 0;
     Graph G;
 
@@ -18,7 +18,8 @@ int main(int argv, char **argc)
     // return x;
 
 
-    fun_result = Vamana(base_filename, &G, 150, 15);
+    s = Vamana(base_filename, &G, 180, 20);
+    fun_result = GroundTruth(query_filename,ground_truth_filename,&G,100,180,s);
 
     Delete_Graph(&G);
 
