@@ -2,7 +2,6 @@
 
 int main(int argv, char **argc)
 {
-    srand(time(NULL)); // make the seed
     const char *base_filename = "Datasets/Small_Set/siftsmall_base.fvecs";
     const char *query_filename = "Datasets/Small_Set/siftsmall_query.fvecs";
     const char *ground_truth_filename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
@@ -18,8 +17,8 @@ int main(int argv, char **argc)
     // return x;
 
 
-    s = Vamana(base_filename, &G, 180, 20);
-    fun_result = GroundTruth(query_filename,ground_truth_filename,&G,100,180,s);
+    s = Vamana(base_filename, &G, 120, 25);
+    fun_result = GroundTruth(query_filename,ground_truth_filename,&G,100,120,s);
 
     Delete_Graph(&G);
 

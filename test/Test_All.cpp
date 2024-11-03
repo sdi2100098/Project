@@ -222,7 +222,6 @@ void Test_Robust_Prune()
 
 void Test_Vamana()
 {
-    srand(time(NULL)); // make the seed
     int fun_result, R = 9, L = 10, k = 7, s, accuracy = 0,total_accuracy = 0;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs", *output_filename = "Datasets/Test_Set/Test_groundtruth.txt";
     std::vector<std::vector<int>> GroundTruthVector;
@@ -260,7 +259,7 @@ void Test_Vamana()
     for (int index = 0; index < G.number_of_nodes; index++)
         TEST_ASSERT(G.nodes_array[index].edges.size() <= R); // There shouldn't exists any vector with more than R edges
 
-    TEST_ASSERT(total_accuracy > 8) ; // Check that at least 8 out of 10 vector has a better accuracy than 83%
+    TEST_ASSERT(total_accuracy > 9) ; // Check that at least 9 out of 10 vector has a better accuracy than 83%
 }
 
 TEST_LIST = {

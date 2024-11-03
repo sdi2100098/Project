@@ -35,7 +35,7 @@ int GroundTruth(const char *Query_path,const char *Ground_Truth_path,Graph *G,in
             accuracy++;
         }
         
-        std::cout << "Accuracy index" << i << " : " << (double)sum/Temp_Set.size() << "%" << std::endl;
+        std::cout << "Accuracy index" << i << " : " << (double)sum/Temp_Set.size() * 100<< "%" << std::endl;
         delete Result;
     }
 
