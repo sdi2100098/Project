@@ -2,6 +2,7 @@
 
 int GroundTruth(const char *Query_path,const char *Ground_Truth_path,Graph *G,int k , int L , int s){
 
+    std::cout << std::endl;
     std::set<int> Temp_Set = {};
     int result, sum, accuracy = 0;
     groundTruth GT = {.array=NULL,.size = 0};
@@ -31,15 +32,21 @@ int GroundTruth(const char *Query_path,const char *Ground_Truth_path,Graph *G,in
                 sum++;
             }
         }       
-        if((double)sum/Temp_Set.size() > 0.9){
+        if((double)sum/Temp_Set.size() > 0.95){
+            printf("\033[0;32m");
             accuracy++;
         }
-        
+        else
+            printf("\033[0;31m");
         std::cout << "Accuracy index" << i << " : " << (double)sum/Temp_Set.size() * 100<< "%" << std::endl;
         delete Result;
     }
-
+    if(accuracy >= 95)
+        printf("\033[0;32m");
+    else
+        printf("\033[0;31m");
     printf("Tottal Accuracy %d\n",accuracy); // Accuracy needs to be > 0.9*number_of_vectors 
+    printf("\033[0m");
 
     Delete_Query(&Q);
     Delete_GroundTruth(&GT);
