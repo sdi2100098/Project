@@ -36,28 +36,28 @@ void Test_Init_Query()
     Delete_Query(&Q);
 }
 
-void Test_Init_GroundTruth(){
+void Test_Init_GroundTruth()
+{
     const char *base_fiflename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
-    groundTruth GT = {.array = NULL,.size = 0};
+    groundTruth GT = {.array = NULL, .size = 0};
 
-    int Return_Number = Init_Ground_Truth_Data(base_fiflename,&GT);
+    int Return_Number = Init_Ground_Truth_Data(base_fiflename, &GT);
 
-    TEST_ASSERT(!Return_Number); 
+    TEST_ASSERT(!Return_Number);
     TEST_ASSERT(GT.array != NULL); // Checking that the array is not NULL
-    TEST_ASSERT(GT.size == 100); // We know we have 100 x 100 array
+    TEST_ASSERT(GT.size == 100);   // We know we have 100 x 100 array
 
-    for(int i = 0; i<GT.size; i++)
+    for (int i = 0; i < GT.size; i++)
         TEST_ASSERT(GT.array[i] != NULL); // Check for every vector that it is not NULL
     Delete_GroundTruth(&GT);
 }
 
-
-void TestReadTxt(){
+void TestReadTxt()
+{
     const char *outputfilename = "Datasets/Test_Set/Test_groundtruth.txt";
     std::vector<std::vector<int>> result = ReadFileTXT(outputfilename);
-    TEST_ASSERT(result.size()>0); // Ensure that the vector is not empty after calling the Function
+    TEST_ASSERT(result.size() > 0); // Ensure that the vector is not empty after calling the Function
 }
-
 
 void Test_Medoid()
 {
@@ -83,7 +83,7 @@ void Test_Argument_Min_Distance()
     }
     for (auto &element : Closest_neighbors)
     {
-        //For each vector we know which of each neighbors is the closest. So we just check with a switch case
+        // For each vector we know which of each neighbors is the closest. So we just check with a switch case
         switch (count)
         {
         case 0:
@@ -132,12 +132,12 @@ void Test_Argument_Min_Distance()
 
 void Test_Set_Difference()
 {
-    std::set<std::pair<double,int>> Set_1 = {};
+    std::set<std::pair<double, int>> Set_1 = {};
     std::set<int> Set_2 = {1, 2};
     std::set<int> Difference = {};
     Set_Difference(&Set_1, &Set_2, &Difference); // The difference of the sets above should be the empty set
     TEST_ASSERT(Difference.empty());
-    std::set<std::pair<double,int>> Set_1_1 = {{0.1,1},{2.51, 2}, {0.4,3}};
+    std::set<std::pair<double, int>> Set_1_1 = {{0.1, 1}, {2.51, 2}, {0.4, 3}};
     std::set<int> Set_2_1 = {1, 2};
     std::set<int> Difference_1 = {};
     Set_Difference(&Set_1_1, &Set_2_1, &Difference_1); // The difference between these twwo sets should only be the number 3
@@ -196,7 +196,8 @@ void Test_Greedy_Search()
     std::set<int> V = {0, 3, 4, 6, 9};         // What V will contain given the above
     std::set<int> L = {4, 9};                  // What L will contain given the above
     TEST_ASSERT(res->V == V);
-    for(auto &element : res->L){
+    for (auto &element : res->L)
+    {
         TempSet.insert(element.second);
     }
     TEST_ASSERT(TempSet == L);
@@ -222,14 +223,14 @@ void Test_Robust_Prune()
 
 void Test_Vamana()
 {
-    int fun_result, R = 9, L = 10, k = 7, s, accuracy = 0,total_accuracy = 0;
+    int fun_result, R = 9, L = 10, k = 7, s, accuracy = 0, total_accuracy = 0;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs", *output_filename = "Datasets/Test_Set/Test_groundtruth.txt";
     std::vector<std::vector<int>> GroundTruthVector;
     std::set<int> Tempset;
     Graph G;
-    fun_result = Vamana(base_filename, &G, L, R); // Vamana algorithm 
-    GroundTruthVector = ReadFileTXT(output_filename); // Save the GroundTruth into a Vector 
-    s = Medoid(&G); // Find Medoid
+    fun_result = Vamana(base_filename, &G, L, R);     // Vamana algorithm
+    GroundTruthVector = ReadFileTXT(output_filename); // Save the GroundTruth into a Vector
+    s = Medoid(&G);                                   // Find Medoid
     result_greedy *Results;
 
     for (int i = 0; i < G.number_of_nodes; i++)
@@ -242,15 +243,16 @@ void Test_Vamana()
 
         Results = Greedy_Search(&G, G.nodes_array[i].vector, k, L, s);
         Tempset.clear();
-        for(std::set<std::pair<double,int>>::iterator it = Results->L.begin(); it != Results->L.end(); it++)
+        for (std::set<std::pair<double, int>>::iterator it = Results->L.begin(); it != Results->L.end(); it++)
             Tempset.insert(it->second); // Save the indexes into a second set
 
         std::vector<int> &GroundTruthRow = GroundTruthVector[i];
-        for(auto &element : GroundTruthRow){
-            if(Tempset.find(element)!=Tempset.end())
+        for (auto &element : GroundTruthRow)
+        {
+            if (Tempset.find(element) != Tempset.end())
                 accuracy++; // Increment the individual accuracy for each vector
         }
-        if((double)accuracy/Tempset.size() > 0.83) // No individual vector has a better accuracy than 83 %
+        if ((double)accuracy / Tempset.size() > 0.83) // No individual vector has a better accuracy than 83 %
             total_accuracy++;
         delete Results;
     }
@@ -259,13 +261,13 @@ void Test_Vamana()
     for (int index = 0; index < G.number_of_nodes; index++)
         TEST_ASSERT(G.nodes_array[index].edges.size() <= R); // There shouldn't exists any vector with more than R edges
 
-    TEST_ASSERT(total_accuracy > 9) ; // Check that at least 9 out of 10 vector has a better accuracy than 83%
+    TEST_ASSERT(total_accuracy > 9); // Check that at least 9 out of 10 vector has a better accuracy than 83%
 }
 
 TEST_LIST = {
     {"Initialization of Graph", Test_Init_Graph},
     {"Initialization of Query", Test_Init_Query},
-    {"Initialization of Ground Truth",Test_Init_GroundTruth},
+    {"Initialization of Ground Truth", Test_Init_GroundTruth},
     {"Read TXT", TestReadTxt},
     {"Medoid", Test_Medoid},
     {"Random Permutation", Test_RandomPermutation},

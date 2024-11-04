@@ -22,7 +22,7 @@ void CreateKNNGraphBruteForce(Graph G, int k, const char *filename)
             }
         }
         std::sort(closest_neighbors.begin(), closest_neighbors.end());
-        // Printing the k closest 
+        // Printing the k closest
         for (int l = 0; l < k; l++)
         {
             fprintf(output_file, "%d ", closest_neighbors[l].second);

@@ -1,7 +1,7 @@
 #include "Library.hpp"
 #include <pthread.h>
 #define MAX_THREAD 5
-// This is the same as the Medoid but we decided to experiment and do it with Multithreading to save some time 
+// This is the same as the Medoid but we decided to experiment and do it with Multithreading to save some time
 
 typedef struct medoid
 {

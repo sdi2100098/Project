@@ -16,6 +16,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
     size_t result_fread;
     long total_size_bytes, vecsize_bytes;
     node *nodes_array = NULL;
+    int **Distances_array = NULL;
 
     /* read dimension and compute the byte size of a vector */
     result_fread = fread(&dimension, sizeof(int), 1, infile);
@@ -36,11 +37,18 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
     if (nodes_array == NULL)
         goto memmory_error;
 
+    Distances_array = (int **)malloc(vectors_number * sizeof(int *));
+    if (Distances_array == NULL)
+        goto memmory_error;
+
     /* for every node in nodes_array alocate memory for the vector and for the edges*/
     for (int i = 0; i < vectors_number; i++)
     {
         nodes_array[i].vector = (float *)malloc(dimension * sizeof(float));
         if (nodes_array[i].vector == NULL)
+            goto memmory_error;
+        Distances_array[i] = (int *)malloc(vectors_number * sizeof(int));
+        if (Distances_array[i] == NULL)
             goto memmory_error;
     }
 
@@ -58,6 +66,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
     }
 
     graph->nodes_array = nodes_array;
+    graph->Distances = Distances_array;
     graph->number_of_nodes = vectors_number;
     graph->dimension = dimension;
 
@@ -186,41 +195,46 @@ std::vector<std::vector<int>> ReadFileTXT(const char *filename)
     return info;
 }
 
-int Init_Ground_Truth_Data(const char *file_path,groundTruth *GT){
-    FILE *infile = fopen(file_path,"rb");
-    if(infile == NULL){
+int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
+{
+    FILE *infile = fopen(file_path, "rb");
+    if (infile == NULL)
+    {
         perror("Error opening Ground Truth");
         return 1;
     }
-    int size,garbage;
-    int **array=NULL;
+    int size, garbage;
+    int **array = NULL;
 
-    fread(&size,sizeof(int),1,infile);
-    fseek(infile,0,SEEK_SET);
+    fread(&size, sizeof(int), 1, infile);
+    fseek(infile, 0, SEEK_SET);
 
     array = (int **)malloc(sizeof(int *) * size);
-    if(array == NULL){
+    if (array == NULL)
+    {
         perror("Allocation error in Init Ground Truth Data");
         fclose(infile);
         return 1;
     }
-    for(int i = 0; i<size; i++){
-        array[i] = (int*)malloc(sizeof(int) * size);
-        if(array[i]==NULL){
+    for (int i = 0; i < size; i++)
+    {
+        array[i] = (int *)malloc(sizeof(int) * size);
+        if (array[i] == NULL)
+        {
             perror("Allocation error in Init Ground Truth Data");
             fclose(infile);
             return 1;
         }
     }
 
-    for(int i = 0; i<size; i++){
-        fread(&garbage,sizeof(int),1,infile);
-        fread(array[i],sizeof(int),size,infile);
+    for (int i = 0; i < size; i++)
+    {
+        fread(&garbage, sizeof(int), 1, infile);
+        fread(array[i], sizeof(int), size, infile);
     }
 
     GT->array = array;
     GT->size = size;
-
 
     fclose(infile);
     return 0;

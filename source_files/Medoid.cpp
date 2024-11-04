@@ -10,9 +10,19 @@ int Medoid(Graph *G)
         SumDistances = 0.0;
         for (int j = 0; j < G->number_of_nodes; j++) // check for every vector in Graph except for yourself
         {
+            if (j < i)
+                TempDistance = G->Distances[i][j];
             if (i == j)
+            {
+                G->Distances[i][j] = 0;
                 continue;
-            TempDistance = EuclidianDistance(G->nodes_array[i].vector, G->nodes_array[j].vector, G->dimension);
+            }
+            else
+            {
+                TempDistance = EuclidianDistance(G->nodes_array[i].vector, G->nodes_array[j].vector, G->dimension);
+                G->Distances[i][j] = TempDistance;
+                G->Distances[j][i] = TempDistance;
+            }
             SumDistances += TempDistance; // Sum all the distances and store it into a vector
         }
         array[i] = SumDistances;

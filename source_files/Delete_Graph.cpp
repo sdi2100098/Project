@@ -23,9 +23,11 @@ void Delete_Query(Query *Q)
     free(Q->vectors_array);
 }
 
-void Delete_GroundTruth(groundTruth *GT){
+void Delete_GroundTruth(groundTruth *GT)
+{
     // Free memory for the groundtruth (int**)
-    for(int i = 0; i<GT->size; i++){
+    for (int i = 0; i < GT->size; i++)
+    {
         free(GT->array[i]);
     }
     free(GT->array);
