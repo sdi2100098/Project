@@ -62,7 +62,7 @@ int GetRandomNumber(const int, const int);
 
 double EuclidianDistance(const float *, const float *, const int);
 void Robust_Prune(int, std::set<int> *, float, Graph *);
-int Vamana(const char *, Graph *, int, int);
+int Vamana(const char *, Graph *, int, int,float);
 int Argument_Min_Distance(Graph *, std::set<int> *, int,Query *);
 int Medoid(Graph *);
 void Set_Difference(std::set<std::pair<double, int>> *, std::set<int> *, std::set<int> *);

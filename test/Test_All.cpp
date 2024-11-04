@@ -241,7 +241,7 @@ void Test_Vamana()
     std::vector<std::vector<int>> GroundTruthVector;
     std::set<int> Tempset;
     Graph G;
-    fun_result = Vamana(base_filename, &G, L, R);     // Vamana algorithm
+    fun_result = Vamana(base_filename, &G, L, R,1.1);     // Vamana algorithm
     GroundTruthVector = ReadFileTXT(output_filename); // Save the GroundTruth into a Vector
     s = Medoid(&G);                                   // Find Medoid
     result_greedy *Results;

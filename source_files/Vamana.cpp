@@ -1,10 +1,9 @@
 #include "Library.hpp"
 
-int Vamana(const char *file_path, Graph *G, int L, int R)
+int Vamana(const char *file_path, Graph *G, int L, int R,float a)
 {
     int result, s, Random_Permutation_Index, Size;
     std::set<int> TempSet = {};
-    float a = 1.1;
     float *vector;
     std::vector<int> RandomPerm;
     result_greedy *GreedyReturnValue = NULL; // Will have the L set and V set obtained from Greedy
