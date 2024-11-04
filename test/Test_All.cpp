@@ -3,6 +3,7 @@
 
 void Test_Init_Graph()
 {
+    std::cout << std::endl;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
@@ -21,6 +22,7 @@ void Test_Init_Graph()
 
 void Test_Init_Query()
 {
+    std::cout << std::endl;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
 
     Query Q = {.vectors_array = NULL, .number_of_vectors = 0, .dimension = 0,NULL};
@@ -40,6 +42,7 @@ void Test_Init_Query()
 
 void Test_Init_GroundTruth()
 {
+    std::cout << std::endl;
     const char *base_fiflename = "Datasets/Small_Set/siftsmall_groundtruth.ivecs";
     groundTruth GT = {.array = NULL, .size = 0};
 
@@ -63,6 +66,7 @@ void TestReadTxt()
 
 void Test_Medoid()
 {
+    std::cout << std::endl;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
@@ -79,6 +83,7 @@ void Test_Medoid()
 
 void Test_Argument_Min_Distance()
 {
+    std::cout << std::endl;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
@@ -151,6 +156,7 @@ void Test_Set_Difference()
 
 void Test_RandomPermutation()
 {
+    std::cout << std::endl;
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
 
@@ -191,6 +197,7 @@ void Test_RandomNumber()
 
 void Test_Greedy_Search()
 {
+    std::cout << std::endl;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G),temp_xq = 0;
@@ -211,6 +218,7 @@ void Test_Greedy_Search()
 
 void Test_Robust_Prune()
 {
+    std::cout << std::endl;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 5, .number_of_nodes = 0, .dimension = 0,NULL};
 
@@ -227,6 +235,7 @@ void Test_Robust_Prune()
 
 void Test_Vamana()
 {
+    std::cout << std::endl;
     int fun_result, R = 9, L = 10, k = 7, s, accuracy = 0, total_accuracy = 0;
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs", *output_filename = "Datasets/Test_Set/Test_groundtruth.txt";
     std::vector<std::vector<int>> GroundTruthVector;

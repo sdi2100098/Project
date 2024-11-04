@@ -2,6 +2,7 @@
 
 int Medoid(Graph *G)
 {
+    std::cout << "Calculating Medoid..." << std::endl;
     double SumDistances, TempDistance, MinDistance = std::numeric_limits<double>::max();
     int MedoidIndex;
     std::vector<double> array(G->number_of_nodes, 0.0);
@@ -36,6 +37,6 @@ int Medoid(Graph *G)
             MedoidIndex = i; // Hold the index of the vector with the smallest sum of distances to all the other vectors. Effectively finding the Medoid
         }
     }
-
+    std::cout << "Medoid is : " << MedoidIndex << std::endl;
     return MedoidIndex;
 }

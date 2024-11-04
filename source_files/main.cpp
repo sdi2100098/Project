@@ -13,9 +13,8 @@ int main(int argv, char **argc)
     // x = Right_Exec(argv, argc);
 
     // return x;
-
-    s = Vamana(base_filename, &G, 200, 25);
-    fun_result = GroundTruth(query_filename, ground_truth_filename, &G, 100, 200, s);
+    s = Vamana(base_filename, &G, 150, 25);
+    fun_result = GroundTruth(query_filename, ground_truth_filename, &G, 100, 150, s);
 
     Delete_Graph(&G);
 

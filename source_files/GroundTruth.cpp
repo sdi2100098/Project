@@ -51,7 +51,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
         printf("\033[0;32m");
     else
         printf("\033[0;31m");
-    printf("Tottal Accuracy %d\n", accuracy); // Accuracy needs to be > 0.9*number_of_vectors
+    printf("%d/%d Passed Test \n", accuracy,Q.number_of_vectors); // Accuracy needs to be > 0.9*number_of_vectors
     printf("\033[0m");
 
     Delete_Query(&Q,G->number_of_nodes);

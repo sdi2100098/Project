@@ -4,7 +4,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
 {
     int result, s, Random_Permutation_Index, Size;
     std::set<int> TempSet = {};
-    float a = 1.2;
+    float a = 1.1;
     float *vector;
     std::vector<int> RandomPerm;
     result_greedy *GreedyReturnValue = NULL; // Will have the L set and V set obtained from Greedy
@@ -16,6 +16,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
 
     int flag = 1000, kapa = 0;
 
+    std::cout << "Vamana Start" << std::endl;
     for (int i = 0; i < G->number_of_nodes; i++)
     {
         Random_Permutation_Index = RandomPerm[i];
@@ -24,7 +25,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
         kapa++;
         if (kapa == flag)
         {
-            printf("%d\n", flag);
+            printf("%.0f%%\n", ((double)flag/ G->number_of_nodes) * 100);
             flag += 1000;
         }
 
@@ -46,6 +47,6 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
                 G->nodes_array[j].edges.insert(Random_Permutation_Index); // Nout(j) <- Nout(j) U σ(i)
         }
     }
-
+    std::cout << "Vamana Ended Succesfully" << std::endl;
     return s;
 }

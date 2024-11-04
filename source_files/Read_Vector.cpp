@@ -3,7 +3,7 @@
 /* Function to read fvecs file using dynamically allocated arrays.If something goes wrong return NULL and exit the program else return the vector array */
 int Init_Graph_Data(const char *file_path, Graph *graph)
 {
-
+    std::cout << "Try Initializing Graph..." << std::endl;
     FILE *infile = fopen(file_path, "rb");
 
     if (infile == NULL)
@@ -89,6 +89,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
 
     /* All went well well */
     fclose(infile);
+    std::cout << "Initialize Graph Complete!" << std::endl;
     return 0;
 
 /* ERRORS AREA */
@@ -112,6 +113,7 @@ If all goes good return 0 else return 1
 */
 int Init_Query_Data(const char *file_path, Query *query,Graph *G)
 {
+    std::cout << "Try Initializing Query..." << std::endl;
     FILE *infile = fopen(file_path, "rb");
 
     if (infile == NULL)
@@ -185,6 +187,7 @@ int Init_Query_Data(const char *file_path, Query *query,Graph *G)
 
     /* All went well well */
     fclose(infile);
+    std::cout << "Initialize Query Complete!" << std::endl;
     return 0;
 
 /* in case something goes wrong with memory */
@@ -230,6 +233,7 @@ std::vector<std::vector<int>> ReadFileTXT(const char *filename)
 
 int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
 {
+    std::cout << "Try Initializing GroundTruth..." << std::endl;
     FILE *infile = fopen(file_path, "rb");
     if (infile == NULL)
     {
@@ -273,6 +277,7 @@ int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
     GT->size = size;
 
     fclose(infile);
+    std::cout << "Initialize GroundTruth Complete!" << std::endl;
     return 0;
 
 /* in case something goes wrong with memory */
