@@ -16,7 +16,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
     size_t result_fread;
     long total_size_bytes, vecsize_bytes;
     node *nodes_array = NULL;
-    int **Distances_array = NULL;
+    double **Distances_array = NULL;
 
     /* read dimension and compute the byte size of a vector */
     result_fread = fread(&dimension, sizeof(int), 1, infile);
@@ -37,7 +37,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
     if (nodes_array == NULL)
         goto memmory_error;
 
-    Distances_array = (int **)malloc(vectors_number * sizeof(int *));
+    Distances_array = (double **)malloc(vectors_number * sizeof(double *));
     if (Distances_array == NULL)
         goto memmory_error;
 
@@ -47,7 +47,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
         nodes_array[i].vector = (float *)malloc(dimension * sizeof(float));
         if (nodes_array[i].vector == NULL)
             goto memmory_error;
-        Distances_array[i] = (int *)malloc(vectors_number * sizeof(int));
+        Distances_array[i] = (double *)malloc(vectors_number * sizeof(double));
         if (Distances_array[i] == NULL)
             goto memmory_error;
     }
@@ -110,9 +110,8 @@ fread_error:
 Read the Query Data from the file and Initilize the Query struct so we can use it in our program
 If all goes good return 0 else return 1
 */
-int Init_Query_Data(const char *file_path, Query *query)
+int Init_Query_Data(const char *file_path, Query *query,Graph *G)
 {
-
     FILE *infile = fopen(file_path, "rb");
 
     if (infile == NULL)
@@ -121,20 +120,31 @@ int Init_Query_Data(const char *file_path, Query *query)
         return 1;
     }
 
-    int dimension, garbage, number_of_vectors;
+    /* alocate memmory for the vectors */
+    float **vectors_array ;
+    double **distances;
+    int dimension, garbage, number_of_vectors,tempDist;
+    long vecsize_bytes;
+    long total_size_bytes;
 
     /* read dimension and compute the byte size of a vector */
-    fread(&dimension, sizeof(int), 1, infile);
-    long vecsize_bytes = (sizeof(float) * (dimension)) + sizeof(int);
+    if(fread(&dimension, sizeof(int), 1, infile)!=1){
+        goto memmory_error;
+    }
 
     /* compute the size of the file in bytes and find the number of vectors */
     fseek(infile, 0, SEEK_END);
-    long total_size_bytes = ftell(infile);
+    total_size_bytes = ftell(infile);
+    vecsize_bytes  = (sizeof(float) * (dimension)) + sizeof(int);
     number_of_vectors = total_size_bytes / vecsize_bytes;
 
-    /* alocate memmory for the vectors */
-    float **vectors_array = (float **)malloc(sizeof(float *) * number_of_vectors);
+    vectors_array = (float **)malloc(sizeof(float *) * number_of_vectors);
+
+    distances = (double **)malloc(sizeof(double *) * G->number_of_nodes);
     if (vectors_array == NULL)
+        goto memmory_error;
+
+    if(distances == NULL)
         goto memmory_error;
 
     for (int i = 0; i < number_of_vectors; i++)
@@ -144,27 +154,50 @@ int Init_Query_Data(const char *file_path, Query *query)
             goto memmory_error;
     }
 
+    for(int i = 0; i < G->number_of_nodes; i++){
+        distances[i] = (double *)malloc(sizeof(double) * number_of_vectors);
+        if(distances[i] == NULL)
+            goto memmory_error;
+    }
+
     /* Initilize the Struct */
     fseek(infile, 0, SEEK_SET);
     for (int i = 0; i < number_of_vectors; i++)
     {
-        fread(&garbage, sizeof(int), 1, infile);
-        fread(vectors_array[i], sizeof(float), dimension, infile);
+        if(fread(&garbage, sizeof(int), 1, infile)!=1)
+            goto fread_error;
+        if(fread(vectors_array[i], sizeof(float), dimension, infile)!=dimension){
+            goto fread_error;
+        }
     }
 
     query->vectors_array = vectors_array;
+    query->Distances = distances;
     query->dimension = dimension;
     query->number_of_vectors = number_of_vectors;
+
+    for(int i = 0; i < G->number_of_nodes; i++){
+        for(int j = 0; j<number_of_vectors; j++){
+            tempDist = EuclidianDistance(G->nodes_array[i].vector,query->vectors_array[j],query->dimension);
+            query->Distances[i][j] = tempDist;
+        }
+    }
 
     /* All went well well */
     fclose(infile);
     return 0;
 
 /* in case something goes wrong with memory */
+/* in case something goes wrong with memory */
 memmory_error:
-
     fclose(infile);
-    perror("No memmory");
+    perror("No memmory in FUN(Init_Graph_Data)");
+    return 1;
+
+/* in case something goes wrong with fread */
+fread_error:
+    fclose(infile);
+    perror("Fread error in FUN(Init_Graph_Data)");
     return 1;
 }
 
@@ -206,7 +239,8 @@ int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
     int size, garbage;
     int **array = NULL;
 
-    fread(&size, sizeof(int), 1, infile);
+    if(fread(&size, sizeof(int), 1, infile)!=1)
+        goto memmory_error;
     fseek(infile, 0, SEEK_SET);
 
     array = (int **)malloc(sizeof(int *) * size);
@@ -229,8 +263,10 @@ int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
 
     for (int i = 0; i < size; i++)
     {
-        fread(&garbage, sizeof(int), 1, infile);
-        fread(array[i], sizeof(int), size, infile);
+        if(fread(&garbage, sizeof(int), 1, infile)!=1)
+            goto fread_error;
+        if(fread(array[i], sizeof(int), size, infile)!=size)
+            goto fread_error;
     }
 
     GT->array = array;
@@ -238,4 +274,16 @@ int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
 
     fclose(infile);
     return 0;
+
+/* in case something goes wrong with memory */
+memmory_error:
+    fclose(infile);
+    perror("No memmory in FUN(Init_Graph_Data)");
+    return 1;
+
+/* in case something goes wrong with fread */
+fread_error:
+    fclose(infile);
+    perror("Fread error in FUN(Init_Graph_Data)");
+    return 1;
 }

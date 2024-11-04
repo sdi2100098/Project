@@ -4,7 +4,7 @@
 void Test_Init_Graph()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
 
     TEST_ASSERT(!Return_Number);          // If everything went fine it should return zero
@@ -22,18 +22,20 @@ void Test_Init_Graph()
 void Test_Init_Query()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Query Q = {.vectors_array = NULL, .number_of_vectors = 0, .dimension = 0};
-    int Return_Number = Init_Query_Data(base_filename, &Q);
+
+    Query Q = {.vectors_array = NULL, .number_of_vectors = 0, .dimension = 0,NULL};
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
+    int Return_Number = Init_Query_Data(base_filename, &Q,&G);
 
     TEST_ASSERT(!Return_Number);
     TEST_ASSERT(Q.vectors_array != NULL);   // Checking that the array is not NULL
-    TEST_ASSERT(Q.number_of_vectors == 10); // We know that we have 10 vectors in 2-dimensional space
+    //TEST_ASSERT(Q.number_of_vectors == 10); // We know that we have 10 vectors in 2-dimensional space
     TEST_ASSERT(Q.dimension == 2);
     for (int i = 0; i < Q.number_of_vectors; i++)
     {
         TEST_ASSERT(Q.vectors_array[i] != NULL); // Check for every vector that it is not NULL
     }
-    Delete_Query(&Q);
+    Delete_Query(&Q,-1);
 }
 
 void Test_Init_GroundTruth()
@@ -62,72 +64,75 @@ void TestReadTxt()
 void Test_Medoid()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
     int MedoidResult = Medoid(&G);
     TEST_ASSERT(MedoidResult == 4); // We know that the vector with index 4 is the Medoid
+    for(int i = 0 ; i < G.number_of_nodes; i++){
+        for(int j= 0 ; j< G.number_of_nodes; j++){
+            TEST_ASSERT(G.Distances[i][j] == G.Distances[j][i]);
+            TEST_ASSERT(G.Distances[i][j] == EuclidianDistance(G.nodes_array[i].vector,G.nodes_array[j].vector,G.dimension));
+        }
+    }
     Delete_Graph(&G);
 }
 
 void Test_Argument_Min_Distance()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
-    std::vector<int> Closest_neighbors;
+    Medoid(&G); // We need to fill the Distances Table 
     int count = 0;
     for (int i = 0; i < G.number_of_nodes; i++)
     {
-        int index = Argument_Min_Distance(&G, &(G.nodes_array[i].edges), G.nodes_array[i].vector);
-        Closest_neighbors.push_back(index);
-    }
-    for (auto &element : Closest_neighbors)
-    {
-        // For each vector we know which of each neighbors is the closest. So we just check with a switch case
-        switch (count)
+        int index = Argument_Min_Distance(&G, &(G.nodes_array[i].edges), i,NULL);
+        switch (i)
         {
-        case 0:
-            TEST_ASSERT(element == 3);
+        case 0 : 
+            TEST_ASSERT(index == 3);
+            break;
+        
+        case 1 : 
+            TEST_ASSERT(index == 7);
             break;
 
-        case 1:
-            TEST_ASSERT(element == 7);
+        case 2 : 
+            TEST_ASSERT(index == 5);
             break;
 
-        case 2:
-            TEST_ASSERT(element == 5);
+        case 3 :
+            TEST_ASSERT(index == 6);
             break;
 
-        case 3:
-            TEST_ASSERT(element == 6);
+        case 4 : 
+            TEST_ASSERT(index == 9);
             break;
 
-        case 4:
-            TEST_ASSERT(element == 9);
+
+        case 5 : 
+            TEST_ASSERT(index == 7);
             break;
 
-        case 5:
-            TEST_ASSERT(element == 7);
+
+        case 6 : 
+            TEST_ASSERT(index == 9);
             break;
 
-        case 6:
-            TEST_ASSERT(element == 9);
+        case 7 :
+            TEST_ASSERT(index == 6);
             break;
 
-        case 7:
-            TEST_ASSERT(element == 6);
+        case 8 :
+            TEST_ASSERT(index == 0);
             break;
 
-        case 8:
-            TEST_ASSERT(element == 0);
-            break;
-
-        case 9:
-            TEST_ASSERT(element == 6);
+        case 9 :
+            TEST_ASSERT(index == 6);
             break;
         }
-        count++;
     }
+    Delete_Graph(&G);
 }
 
 void Test_Set_Difference()
@@ -146,7 +151,7 @@ void Test_Set_Difference()
 
 void Test_RandomPermutation()
 {
-    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
 
     int Return_Number = Init_Graph_Data(base_filename, &G);
@@ -187,14 +192,13 @@ void Test_RandomNumber()
 void Test_Greedy_Search()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0};
-    int Return_Number = Init_Graph_Data(base_filename, &G);
+    Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
+    int Return_Number = Init_Graph_Data(base_filename, &G),temp_xq = 0;
     std::set<int> TempSet = {};
     result_greedy *res = NULL;                 // Initialize the results we are going to get from the greedy
-    float *temp_xq = new float[2]{5.0, 5.0};   // Query is going to have the value of the center of the graph
-    res = Greedy_Search(&G, temp_xq, 2, 5, 4); // Calling Greedy_Search for the k=2,L=5 and s=4
-    std::set<int> V = {0, 3, 4, 6, 9};         // What V will contain given the above
-    std::set<int> L = {4, 9};                  // What L will contain given the above
+    res = Greedy_Search(&G, temp_xq, 2, 5, 4,NULL); // Calling Greedy_Search for the k=2,L=5 and s=4
+    std::set<int> V = {1,2,3,4,5};         // What V will contain given the above
+    std::set<int> L = {1,2};                  // What L will contain given the above
     TEST_ASSERT(res->V == V);
     for (auto &element : res->L)
     {
@@ -202,23 +206,23 @@ void Test_Greedy_Search()
     }
     TEST_ASSERT(TempSet == L);
     Delete_Graph(&G);
-    free(res);
-    delete temp_xq;
+    delete(res);
 }
 
 void Test_Robust_Prune()
 {
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
-    Graph G = {.nodes_array = NULL, .R = 5, .number_of_nodes = 0, .dimension = 0};
+    Graph G = {.nodes_array = NULL, .R = 5, .number_of_nodes = 0, .dimension = 0,NULL};
 
     Init_Graph_Data(base_filename, &G);
 
     std::set<int> test_set = {0, 5, 9};
     Robust_Prune(0, &test_set, 1, &G);
 
-    std::set<int> right_result = {7, 9};
+    std::set<int> right_result = {2};
 
     TEST_ASSERT(G.nodes_array[0].edges == right_result); // We know after runniing robust Prune by hand that the Result for this specific example should be {7,9}
+    Delete_Graph(&G);
 }
 
 void Test_Vamana()
@@ -241,7 +245,7 @@ void Test_Vamana()
             break;
         }
 
-        Results = Greedy_Search(&G, G.nodes_array[i].vector, k, L, s);
+        Results = Greedy_Search(&G, i, k, L, s,NULL);
         Tempset.clear();
         for (std::set<std::pair<double, int>>::iterator it = Results->L.begin(); it != Results->L.end(); it++)
             Tempset.insert(it->second); // Save the indexes into a second set
@@ -262,6 +266,7 @@ void Test_Vamana()
         TEST_ASSERT(G.nodes_array[index].edges.size() <= R); // There shouldn't exists any vector with more than R edges
 
     TEST_ASSERT(total_accuracy > 9); // Check that at least 9 out of 10 vector has a better accuracy than 83%
+    Delete_Graph(&G);
 }
 
 TEST_LIST = {

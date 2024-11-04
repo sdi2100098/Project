@@ -20,7 +20,7 @@ void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
     { /* V != 0 */
 
         /* p* <- arg min[for p'in V compute d(p,p')] */
-        p_star = Argument_Min_Distance(G, V, G->nodes_array[p].vector);
+        p_star = Argument_Min_Distance(G, V, p,NULL);
 
         G->nodes_array[p].edges.insert(p_star); /* Nout(p) <- Nout(p) U {p*} */
 
@@ -35,7 +35,7 @@ void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 
         for (std::set<int>::iterator it = Temp_V.begin(); it != Temp_V.end(); it++)
         {
-            if ((a * EuclidianDistance(G->nodes_array[p_star].vector, G->nodes_array[*it].vector, G->dimension)) <= EuclidianDistance(G->nodes_array[p].vector, G->nodes_array[*it].vector, G->dimension))
+            if ((a * G->Distances[p_star][*it]) <= G->Distances[p][*it])
             {
                 V->erase(*it);
             }

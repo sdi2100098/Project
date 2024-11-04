@@ -1,6 +1,6 @@
 #include "Library.hpp"
 
-result_greedy *Greedy_Search(Graph *G, float *xq, int k, int L, int s)
+result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s,Query *Q)
 {
 
     /* Initialize L <- {s} and V <- 0 */
@@ -18,12 +18,15 @@ result_greedy *Greedy_Search(Graph *G, float *xq, int k, int L, int s)
         i = 0;
 
         /* p* <- atg min d(Xp,Xq) for p in L\V */
-        p_star = Argument_Min_Distance(G, &Difference_L_V, xq);
+        p_star = Argument_Min_Distance(G, &Difference_L_V, xq,Q);
 
         /* L <- L U Nout(p*) (with the distances)*/
         for (std::set<int>::iterator it = G->nodes_array[p_star].edges.begin(); it != G->nodes_array[p_star].edges.end(); it++)
         {
-            distance = EuclidianDistance(G->nodes_array[*it].vector, xq, G->dimension);
+            if(!Q)
+                distance = G->Distances[*it][xq];
+            else
+                distance = Q->Distances[*it][xq];
             L_kal.insert({distance, *it});
         }
 

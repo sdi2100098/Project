@@ -14,7 +14,7 @@ int Medoid(Graph *G)
                 TempDistance = G->Distances[i][j];
             if (i == j)
             {
-                G->Distances[i][j] = 0;
+                G->Distances[i][j] = 0.0;
                 continue;
             }
             else

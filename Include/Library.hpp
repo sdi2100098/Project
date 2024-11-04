@@ -30,7 +30,7 @@ typedef struct graph
     int R;               /* out-degree number */
     int number_of_nodes; /* rows */
     int dimension;       /* columns */
-    int **Distances;     /* Array to hold Distances*/
+    double **Distances;     /* Array to hold Distances*/
 } Graph;
 
 typedef struct query
@@ -38,6 +38,7 @@ typedef struct query
     float **vectors_array;
     int number_of_vectors; /* rows */
     int dimension;         /* columns */
+    double **Distances;
 } Query;
 
 typedef struct groundTruth
@@ -54,7 +55,7 @@ typedef struct result_GreedySearch
 
 void CreateKNNGraphBruteForce(Graph, int, const char *);
 int Init_Graph_Data(const char *, Graph *);
-int Init_Query_Data(const char *, Query *);
+int Init_Query_Data(const char *, Query *,Graph *G);
 int Init_Ground_Truth_Data(const char *, groundTruth *);
 std::vector<std::vector<int>> ReadFileTXT(const char *);
 int GetRandomNumber(const int, const int);
@@ -62,19 +63,19 @@ int GetRandomNumber(const int, const int);
 double EuclidianDistance(const float *, const float *, const int);
 void Robust_Prune(int, std::set<int> *, float, Graph *);
 int Vamana(const char *, Graph *, int, int);
-int Argument_Min_Distance(Graph *, std::set<int> *, float *);
+int Argument_Min_Distance(Graph *, std::set<int> *, int,Query *);
 int Medoid(Graph *);
 void Set_Difference(std::set<std::pair<double, int>> *, std::set<int> *, std::set<int> *);
 int CallThread(Graph *);
 void *Medoid_Find(void *);
-result_greedy *Greedy_Search(Graph *, float *, int, int, int);
+result_greedy *Greedy_Search(Graph *, int, int, int, int,Query *);
 std::vector<int> RandomPermutation(Graph *);
 int Right_Exec(int, char **);
 int GroundTruth(const char *, const char *, Graph *, int, int, int);
 
 /* Function to Free memmory */
 void Delete_Graph(Graph *);
-void Delete_Query(Query *);
+void Delete_Query(Query *,int);
 void Delete_GroundTruth(groundTruth *);
 
 // Functions For Testing

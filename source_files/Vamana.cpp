@@ -19,8 +19,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R)
     for (int i = 0; i < G->number_of_nodes; i++)
     {
         Random_Permutation_Index = RandomPerm[i];
-        vector = G->nodes_array[Random_Permutation_Index].vector;
-        GreedyReturnValue = Greedy_Search(G, vector, 1, L, s); // [L,V] <- GreedySearch(s,x_s(i),1,L)
+        GreedyReturnValue = Greedy_Search(G, Random_Permutation_Index, 1, L, s,NULL); // [L,V] <- GreedySearch(s,x_s(i),1,L)
 
         kapa++;
         if (kapa == flag)
