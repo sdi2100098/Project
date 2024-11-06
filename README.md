@@ -4,4 +4,4 @@
 Ιωάννης Κούβελας : sdi2100070 , email : sdi2100070@di.uoa.gr
 
 
-Ιωάννης Γρυπιώτης :sdi2100028 , email : sdi2100070@di.uoa.gr
+Ιωάννης Γρυπιώτης :sdi2100028 , email : sdi2100028@di.uoa.gr
