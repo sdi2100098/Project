@@ -6,7 +6,7 @@
 
 int main() {
     // Specify file paths
-    const char* binFilename = "dummy-data.bin";  // Binary file input
+    const char* binFilename = "Datasets/dummy-data.bin";  // Binary file input
     const char* txtFilename = "output.txt";   // Text file output
 
     // Open the binary file in binary mode
