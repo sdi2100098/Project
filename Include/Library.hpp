@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdbool.h>
+#include <jsoncpp/json/json.h>
 #include <stdio.h>
 #include <fstream>
 #include <vector>
@@ -17,6 +18,7 @@
 #include <limits>
 #include <algorithm>
 #include <iterator>
+
 
 typedef struct node
 { /* node of each graph */
