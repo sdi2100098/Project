@@ -27,7 +27,8 @@ void Test_Init_Query()
 
     Query Q = {.vectors_array = NULL, .number_of_vectors = 0, .dimension = 0,NULL};
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
-    int Return_Number = Init_Query_Data(base_filename, &Q,&G);
+    int Return_Number = Init_Graph_Data(base_filename,&G);
+    Return_Number = Init_Query_Data(base_filename, &Q,&G);
 
     TEST_ASSERT(!Return_Number);
     TEST_ASSERT(Q.vectors_array != NULL);   // Checking that the array is not NULL
@@ -37,7 +38,8 @@ void Test_Init_Query()
     {
         TEST_ASSERT(Q.vectors_array[i] != NULL); // Check for every vector that it is not NULL
     }
-    Delete_Query(&Q,-1);
+    Delete_Query(&Q,Q.number_of_vectors);
+    Delete_Graph(&G);
 }
 
 void Test_Init_GroundTruth()
@@ -279,17 +281,17 @@ void Test_Vamana()
 }
 
 TEST_LIST = {
-    {"Initialization of Graph", Test_Init_Graph},
-    {"Initialization of Query", Test_Init_Query},
-    {"Initialization of Ground Truth", Test_Init_GroundTruth},
-    {"Read TXT", TestReadTxt},
-    {"Medoid", Test_Medoid},
-    {"Random Permutation", Test_RandomPermutation},
-    {"EculideanDistance", Test_EuclideanDistance},
-    {"Random Number", Test_RandomNumber},
-    {"Set_Difference", Test_Set_Difference},
-    {"Argument Min Distance", Test_Argument_Min_Distance},
-    {"Greedy_Search", Test_Greedy_Search},
-    {"Robust Prune", Test_Robust_Prune},
-    {"Vamana", Test_Vamana},
+    {"Initialization of Graph", Test_Init_Graph}, 
+    {"Initialization of Query", Test_Init_Query}, 
+    {"Initialization of Ground Truth", Test_Init_GroundTruth}, 
+    {"Read TXT", TestReadTxt}, 
+    {"Medoid", Test_Medoid}, 
+    {"Random Permutation", Test_RandomPermutation}, 
+    {"EculideanDistance", Test_EuclideanDistance}, 
+    {"Random Number", Test_RandomNumber}, 
+    {"Set_Difference", Test_Set_Difference}, 
+    {"Argument Min Distance", Test_Argument_Min_Distance}, 
+    {"Greedy_Search", Test_Greedy_Search}, 
+    {"Robust Prune", Test_Robust_Prune}, 
+    {"Vamana", Test_Vamana}, 
     {NULL, NULL}};

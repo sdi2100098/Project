@@ -33,21 +33,21 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
     /* fvecs, create the graph */
 
     /* alocate memmory for the (nodes_array) */
-    nodes_array = (node *)malloc(vectors_number * sizeof(node));
+    nodes_array = new node[vectors_number]();
     if (nodes_array == NULL)
         goto memmory_error;
 
-    Distances_array = (double **)malloc(vectors_number * sizeof(double *));
+    Distances_array = new double *[vectors_number]();
     if (Distances_array == NULL)
         goto memmory_error;
 
     /* for every node in nodes_array alocate memory for the vector and for the edges*/
     for (int i = 0; i < vectors_number; i++)
     {
-        nodes_array[i].vector = (float *)malloc(dimension * sizeof(float));
+        nodes_array[i].vector = new float[dimension]();
         if (nodes_array[i].vector == NULL)
             goto memmory_error;
-        Distances_array[i] = (double *)malloc(vectors_number * sizeof(double));
+        Distances_array[i] = new double[vectors_number]();
         if (Distances_array[i] == NULL)
             goto memmory_error;
     }

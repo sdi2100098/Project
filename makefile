@@ -14,6 +14,16 @@ test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DI
 	g++ -O3 -pthread -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm
 	./run_all_tests
 
+# New target to run tests with Valgrind (without rebuilding the entire program)
+valgrind_tests: test_all
+	@echo "Running tests with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./run_all_tests
+
+# New target to build the main program and run it with Valgrind
+valgrind_build: build
+	@echo "Running the build with Valgrind..."
+	valgrind --leak-check=full --track-origins=yes --verbose ./build $(ARGS)
+
 # Rule for Test_All.o (Combined test file)
 $(OBJ_DIR)/Test_All.o: $(TEST_DIR)/Test_All.cpp $(INC_DIR)/Library.hpp
 	@mkdir -p $(OBJ_DIR)
