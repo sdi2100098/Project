@@ -1,23 +1,55 @@
-# Define directories for source, object, include files, and output files
-SRC_DIR = source_files
+# C++ compiler we use
+CXX = g++
+
+CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+
+# Output filename after compilation 
+TARGET = build
+
+# Directory for object files
 OBJ_DIR = obj
-INC_DIR = Include
-OUT_DIR = DatasetsReadable
-TEST_DIR = test
 
-# Target to build the executable
-build: $(OBJ_DIR)
+# Source files (without main.cpp)
+SRC = source_files/Read_Data.cpp\
+		source_files/Delete_Data.cpp\
 
-# Target to build and run all tests in one file
-test_all: $(OBJ_DIR)
+# Test file
+TEST_SRC = test/Test_All.cpp
 
-# New target to run tests with Valgrind (without rebuilding the entire program)
-valgrind_tests: test_all
-		@echo "Running tests with Valgrind..."
-		valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./run_all_tests
+# Create object file names for each source file
+OBJ = $(SRC:source_files/%.cpp=$(OBJ_DIR)/%.o)
 
-# New target to build the main program and run it with Valgrind
-valgrind_build: build
-		@echo "Running the build with Valgrind..."
-		valgrind --leak-check=full --track-origins=yes --verbose ./build $(ARGS)
+# Main target
+all: $(TARGET)
 
+# Build main executable
+$(TARGET): source_files/main.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) source_files/main.cpp $(OBJ)
+
+# Build object files (without main.cpp)
+$(OBJ_DIR)/%.o: source_files/%.cpp
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Run main executable
+run: $(TARGET)
+	./$(TARGET)
+
+# Run the tests (compile and run the tests directly without creating a separate executable)
+test: $(TEST_SRC) $(OBJ)
+	$(CXX) $(CXXFLAGS) -o test_executable $(TEST_SRC) $(OBJ)
+	./test_executable
+
+# Run valgrind for main executable
+valgrind_main: $(TARGET)
+	@echo "Running the build with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
+
+# Run valgrind for test executable
+valgrind_test: test
+	@echo "Running tests with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./test_executable
+
+# Clean up object files and executables
+clean:
+	rm -rf $(TARGET) $(OBJ_DIR) test_executable
