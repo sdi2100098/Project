@@ -23,12 +23,12 @@ jobs:
       run: |
         make test CXXFLAGS="-fPIC"
 
-    # # Run valgrind for the tests (optional)
-    # - name: Run valgrind test
-    #   if: matrix.os == 'ubuntu-20.04'
-    #   run: |
-    #     sudo apt install -y valgrind
-    #     make valgrind_test CXXFLAGS="-fPIC"
+    # Run valgrind for the tests (optional)
+    - name: Run valgrind test
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        sudo apt install -y valgrind
+        make valgrind_test CXXFLAGS="-fPIC"
 
     # Upload the artifacts (compiled files)
     - name: Upload
