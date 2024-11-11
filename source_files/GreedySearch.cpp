@@ -34,7 +34,7 @@ result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s,Query *Q)
         V.insert(p_star);
 
         /* |L kaligrafiko| > L */
-        if (L_kal.size() > L)
+        if ((int)L_kal.size() > L)
         {
 
             Temp.clear();

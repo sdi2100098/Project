@@ -61,7 +61,7 @@ int Init_Graph_Data(const char *file_path, Graph *graph)
             goto fread_error;
 
         result_fread = fread(nodes_array[i].vector, sizeof(float), dimension, infile);
-        if (result_fread != dimension)
+        if ((int)result_fread != dimension)
             goto fread_error;
     }
 
@@ -125,6 +125,7 @@ int Init_Query_Data(const char *file_path, Query *query,Graph *G)
     /* alocate memmory for the vectors */
     float **vectors_array ;
     double **distances;
+    size_t result_fread;
     int dimension, garbage, number_of_vectors,tempDist;
     long vecsize_bytes;
     long total_size_bytes;
@@ -168,7 +169,8 @@ int Init_Query_Data(const char *file_path, Query *query,Graph *G)
     {
         if(fread(&garbage, sizeof(int), 1, infile)!=1)
             goto fread_error;
-        if(fread(vectors_array[i], sizeof(float), dimension, infile)!=dimension){
+        result_fread = fread(vectors_array[i], sizeof(float), dimension, infile);
+        if((int)result_fread!=dimension){
             goto fread_error;
         }
     }
@@ -241,6 +243,7 @@ int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
         return 1;
     }
     int size, garbage;
+    size_t result_fread;
     int **array = NULL;
 
     if(fread(&size, sizeof(int), 1, infile)!=1)
@@ -269,7 +272,8 @@ int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
     {
         if(fread(&garbage, sizeof(int), 1, infile)!=1)
             goto fread_error;
-        if(fread(array[i], sizeof(int), size, infile)!=size)
+        result_fread=fread(array[i], sizeof(int), size, infile);
+        if((int)result_fread!=size)
             goto fread_error;
     }
 

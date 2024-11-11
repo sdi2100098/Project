@@ -15,7 +15,7 @@ void Test_Init_Graph()
     for (int i = 0; i < G.number_of_nodes; i++)
     {
         TEST_ASSERT(G.nodes_array[i].vector != NULL);      // Test that the vector for all nodes aren't equal to NULL
-        TEST_ASSERT(G.nodes_array[i].edges.size() == G.R); // Test that the size of the set is in fact equal to R
+        TEST_ASSERT((int)G.nodes_array[i].edges.size() == G.R); // Test that the size of the set is in fact equal to R
     }
     Delete_Graph(&G); // Free the memory
 }
@@ -73,6 +73,7 @@ void Test_Medoid()
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
     int MedoidResult = Medoid(&G);
+    TEST_ASSERT(!Return_Number);          // If everything went fine it should return zero
     TEST_ASSERT(MedoidResult == 4); // We know that the vector with index 4 is the Medoid
     for(int i = 0 ; i < G.number_of_nodes; i++){
         for(int j= 0 ; j< G.number_of_nodes; j++){
@@ -89,8 +90,8 @@ void Test_Argument_Min_Distance()
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G);
+    TEST_ASSERT(!Return_Number);          // If everything went fine it should return zero
     Medoid(&G); // We need to fill the Distances Table 
-    int count = 0;
     for (int i = 0; i < G.number_of_nodes; i++)
     {
         int index = Argument_Min_Distance(&G, &(G.nodes_array[i].edges), i,NULL);
@@ -163,16 +164,17 @@ void Test_RandomPermutation()
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
 
     int Return_Number = Init_Graph_Data(base_filename, &G);
+    TEST_ASSERT(!Return_Number);          // If everything went fine it should return zero
     std::vector<int> permutation = RandomPermutation(&G);
 
     std::vector<bool> Testvector(G.number_of_nodes, false);
     // check that no number in permutation is out of bounds
-    for (int index = 0; index < permutation.size(); index++)
+    for (int index = 0; index < (int)permutation.size(); index++)
     {
         TEST_ASSERT(permutation[index] >= 0 && permutation[index] < G.number_of_nodes); // Ensure the index is not out of bounds
         Testvector[index] = true;
     }
-    for (int i = 0; i < permutation.size(); i++)
+    for (int i = 0; i < (int)permutation.size(); i++)
         TEST_ASSERT(Testvector[i] == true); // Ensure that all elements exist inside the vector
     Delete_Graph(&G);
 }
@@ -203,6 +205,7 @@ void Test_Greedy_Search()
     const char *base_filename = "Datasets/Test_Set/random_vectors.fvecs";
     Graph G = {.nodes_array = NULL, .R = 2, .number_of_nodes = 0, .dimension = 0,NULL};
     int Return_Number = Init_Graph_Data(base_filename, &G),temp_xq = 0;
+    TEST_ASSERT(!Return_Number);          // If everything went fine it should return zero
     std::set<int> TempSet = {};
     result_greedy *res = NULL;                 // Initialize the results we are going to get from the greedy
     res = Greedy_Search(&G, temp_xq, 2, 5, 4,NULL); // Calling Greedy_Search for the k=2,L=5 and s=4
@@ -251,7 +254,7 @@ void Test_Vamana()
     for (int i = 0; i < G.number_of_nodes; i++)
     {
         accuracy = 0;
-        if (i >= GroundTruthVector.size())
+        if (i >= (int)GroundTruthVector.size())
         {
             break;
         }
@@ -274,7 +277,7 @@ void Test_Vamana()
     TEST_ASSERT(fun_result == s);
 
     for (int index = 0; index < G.number_of_nodes; index++)
-        TEST_ASSERT(G.nodes_array[index].edges.size() <= R); // There shouldn't exists any vector with more than R edges
+        TEST_ASSERT((int)G.nodes_array[index].edges.size() <= R); // There shouldn't exists any vector with more than R edges
 
     TEST_ASSERT(total_accuracy > 9); // Check that at least 9 out of 10 vector has a better accuracy than 83%
     Delete_Graph(&G);

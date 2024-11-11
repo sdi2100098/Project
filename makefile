@@ -1,118 +1,65 @@
-# Define directories for source, object, include files, and output files
-SRC_DIR = source_files
+# C++ compiler we use
+CXX = g++
+
+CXXFLAGS = -Wall -std=c++17 -O3 -fopenmp -IInclude
+
+# Output filename after compilation 
+TARGET = build
+
+# Directory for object files
 OBJ_DIR = obj
-INC_DIR = Include
-OUT_DIR = DatasetsReadable
-TEST_DIR = test
 
-# Target to build the executable
-build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o
-	g++ -O3 -pthread -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o 
+# Source files (without main.cpp)
+SRC = source_files/GreedySearch.cpp \
+    source_files/Argument_Min_Distance.cpp \
+    source_files/Robust_Prune.cpp \
+    source_files/Medoid.cpp \
+    source_files/Vamana.cpp \
+    source_files/Delete_Graph.cpp \
+    source_files/EuclidianDistance.cpp \
+    source_files/GetRandomNumber.cpp \
+    source_files/GroundTruth.cpp \
+    source_files/RandomPermutation.cpp \
+    source_files/Read_Vector.cpp \
+    source_files/Set_Difference.cpp
 
-# Target to build and run all tests in one file
-test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o
-	g++ -O3 -pthread -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm 
-	./run_all_tests
+# Test file
+TEST_SRC = test/Test_All.cpp
 
-# New target to run tests with Valgrind (without rebuilding the entire program)
-valgrind_tests: test_all
-	@echo "Running tests with Valgrind..."
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./run_all_tests
+# Create object file names for each source file
+OBJ = $(SRC:source_files/%.cpp=$(OBJ_DIR)/%.o)
 
-# New target to build the main program and run it with Valgrind
-valgrind_build: build
+# Main target
+all: $(TARGET)
+
+# Build main executable
+$(TARGET): source_files/main.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) source_files/main.cpp $(OBJ)
+
+# Build object files (without main.cpp)
+$(OBJ_DIR)/%.o: source_files/%.cpp
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Run main executable
+run: $(TARGET)
+	./$(TARGET)
+
+# Run the tests (compile and run the tests directly without creating a separate executable)
+test: $(TEST_SRC) $(OBJ)
+	$(CXX) $(CXXFLAGS) -o test_executable $(TEST_SRC) $(OBJ)
+	./test_executable
+
+# Run valgrind for main executable
+valgrind_main: $(TARGET)
 	@echo "Running the build with Valgrind..."
-	valgrind --leak-check=full --track-origins=yes --verbose ./build $(ARGS)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
 
-# Rule for Test_All.o (Combined test file)
-$(OBJ_DIR)/Test_All.o: $(TEST_DIR)/Test_All.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(TEST_DIR)/Test_All.cpp -o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR)
+# Run valgrind for test executable
+valgrind_test: test
+	@echo "Running tests with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./test_executable
 
-# Rule for main.o
-$(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/main.cpp -o $(OBJ_DIR)/main.o -I$(INC_DIR)
-
-# Rule for Read_Vector.o
-$(OBJ_DIR)/Read_Vector.o: $(SRC_DIR)/Read_Vector.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Read_Vector.cpp -o $(OBJ_DIR)/Read_Vector.o -I$(INC_DIR)
-
-# Rule for EuclidianDistance.o
-$(OBJ_DIR)/EuclidianDistance.o: $(SRC_DIR)/EuclidianDistance.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/EuclidianDistance.cpp -o $(OBJ_DIR)/EuclidianDistance.o -I$(INC_DIR) -lm
-
-# Rule for GetRandomNumber.o
-$(OBJ_DIR)/GetRandomNumber.o: $(SRC_DIR)/GetRandomNumber.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/GetRandomNumber.cpp -o $(OBJ_DIR)/GetRandomNumber.o -I$(INC_DIR)
-
-# Rule for RandomPermutation.o
-$(OBJ_DIR)/RandomPermutation.o: $(SRC_DIR)/RandomPermutation.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/RandomPermutation.cpp -o $(OBJ_DIR)/RandomPermutation.o -I$(INC_DIR)
-
-# Rule for GreedySearch.o
-$(OBJ_DIR)/GreedySearch.o: $(SRC_DIR)/GreedySearch.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/GreedySearch.cpp -o $(OBJ_DIR)/GreedySearch.o -I$(INC_DIR)
-
-# Rule for Robust_Prune.o
-$(OBJ_DIR)/Robust_Prune.o: $(SRC_DIR)/Robust_Prune.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Robust_Prune.cpp -o $(OBJ_DIR)/Robust_Prune.o -I$(INC_DIR)
-
-# Rule for Delete_Graph.o
-$(OBJ_DIR)/Delete_Graph.o: $(SRC_DIR)/Delete_Graph.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Delete_Graph.cpp -o $(OBJ_DIR)/Delete_Graph.o -I$(INC_DIR)
-
-# Rule for Argument_Min_Distance.o
-$(OBJ_DIR)/Argument_Min_Distance.o: $(SRC_DIR)/Argument_Min_Distance.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Argument_Min_Distance.cpp -o $(OBJ_DIR)/Argument_Min_Distance.o -I$(INC_DIR)
-
-# Rule for Set_Difference.o
-$(OBJ_DIR)/Set_Difference.o: $(SRC_DIR)/Set_Difference.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Set_Difference.cpp -o $(OBJ_DIR)/Set_Difference.o -I$(INC_DIR)
-
-# Rule for Medoid.o
-$(OBJ_DIR)/Medoid.o: $(SRC_DIR)/Medoid.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Medoid.cpp -o $(OBJ_DIR)/Medoid.o -I$(INC_DIR)
-
-# Rule for MultiThread.o
-$(OBJ_DIR)/MultiThread.o: $(SRC_DIR)/MultiThread.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/MultiThread.cpp -o $(OBJ_DIR)/MultiThread.o -I$(INC_DIR)
-
-# Rule for Vamana.o
-$(OBJ_DIR)/Vamana.o: $(SRC_DIR)/Vamana.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Vamana.cpp -o $(OBJ_DIR)/Vamana.o -I$(INC_DIR)
-
-# Rule for Right_Exec.o
-$(OBJ_DIR)/Right_Exec.o: $(SRC_DIR)/Right_Exec.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/Right_Exec.cpp -o $(OBJ_DIR)/Right_Exec.o -I$(INC_DIR)
-
-# Rule for KNNG_BruteForce.o
-$(OBJ_DIR)/KNNG_BruteForce.o: $(SRC_DIR)/KNNG_BruteForce.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/KNNG_BruteForce.cpp -o $(OBJ_DIR)/KNNG_BruteForce.o -I$(INC_DIR)
-
-# Rule for GroundTruth.o
-$(OBJ_DIR)/GroundTruth.o: $(SRC_DIR)/GroundTruth.cpp $(INC_DIR)/Library.hpp
-	@mkdir -p $(OBJ_DIR)
-	g++ -O3 -c $(SRC_DIR)/GroundTruth.cpp -o $(OBJ_DIR)/GroundTruth.o -I$(INC_DIR)
-
-# Rule to ensure DatasetsReadable directory is created
-$(OUT_DIR):
-	@mkdir -p $(OUT_DIR)
-
-# Clean rule to remove the object files and the executable
+# Clean up object files and executables
 clean:
-	rm -rf $(OBJ_DIR) build $(OUT_DIR) run_tests
+	rm -rf $(TARGET) $(OBJ_DIR) test_executable

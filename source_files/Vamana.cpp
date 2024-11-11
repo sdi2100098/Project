@@ -4,12 +4,13 @@ int Vamana(const char *file_path, Graph *G, int L, int R,float a)
 {
     int result, s, Random_Permutation_Index, Size;
     std::set<int> TempSet = {};
-    float *vector;
     std::vector<int> RandomPerm;
     result_greedy *GreedyReturnValue = NULL; // Will have the L set and V set obtained from Greedy
     srand(time(NULL));
     G->R = R;
     result = Init_Graph_Data(file_path, G); // Create a random R-regular directed graph
+    if(result)
+        std::cout << "Something is wrong";
     s = Medoid(G);                          // Use the slow medoid
     RandomPerm = RandomPermutation(G);      // Get a Random Permutation
 

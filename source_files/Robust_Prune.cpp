@@ -3,8 +3,7 @@
 void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 {
 
-    int p_star, p_tonos;
-    double min_distance, temp_distance;
+    int p_star;
 
     std::set<int> Temp_V = {};
 

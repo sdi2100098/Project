@@ -4,7 +4,7 @@ int Medoid(Graph *G)
 {
     std::cout << "Calculating Medoid..." << std::endl;
     double SumDistances, TempDistance, MinDistance = std::numeric_limits<double>::max();
-    int MedoidIndex;
+    int MedoidIndex=0;
     std::vector<double> array(G->number_of_nodes, 0.0);
     for (int i = 0; i < G->number_of_nodes; i++) // For all vectors in Graph
     {
