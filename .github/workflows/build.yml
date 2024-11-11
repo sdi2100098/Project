@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: make run
-      test: make test CFLAGS=-fPIC
+      run: make test CFLAGS=-fPIC
 
     # - name: make valgrind
     #   if: matrix.os == 'ubuntu-20.04'
@@ -23,4 +23,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: compiled-${{ matrix.os }}
-        path: .
+        path: .  
