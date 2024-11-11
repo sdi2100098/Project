@@ -1,7 +1,7 @@
 # C++ compiler we use
 CXX = g++
 
-CXXFLAGS = -Wall -std=c++17 -O3 -fopenmp -Iinclude
+CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -Iinclude
 
 # Output filename after compilation 
 TARGET = build
