@@ -16,11 +16,11 @@ jobs:
     - name: make test
       run: make test CFLAGS=-fPIC
 
-    - name: make valgrind test
+    - name: make valgrind_test
       if: matrix.os == 'ubuntu-20.04'
       run: |
         sudo apt install valgrind
-        make valgrind test CFLAGS=-fPIC
+        make valgrind_test CFLAGS=-fPIC
 
     - name: Upload
       uses: actions/upload-artifact@v3
