@@ -10,17 +10,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: make run
-      run: make run CFLAGS=-fPIC
-
     - name: make test
       run: make test CFLAGS=-fPIC
 
-    # - name: make valgrind
-    #   if: matrix.os == 'ubuntu-20.04'
-    #   run: |
-    #     sudo apt install valgrind
-    #     make valgrind CFLAGS=-fPIC
+    - name: make valgrind_test
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        sudo apt install valgrind
+        make valgrind_test CFLAGS=-fPIC
 
     - name: Upload
       uses: actions/upload-artifact@v3
