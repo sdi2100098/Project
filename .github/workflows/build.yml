@@ -10,8 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: make run
-      run: make run CFLAGS=-fPIC
+    - name: make test
+      test: make test CFLAGS=-fPIC
 
     # - name: make valgrind
     #   if: matrix.os == 'ubuntu-20.04'
