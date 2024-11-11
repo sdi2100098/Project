@@ -1,4 +1,5 @@
 name: run-tests
+
 on: [push, pull_request]
 
 jobs:
@@ -7,20 +8,31 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
+
     steps:
     - uses: actions/checkout@v1
 
-    - name: make run
-      run: make run CFLAGS=-fPIC
+    # Set up C++ build environment
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y g++ make valgrind # Install the necessary dependencies
 
-    # - name: make valgrind
-    #   if: matrix.os == 'ubuntu-20.04'
-    #   run: |
-    #     sudo apt install valgrind
-    #     make valgrind_test CFLAGS=-fPIC
+    # Run make test
+    - name: Run make test
+      run: |
+        make test CXXFLAGS="-fPIC"
 
+    # Run valgrind for the tests (optional)
+    - name: Run valgrind test
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        sudo apt install -y valgrind
+        make valgrind_test CXXFLAGS="-fPIC"
+
+    # Upload the artifacts (compiled files)
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
         name: compiled-${{ matrix.os }}
-        path: .  
+        path: .
