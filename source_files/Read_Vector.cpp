@@ -207,7 +207,6 @@ fread_error:
 }
 
 
-
 int Init_Ground_Truth_Data(const char *file_path, groundTruth *GT)
 {
     std::cout << "Try Initializing GroundTruth..." << std::endl;

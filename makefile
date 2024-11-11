@@ -1,7 +1,7 @@
 # C++ compiler we use
 CXX = g++
 
-CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -Iinclude
+CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 
 # Output filename after compilation 
 TARGET = build
@@ -21,7 +21,8 @@ SRC = source_files/GreedySearch.cpp \
     source_files/GroundTruth.cpp \
     source_files/RandomPermutation.cpp \
     source_files/Read_Vector.cpp \
-    source_files/Set_Difference.cpp
+    source_files/Set_Difference.cpp \
+	source_files/Read_Txt.cpp 
 
 # Test file
 TEST_SRC = test/Test_All.cpp
