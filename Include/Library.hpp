@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <stdbool.h>
-#include <jsoncpp/json/json.h>
+#include "json.hpp"
 #include <stdio.h>
 #include <fstream>
 #include <vector>

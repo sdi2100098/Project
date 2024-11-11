@@ -7,11 +7,11 @@ TEST_DIR = test
 
 # Target to build the executable
 build: $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o
-	g++ -O3 -pthread -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o -I/usr/include/jsoncpp -ljsoncpp
+	g++ -O3 -pthread -o build $(OBJ_DIR)/main.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/MultiThread.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/Right_Exec.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/GroundTruth.o 
 
 # Target to build and run all tests in one file
 test_all: $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o
-	g++ -O3 -pthread -I/usr/include/jsoncpp -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm 
+	g++ -O3 -pthread -o run_all_tests $(OBJ_DIR)/RandomPermutation.o $(OBJ_DIR)/EuclidianDistance.o $(OBJ_DIR)/GetRandomNumber.o $(OBJ_DIR)/Set_Difference.o $(OBJ_DIR)/Read_Vector.o $(OBJ_DIR)/GreedySearch.o $(OBJ_DIR)/Delete_Graph.o $(OBJ_DIR)/Medoid.o $(OBJ_DIR)/Argument_Min_Distance.o $(OBJ_DIR)/Robust_Prune.o $(OBJ_DIR)/Vamana.o $(OBJ_DIR)/KNNG_BruteForce.o $(OBJ_DIR)/Test_All.o -I$(INC_DIR) -I$(TEST_DIR) -lm 
 	./run_all_tests
 
 # New target to run tests with Valgrind (without rebuilding the entire program)
