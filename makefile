@@ -13,7 +13,8 @@ OBJ_DIR = obj
 SRC = source_files/Read_Data.cpp\
 		source_files/Delete_Data.cpp\
 		source_files/FindMedoid.cpp \
-		source_files/EuclideanDistance.cpp
+		source_files/EuclideanDistance.cpp \
+		source_files/RandomPermutation.cpp 
 
 # Test file
 TEST_SRC = test/Test_All.cpp
