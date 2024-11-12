@@ -10,4 +10,11 @@ int Init_Graph_Data(Graph *,const char *);
 /* For free memmory for the structs */
 void Delete_Graph(Graph *);
 
+
+double EuclideanDistance(const float *, const float *, const int );
+std::vector<int> RandomPermutation(Graph *);
+
+/*Medoid Function*/
+int FindMedoid(Graph *,int , std::unordered_map<int,int> *);
+
 #endif
