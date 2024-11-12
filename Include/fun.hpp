@@ -2,6 +2,7 @@
 #define FUN_HPP
 
 #include "struct.hpp"
+#include <unordered_map>
 
 /* For read datas of eny cind */
 /* return 0:succes,1:fail */
