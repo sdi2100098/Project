@@ -14,6 +14,6 @@ void Delete_Graph(Graph *);
 double EuclideanDistance(const float *, const float *, const int );
 
 /*Medoid Function*/
-int FindMedoid(Graph *,int , std::unordered_map<float,int> *);
+int FindMedoid(Graph *,int , std::unordered_map<int,int> *);
 
 #endif

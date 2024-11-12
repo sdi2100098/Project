@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 int Init_Graph_Data(Graph *G,const char *file_path){
 
@@ -47,7 +48,7 @@ int Init_Graph_Data(Graph *G,const char *file_path){
         if(fread(&garbage,sizeof(float),1,file) != 1) goto fread_error;
         if(fread(nodes_array[i].vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error;
     }   
-
+    std::cout << Temp_Filters.size() << std::endl;
     Filters = new std::vector<int>[Temp_Filters.size()]();
 
     for(int i = 0; i < number_of_nodes; i++){
@@ -58,6 +59,7 @@ int Init_Graph_Data(Graph *G,const char *file_path){
     G->number_of_nodes = number_of_nodes;
     G->dimension = dimension;
     G->Filters_Size = (int)Temp_Filters.size();
+    std::cout << G->Filters_Size << std::endl;
     G->Filters = Filters;
 
     fclose(file);
