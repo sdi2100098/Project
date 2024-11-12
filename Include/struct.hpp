@@ -23,5 +23,17 @@ typedef struct graph
     //double **Distances;  /* Array to hold Distances*/
 } Graph;
 
+typedef struct query_node{
+    int filter;
+}query_node;
+
+typedef struct query
+{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */ // not true !
+    query_node *nodes_array;
+    int number_of_nodes; /* rows */
+    int dimension;         /* columns */
+    //double **Distances;
+} Query;
+
 
 #endif
