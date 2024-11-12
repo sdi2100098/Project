@@ -2,6 +2,9 @@
 #include "fun.hpp"
 
 #include <stdio.h>
+#include <iostream>
+#include <iterator>
+#include <set>
 
 
 int main(){
@@ -13,7 +16,6 @@ int main(){
     Graph G;
 
     if(Init_Graph_Data(&G,base_path) == 1) return 1;
-
     Delete_Graph(&G);
 
     return 0;
