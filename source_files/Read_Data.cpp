@@ -74,3 +74,7 @@ memmory_error:
     fclose(file);
     return 1;
 }
+
+int Init_Query_Data(Query *Q,const char *file_path){
+
+}
