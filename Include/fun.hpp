@@ -6,7 +6,7 @@
 /* For read datas of eny cind */
 /* return 0:succes,1:fail */
 int Init_Graph_Data(Graph *,const char *);
-int Init_Query_Data(Query *,const char *);
+int Init_Query_Data(Query *,const char *,int);
 
 /* For free memmory for the structs */
 void Delete_Graph(Graph *);

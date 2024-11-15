@@ -4,6 +4,7 @@
 #include <set>
 #include <vector>
 
+#define NO_FILTER -1
 
 typedef struct node{ /* node of each graph */
     int filter;
@@ -12,11 +13,11 @@ typedef struct node{ /* node of each graph */
 }node;
 
 typedef struct graph{
-    node *nodes_array;   /* WTF HASH MAP */
+    node *index_array;   /* WTF HASH MAP */
     int R;               /* out-degree number */
-    int number_of_nodes; /* rows */
+    int number_of_indexes; /* rows */
     int dimension;       /* columns */
-    std::vector<int> *Filters; /*An array to hold vectors*/ 
+    std::vector<int> *Filters; /*An array to hold vectors base on their filters */ 
     int Filters_Size;
     //double **Distances;  /* Array to hold Distances*/
 }Graph;
@@ -27,9 +28,12 @@ typedef struct query_node{
 }query_node;
 
 typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */ // not true !
-    query_node *nodes_array;
-    int number_of_nodes; /* rows */
+    query_node *index_array;
+    int number_of_indexes; /* rows */
     int dimension;         /* columns */
+    std::vector<int> *Filters; /*An array to hold vectors base on their filters */
+    int Filters_Size;
+    int NO_FILTERS_POTITION;
     //double **Distances;
 }Query;
 
