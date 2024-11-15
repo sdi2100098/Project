@@ -19,6 +19,6 @@ void CreateKNNGraphBruteForce(Graph , int , const char *, const char *);
 
 
 /*Medoid Function*/
-int* FindMedoid(Graph *,int);
+int* FindMedoid(Graph *,float);
 
 #endif

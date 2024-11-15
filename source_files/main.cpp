@@ -22,7 +22,7 @@ int main(){
     // CreateKNNGraphBruteForce(G,100,"Datasets/Small_Set/dummy-groundtruth.txt","Datasets/Small_Set/dummy-groundtruth.bin");
     int *Vamana_Map ;
     int Vamana_Map_Size = G.Filters_Size;
-    Vamana_Map = FindMedoid(&G,1);
+    Vamana_Map = FindMedoid(&G,0.9);
     for(int i = 0; i<Vamana_Map_Size; i++){
         std::cout << "Key : " << i << " Value : " << Vamana_Map[i] << std::endl;
     }
