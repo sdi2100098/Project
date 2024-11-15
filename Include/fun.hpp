@@ -21,4 +21,9 @@ void CreateKNNGraphBruteForce(Graph , int , const char *, const char *);
 /*Medoid Function*/
 int* FindMedoid(Graph *,float);
 
+
+
+/*Test Functions*/
+void Test_EuclideanDistance();
+
 #endif

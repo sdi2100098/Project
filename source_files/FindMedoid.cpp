@@ -10,7 +10,7 @@ int * FindMedoid(Graph *G,float t){
     int *M = (int *) malloc(sizeof(int) * G->Filters_Size);
     if (M == NULL)
         perror("Error in Medoid (malloc)");
-    int *T = (int *) malloc(sizeof(int) * G->number_of_nodes);
+    int *T = (int *) malloc(sizeof(int) * G->number_of_indexes);
     if (T == NULL)
         perror("Error in Medoid (malloc)");
     std::vector<int> P_f;
@@ -19,7 +19,7 @@ int * FindMedoid(Graph *G,float t){
     float temp_threshold = t;
 
     /*Initializze T to a zero map , T is intended as a counter*/
-    for(int i = 0; i < G->number_of_nodes; i++)
+    for(int i = 0; i < G->number_of_indexes; i++)
         T[i] = 0 ;
 
 
@@ -60,6 +60,7 @@ int * FindMedoid(Graph *G,float t){
         T[p_tonos]++;
     }
 
+    free(T);
     //Return M
     return M;
 }
