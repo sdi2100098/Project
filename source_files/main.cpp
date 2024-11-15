@@ -20,8 +20,12 @@ int main(){
     if(Init_Query_Data(&Q,query_path) == 1) return 1;
 
     // CreateKNNGraphBruteForce(G,100,"Datasets/Small_Set/dummy-groundtruth.txt","Datasets/Small_Set/dummy-groundtruth.bin");
-    // std::unordered_map<int,int> Vamana_Map;
-    // std::cout << FindMedoid(&G,1,&Vamana_Map) << std::endl;
+    int *Vamana_Map ;
+    int Vamana_Map_Size = G.Filters_Size;
+    Vamana_Map = FindMedoid(&G,1);
+    for(int i = 0; i<Vamana_Map_Size; i++){
+        std::cout << "Key : " << i << " Value : " << Vamana_Map[i] << std::endl;
+    }
     
     Delete_Query(&Q);
     Delete_Graph(&G);
