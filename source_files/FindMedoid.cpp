@@ -60,6 +60,7 @@ int * FindMedoid(Graph *G,float t){
         T[p_tonos]++;
     }
 
+    free(T);
     //Return M
     return M;
 }
