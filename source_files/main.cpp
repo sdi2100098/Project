@@ -38,6 +38,7 @@ int main(){
     
     Delete_Query(&Q);
     Delete_Graph(&G);
+    free(Vamana_Map);
 
     return 0;
 }
