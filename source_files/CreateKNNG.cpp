@@ -24,18 +24,18 @@ void CreateKNNGraphBruteForce(Graph G, int k, const char *filename, const char *
     }
 
     // Iterate through each node in the graph
-    for (int i = 0; i < G.number_of_nodes; i++)
+    for (int i = 0; i < G.number_of_indexes; i++)
     {
         // Finding the closest neighbors of each node
-        G.nodes_array[i].edges.clear();
+        G.index_array[i].edges.clear();
         std::vector<std::pair<double, int>> closest_neighbors;
 
-        for (int j = 0; j < G.number_of_nodes; j++)
+        for (int j = 0; j < G.number_of_indexes; j++)
         {
             if (i != j)
             {
                 // Calculate the distance between node i and node j
-                double distance = EuclideanDistance(G.nodes_array[i].vector, G.nodes_array[j].vector, G.dimension);
+                double distance = EuclideanDistance(G.index_array[i].vector, G.index_array[j].vector, G.dimension);
                 closest_neighbors.push_back({distance, j});
             }
         }
