@@ -2,7 +2,6 @@
 #define FUN_HPP
 
 #include "struct.hpp"
-#include <unordered_map>
 
 /* For read datas of eny cind */
 /* return 0:succes,1:fail */
@@ -20,6 +19,6 @@ void CreateKNNGraphBruteForce(Graph , int , const char *, const char *);
 
 
 /*Medoid Function*/
-int FindMedoid(Graph *,int , std::unordered_map<int,int> *);
+int* FindMedoid(Graph *,float);
 
 #endif
