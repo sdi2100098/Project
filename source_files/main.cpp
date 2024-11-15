@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <iterator>
-#include <set>
 
 
 int main(){
@@ -17,7 +16,17 @@ int main(){
 
     if(Init_Graph_Data(&G,base_path) == 1) return 1;
 
-    if(Init_Query_Data(&Q,query_path) == 1) return 1;
+    //printf("filters %d\n",G.Filters_Size);
+
+    if(Init_Query_Data(&Q,query_path,G.Filters_Size) == 1) return 1;
+
+    int sum = 0;
+    for(int i = 0; i < Q.Filters_Size; i++){
+        sum += Q.Filters[i].size();
+        if(Q.Filters[i].size() != 0)
+            printf("%d = %d\n",i,(int)Q.Filters[i].size());
+    }
+    printf("\nSum = %d\n",sum);
 
     // CreateKNNGraphBruteForce(G,100,"Datasets/Small_Set/dummy-groundtruth.txt","Datasets/Small_Set/dummy-groundtruth.bin");
     int *Vamana_Map ;
