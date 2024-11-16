@@ -1,0 +1,56 @@
+#include "fun.hpp"
+#include <time.h>
+#include <stdlib.h>
+#include <iostream>
+
+int Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
+{
+    int RandomPermutationIndex, result, SF_x_i, Size;
+    int *s = NULL;
+    float threshold = 0.9f;
+    std::vector<int> RandomPerm;
+    std::set<int> TempSet = {};
+
+    srand(time(NULL));
+
+    /*Initialize G to an Empty Graph*/
+    result = Init_Graph_Data(G, file_path);
+    if (result == 1)
+    {
+        perror("Error in Init_Graph");
+        return result;
+    }
+
+    /*Let s denote the Medoid of P*/
+    s = FindMedoid(G, threshold);
+
+    /*Let σ denote be a random permutation of [n] */
+    RandomPerm = RandomPermutation(G);
+
+    for (int i = 0; i < G->number_of_indexes; i++)
+    {
+        RandomPermutationIndex = RandomPerm[i];
+        /*Let SF_x_σ(i) = {st(f) : f ε F_x_σ(i) }*/
+        SF_x_i = s[G->index_array[i].filter];
+
+        /*Let [0;VF_x_σ(i) <-- FilteredGreedySearch(SF_x_σ(i),x_σ(i),0,L,F_x_σ(i))]*/
+
+        /*Run FilteredRobustPrune(σ(i),VF_x_σ(i),a,R) to update out-neighbors of σ(i)*/
+
+        for (auto &j : G->index_array[RandomPermutationIndex].edges)
+        {
+            TempSet.clear();
+            for (auto &element : G->index_array[j].edges)
+                TempSet.insert(element);
+            TempSet.insert(RandomPermutationIndex);
+            Size = (int)TempSet.size();
+
+            if (Size > R)
+                /*Run FilteredRobustPrune(j,Nout(j),a,R) to update out-neighbors of j*/;
+        }
+    }
+
+    // Deallocate Memory for Map
+    free(s);
+    return 0;
+}
