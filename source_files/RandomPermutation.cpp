@@ -3,7 +3,7 @@
 
 std::vector<int> RandomPermutation(Graph *G)
 {
-    int maxVal = G->number_of_nodes;      // Total number of nodes
+    int maxVal = G->number_of_indexes;    // Total number of nodes
     std::vector<int> permutation(maxVal); // Vector to store the permutation
 
     // Fill the vector with the values 0 to maxVal-1

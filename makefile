@@ -16,6 +16,7 @@ SRC = source_files/Read_Data.cpp\
 		source_files/EuclideanDistance.cpp \
 		source_files/RandomPermutation.cpp \
 		source_files/CreateKNNG.cpp \
+		source_files/Filtered_Vamana.cpp
 
 # Test file
 TEST_SRC = test/Test_All.cpp
