@@ -9,7 +9,7 @@ int Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     int *s = NULL;
     float threshold = 0.9f;
     std::vector<int> RandomPerm;
-    std::set<int> TempSet = {};
+    std::set<int> TempSet = {}, VF_x_i = {};
 
     srand(time(NULL));
 
@@ -31,11 +31,12 @@ int Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     {
         RandomPermutationIndex = RandomPerm[i];
         /*Let SF_x_σ(i) = {st(f) : f ε F_x_σ(i) }*/
-        SF_x_i = s[G->index_array[i].filter];
+        SF_x_i = s[G->index_array[RandomPermutationIndex].filter];
 
-        /*Let [0;VF_x_σ(i) <-- FilteredGreedySearch(SF_x_σ(i),x_σ(i),0,L,F_x_σ(i))]*/
+        /*Let [0;VF_x_σ(i)] <-- FilteredGreedySearch(SF_x_σ(i),x_σ(i),0,L,F_x_σ(i))*/
 
         /*Run FilteredRobustPrune(σ(i),VF_x_σ(i),a,R) to update out-neighbors of σ(i)*/
+        Filtered_Robust_Prune(RandomPermutationIndex, &(VF_x_i), a, G);
 
         for (auto &j : G->index_array[RandomPermutationIndex].edges)
         {
@@ -47,6 +48,7 @@ int Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
 
             if (Size > R)
                 /*Run FilteredRobustPrune(j,Nout(j),a,R) to update out-neighbors of j*/;
+            Filtered_Robust_Prune(j, &(TempSet), a, G);
         }
     }
 
