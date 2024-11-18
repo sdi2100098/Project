@@ -13,16 +13,23 @@ int Init_Ground_Truth_Data(Ground_Truth *,const char *);
 void Delete_Graph(Graph *);
 void Delete_Query(Query *);
 
-
-double EuclideanDistance(const float *, const float *, const int );
+double EuclideanDistance(const float *, const float *, const int);
+int Argument_Min_Distance(Graph *, std::set<int> *, float *);
+void Set_Difference(std::set<std::pair<double, int>> *, std::set<int> *, std::set<int> *);
 std::vector<int> RandomPermutation(Graph *);
 int CreateKNNGraphBruteForce(Graph *,Query *, int, const char *, const char *);
 
 
 /*Medoid Function*/
-int* FindMedoid(Graph *,float);
+int *FindMedoid(Graph *, float);
 
+/*Robust Function*/
+void Filtered_Robust_Prune(int, std::set<int> *, float, Graph *);
 
+/*Greedy Search Function*/
+result_greedy *Greedy_Search(Graph *, int, int, int, int *, Query *);
+
+int Filtered_Vamana(const char *, Graph *, int, int, double);
 
 /*Test Functions*/
 void Test_EuclideanDistance();
