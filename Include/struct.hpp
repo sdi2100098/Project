@@ -45,7 +45,7 @@ typedef struct result_GreedySearch
 {
     std::set<int> V;
     std::set<std::pair<double, int>> L;
-} result_greedy;
+} Result_greedy;
 
 typedef struct neighbor{
     int K;

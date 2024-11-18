@@ -1,10 +1,9 @@
 #include "fun.hpp"
 
-result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int *s, Query *Q)
-{
+Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Query *Q){
 
     /* Initialize L <- 0 and V <- 0 */
-    std::set<std::pair<double, int>> L_kal = {{0, 0}};
+    std::set<std::pair<double, int>> L_kal = {{}};
     std::set<std::pair<double, int>> Temp = {{}};
     std::set<int> V = {};
     std::set<int> Difference_L_V = {};
@@ -13,10 +12,28 @@ result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int *s, Query *Q)
     double distance;
     float *vector;
 
-    if (!Q)
+    /* Ground Truth */
+    if (Q == NULL)
         vector = G->index_array[xq].vector;
     else
         vector = Q->index_array[xq].vector;
+
+
+    for(int s = 0; s < G->Filters_Size; s++){ /* For every starting point in Medoids (only filters)*/
+        if(Q == NULL && s == G->index_array[xq].filter){/* Not Graound Truth and F_s ∩ F_x */ 
+            L_kal.insert({0,S[s]});/* L <- L U {s} */
+        }
+        else if(Q != NULL){/* Graound Truth */
+            if(Q->index_array[xq].filter == -1){ /* Has no filter F_s ∩ F_x */
+                L_kal.insert({0,S[s]});/* L <- L U {s} */
+            }
+            else if(s == Q->index_array[xq].filter){ /* Has filter F_s ∩ F_x */
+                L_kal.insert({0,S[s]});/* L <- L U {s} */
+            }
+        }
+    }
+
+    Set_Difference(&L_kal,&V,&Difference_L_V); /* Update diff */
 
     /* while L\V != 0 */
     while (Difference_L_V.size() != 0)
@@ -26,25 +43,31 @@ result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int *s, Query *Q)
         /* p* <- atg min d(Xp,Xq) for p in L\V */
         p_star = Argument_Min_Distance(G, &Difference_L_V, vector);
 
-        /* L <- L U Nout(p*) (with the distances)*/
-        for (std::set<int>::iterator it = G->index_array[p_star].edges.begin(); it != G->index_array[p_star].edges.end(); it++)
-        {
-
-            distance = EuclideanDistance(G->index_array[*it].vector, vector, G->dimension);
-            L_kal.insert({distance, *it});
-        }
-
         /* V <- V U {p*} */
         V.insert(p_star);
 
-        /* |L kaligrafiko| > L */
-        if ((int)L_kal.size() > L)
-        {
+
+        /* Let Nout'(p*) <- {p'ε Νout(p*) : Fp' ∩ Fq != 0 ,p' not in V} */
+        Temp.clear();
+        for(std::set<int>::iterator it = G->index_array[p_star].edges.begin(); it != G->index_array[p_star].edges.end(); it++){ /* p'ε Νout(p*) */
+            if(Q == NULL){ /* Not Ground Truth */
+                if(G->index_array[*it].filter == G->index_array[xq].filter && V.find(*it) == V.end()){ /* Fp' ∩ Fq != 0 ,p' not in V */
+                    distance = EuclideanDistance(G->index_array[*it].vector,vector,G->dimension);
+                    Temp.insert({distance,*it});
+                }
+            }
+            /* NOW WE MUST DO THE SAME IN CASE WE ARE IN GROUND TRUTH */
+        }
+
+        for(std::set<std::pair<double,int>>::iterator it = Temp.begin(); it != Temp.end(); it++){ /* L <- L U Nout'(p*) */
+            L_kal.insert({it->first, it->second});
+        }
+
+        if ((int)L_kal.size() > L){ /* |L kaligrafiko| > L */
 
             Temp.clear();
             /* L kaligrafiko retain closest L points to Xq */
-            for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; i++, it++)
-            {
+            for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; i++, it++){
                 Temp.insert({it->first, it->second});
             }
 
@@ -58,7 +81,7 @@ result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int *s, Query *Q)
         Set_Difference(&L_kal, &V, &Difference_L_V);
     }
 
-    result_greedy *RG = new result_greedy;
+    Result_greedy *RG = new Result_greedy;
     RG->L = {};
 
     i = 0;
