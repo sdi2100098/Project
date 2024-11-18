@@ -37,5 +37,14 @@ typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */ // not
     //double **Distances;
 }Query;
 
+typedef struct neighbor{
+    int K;
+    int *K_NBH_array; //neighbor
+}Neighbor;
+
+typedef struct ground_truth{
+    Neighbor *array;
+    int Size;
+}Ground_Truth;
 
 #endif
