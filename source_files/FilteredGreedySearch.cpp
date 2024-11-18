@@ -1,4 +1,5 @@
 #include "fun.hpp"
+#include <stdlib.h>
 
 Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Query *Q){
 
@@ -57,6 +58,12 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
                 }
             }
             /* NOW WE MUST DO THE SAME IN CASE WE ARE IN GROUND TRUTH */
+            else if(Q){
+                if(G->index_array[*it].filter == Q->index_array[xq].filter && V.find(*it) == V.end()){ /* Fp' ∩ Fq != 0 ,p' not in V */
+                    distance = EuclideanDistance(G->index_array[*it].vector,vector,G->dimension);
+                    Temp.insert({distance,*it});
+                }
+            }
         }
 
         for(std::set<std::pair<double,int>>::iterator it = Temp.begin(); it != Temp.end(); it++){ /* L <- L U Nout'(p*) */
