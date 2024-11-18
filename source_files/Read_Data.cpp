@@ -6,7 +6,7 @@
 
 int Init_Graph_Data(Graph *G,const char *file_path){
 
-    printf("Try to initialize the Graph data...\n");
+    //printf("Try to initialize the Graph data...\n");
 
     FILE *file = fopen(file_path,"rb");
     if(file == NULL){
@@ -62,7 +62,7 @@ int Init_Graph_Data(Graph *G,const char *file_path){
     G->Filters = Filters;
 
     fclose(file);
-    printf("Initialize the Graph data succefuly!\n");
+    //printf("Initialize the Graph data succefuly!\n");
     return 0;
 
 /* In case something goes wrong in (fread) */
@@ -78,9 +78,52 @@ memmory_error:
     return 1;
 }
 
+typedef struct Dimension_values{
+    float d1;
+    float d2;
+    float d3;
+    float d4;
+}Dimension_values;
+
+/* Go and find the Number of querys that we want to (only this with type 0 or 1) */
+int Find_Usefull_NumberofIndexes(FILE *file, int *number_of_indexes, int number_of_filters, int dimension){
+
+    int temp_indexes  = 0;
+    float vector[dimension];
+
+    Dimension_values dimension_values{
+        .d1 = -1.0f,
+        .d2 = -1.0f,
+        .d3 = -1.0f,
+        .d4 = -1.0f
+    };   
+
+    for(int i = 0; i < *number_of_indexes; i++){
+
+        if(fread(&dimension_values,sizeof(Dimension_values),1,file) != 1) goto fread_error;
+        if(fread(vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error; //skip the vector
+
+        if(dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f || dimension_values.d2 > (float)number_of_filters){ //in case exist filter with value more than 128
+            continue;
+        }
+
+        temp_indexes++;
+
+    }
+
+    *number_of_indexes = temp_indexes;
+
+    fseek(file,sizeof(int),SEEK_SET); /* Skip the first value */
+    return 0;
+
+fread_error:
+    perror("Error in Find_Usefull_NumberofIndexes (fread_error)");
+    return 1;
+}
+
 int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
 
-    printf("Try to initialize the Query data...\n");
+    //printf("Try to initialize the Query data...\n");
 
     FILE *file = fopen(file_path,"rb");
     if(file == NULL){
@@ -89,21 +132,14 @@ int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
     }
 
     int Filters_Size = number_of_filters+1; //+1 to save nodes with no FILTER in the (number_of_filters) potition,(the last one)
-    int dimension = 100, number_of_indexes = 0, No_filter_potition = number_of_filters, entry_potition = 0;
+    int dimension = 100, number_of_indexes = 0, No_filter_potition = number_of_filters, entry_potition = 0, usefull_number_of_indexes = 0, all_number_of_indexes;
     float garbage_vector[dimension];
 
-    typedef struct Dimension_values{
-        float dimension_1;
-        float dimension_2;
-        float dimension_3;
-        float dimension_4;
-    }Dimension_values;
-
     Dimension_values dimension_values{
-        .dimension_1 = -1.0f,
-        .dimension_2 = -1.0f,
-        .dimension_3 = -1.0f,
-        .dimension_4 = -1.0f
+        .d1 = -1.0f,
+        .d2 = -1.0f,
+        .d3 = -1.0f,
+        .d4 = -1.0f
     };    
 
     std::vector<int> *Filters = NULL;
@@ -118,7 +154,10 @@ int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
         goto memmory_error;
     }
    
-    if(fread(&number_of_indexes,sizeof(int),1,file) != 1) goto fread_error;
+    if(fread(&all_number_of_indexes,sizeof(int),1,file) != 1) goto fread_error;
+    number_of_indexes = all_number_of_indexes;
+    if(Find_Usefull_NumberofIndexes(file,&number_of_indexes,number_of_filters,dimension) == 1) goto fread_error;
+
 
     index_array = (query_node *)malloc(number_of_indexes * sizeof(query_node));
     if(index_array == NULL) goto memmory_error;
@@ -130,24 +169,25 @@ int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
     }
 
     /* Time to read some data */
-    for(int i = 0; i < number_of_indexes; i++){
+    for(int i = 0; i < all_number_of_indexes; i++,usefull_number_of_indexes++){
         if(fread(&dimension_values,sizeof(Dimension_values),1,file) != 1) goto fread_error;
         
         /* skip the type 2,3 querys (we do not need them) */
-        if(dimension_values.dimension_1 == 2.0f || dimension_values.dimension_1 == 3.0f || dimension_values.dimension_2 > (float)number_of_filters-1){ //in case exist filter with value more than 128
+        if(dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f || dimension_values.d2 > (float)number_of_filters){ //in case exist filter with value more than 128
             if(fread(garbage_vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error; //skip the vector
+            usefull_number_of_indexes--; //keep track only for the INDEX of the usefull Vectors 
             continue;
         }
 
         /* if is type 0 ,I save it in Last potition of (Filters MAP),couse this mean i do not have filters */
         /* if is type 1 ,I save it in the (i-th) potition of (Filters MAP) */
-        entry_potition = (dimension_values.dimension_1 == 0.0f) ? No_filter_potition : dimension_values.dimension_2;
+        entry_potition = (dimension_values.d1 == 0.0f) ? No_filter_potition : dimension_values.d2;
     
-        Filters[entry_potition].push_back(i);
+        Filters[entry_potition].push_back(usefull_number_of_indexes);
 
-        index_array[i].filter = (int)dimension_values.dimension_2;
+        index_array[usefull_number_of_indexes].filter = (int)dimension_values.d2;
 
-        if(fread(index_array[i].vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error;
+        if(fread(index_array[usefull_number_of_indexes].vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error;
     }
 
     Q->index_array = index_array;
@@ -158,7 +198,7 @@ int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
     Q->NO_FILTERS_POTITION = No_filter_potition;
 
     fclose(file);
-    printf("Initialize the Graph data succefuly!\n");
+    //printf("Initialize the Graph data succefuly!\n");
     return 0;
 
 /* In case something goes wrong in (fread) */
@@ -171,5 +211,30 @@ fread_error:
 memmory_error:
     fclose(file);
     perror("Error in Init_Graph_Data (new,malloc)");
+    return 1;
+}
+
+
+int Init_Ground_Truth_Data(Ground_Truth *GT,const char *file_path){
+
+    FILE *file = fopen(file_path,"rb");
+    if(file == NULL){
+        perror("Error in Init_Ground_Truth (fopen)");
+        return 1;
+    }
+
+    int filtes, tottal_querys;
+
+    if(fread(&filtes,sizeof(int),1,file) != 1) goto fread_error;
+    if(fread(&tottal_querys,sizeof(int),1,file) != 1) goto fread_error;
+
+    printf("%d %d\n",filtes,tottal_querys);
+
+
+    fclose(file);
+    return 0;
+
+fread_error:
+    perror("Error in Init_Ground_Truth (fopen)");
     return 1;
 }

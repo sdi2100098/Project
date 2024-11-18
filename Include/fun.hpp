@@ -5,8 +5,9 @@
 
 /* For read datas of eny cind */
 /* return 0:succes,1:fail */
-int Init_Graph_Data(Graph *, const char *);
-int Init_Query_Data(Query *, const char *, int);
+int Init_Graph_Data(Graph *,const char *);
+int Init_Query_Data(Query *,const char *,int);
+int Init_Ground_Truth_Data(Ground_Truth *,const char *);
 
 /* For free memmory for the structs */
 void Delete_Graph(Graph *);
@@ -16,7 +17,8 @@ double EuclideanDistance(const float *, const float *, const int);
 int Argument_Min_Distance(Graph *, std::set<int> *, float *);
 void Set_Difference(std::set<std::pair<double, int>> *, std::set<int> *, std::set<int> *);
 std::vector<int> RandomPermutation(Graph *);
-void CreateKNNGraphBruteForce(Graph, int, const char *, const char *);
+int CreateKNNGraphBruteForce(Graph *,Query *, int, const char *, const char *);
+
 
 /*Medoid Function*/
 int *FindMedoid(Graph *, float);
