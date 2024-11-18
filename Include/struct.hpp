@@ -47,4 +47,14 @@ typedef struct result_GreedySearch
     std::set<std::pair<double, int>> L;
 } result_greedy;
 
+typedef struct neighbor{
+    int K;
+    int *K_NBH_array; //neighbor
+}Neighbor;
+
+typedef struct ground_truth{
+    Neighbor *array;
+    int Size;
+}Ground_Truth;
+
 #endif
