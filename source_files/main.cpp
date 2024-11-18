@@ -27,34 +27,38 @@ int main()
 
     int R = config["R"];
     int L = config["L"];
-    // int k = config["k"];
+    int k = config["k"];
     double a = config["a"];
 
     const char *base_path = "Datasets/Small_Set/dummy-data.bin";
     const char *query_path = "Datasets/Small_Set/dummy-queries.bin";
 
-    const char *output_path = "Datasets/Small_Set/dummy-groundtruth.txt";
+    //const char *output_path = "Datasets/Small_Set/dummy-groundtruth.txt";
     const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
 
     Graph G;
-    Query Q;
-    Ground_Truth GT;
+    //Query Q;
+    //Ground_Truth GT;
+    int *Map;
 
 
 
-    // if (Filtered_Vamana(base_path, &G, L, R, a) == 1)
-    //     return 1;
+    Map = Filtered_Vamana(base_path, &G, L, R, a);
+    if(!Map)
+        return 1;
+    if(GroundTruth(query_path,binary_output_path,&G,k,L,Map)==1)
+        return 1;
 
     // printf("filters %d\n",G.Filters_Size);
 
-    if(Init_Graph_Data(&G,base_path) == 1)
-        return 1;
+    // if(Init_Graph_Data(&G,base_path) == 1)
+    //     return 1;
 
-    if(Init_Query_Data(&Q, query_path, G.Filters_Size) == 1)
-        return 1;
+    // if(Init_Query_Data(&Q, query_path, G.Filters_Size) == 1)
+    //     return 1;
 
-    if(Init_Ground_Truth_Data(&GT,binary_output_path) == 1)
-        return 1;
+    // if(Init_Ground_Truth_Data(&GT,binary_output_path) == 1)
+    //     return 1;
 
 
     // int x;
@@ -117,9 +121,9 @@ int main()
     //     std::cout << "Key : " << i << " Value : " << Vamana_Map[i] << std::endl;
     // }
     
-    Delete_Query(&Q);
+    // Delete_Query(&Q);
     Delete_Graph(&G);
-    Delete_Ground_Truth(&GT);
+    // Delete_Ground_Truth(&GT);
     //free(Vamana_Map);
 
     return 0;

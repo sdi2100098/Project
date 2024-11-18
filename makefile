@@ -21,6 +21,7 @@ SRC = source_files/Read_Data.cpp\
 		source_files/FilteredRobustPrune.cpp\
 		source_files/FilteredGreedySearch.cpp\
 		source_files/Argument_Min_Distance.cpp\
+		source_files/GroundTruth.cpp\
 		source_files/Filtered_Vamana.cpp 
 
 # Test file

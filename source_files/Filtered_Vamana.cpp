@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-int Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
+int* Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
 {
     int RandomPermutationIndex, result, Size;
     int *s = NULL;
@@ -19,7 +19,7 @@ int Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     if (result == 1)
     {
         perror("Error in Init_Graph");
-        return result;
+        return NULL;
     }
 
     /*Let s denote the Medoid of P*/
@@ -64,7 +64,5 @@ int Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
         delete result_greedy;
     }
 
-    // Deallocate Memory for Map
-    free(s);
-    return 0;
+    return s;
 }
