@@ -12,6 +12,7 @@ int Init_Ground_Truth_Data(Ground_Truth *,const char *);
 /* For free memmory for the structs */
 void Delete_Graph(Graph *);
 void Delete_Query(Query *);
+void Delete_Ground_Truth(Ground_Truth *);
 
 double EuclideanDistance(const float *, const float *, const int);
 int Argument_Min_Distance(Graph *, std::set<int> *, float *);
@@ -27,7 +28,7 @@ int *FindMedoid(Graph *, float);
 void Filtered_Robust_Prune(int, std::set<int> *, float, Graph *);
 
 /*Greedy Search Function*/
-result_greedy *Greedy_Search(Graph *, int, int, int, int *, Query *);
+Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *);
 
 int Filtered_Vamana(const char *, Graph *, int, int, double);
 

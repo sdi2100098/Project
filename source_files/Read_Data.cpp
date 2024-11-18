@@ -210,7 +210,7 @@ fread_error:
 /* In case something goes wrong in (malloc,new) */
 memmory_error:
     fclose(file);
-    perror("Error in Init_Graph_Data (new,malloc)");
+    perror("Error in Init_Query_Data (new,malloc)");
     return 1;
 }
 
@@ -223,18 +223,58 @@ int Init_Ground_Truth_Data(Ground_Truth *GT,const char *file_path){
         return 1;
     }
 
-    int filtes, tottal_querys;
+    int filters, tottal_querys, index, K;
+    int *Querys_with_Filter = NULL, *Actual_KNN_with_Filter = NULL;
+    Neighbor *array = NULL;
+    
 
-    if(fread(&filtes,sizeof(int),1,file) != 1) goto fread_error;
+    if(fread(&filters,sizeof(int),1,file) != 1) goto fread_error;
     if(fread(&tottal_querys,sizeof(int),1,file) != 1) goto fread_error;
 
-    printf("%d %d\n",filtes,tottal_querys);
+    Querys_with_Filter = (int *)malloc(sizeof(int) * filters);
+    if(Querys_with_Filter == NULL) goto memmory_error;
 
+    Actual_KNN_with_Filter = (int *)malloc(sizeof(int) * filters);
+    if(Actual_KNN_with_Filter == NULL) goto memmory_error;
+
+    array = (Neighbor *)malloc(sizeof(Neighbor) * tottal_querys);
+    if(array == NULL) goto memmory_error;
+
+    if(fread(Querys_with_Filter,sizeof(int),filters,file) != (size_t)filters) goto fread_error;
+    if(fread(Actual_KNN_with_Filter,sizeof(int),filters,file) != (size_t)filters) goto fread_error;
+
+    /* Pao kai blepo kathe filtro posa stixiea query exei dioti tha kano loop osa einai ta stixia tou prokeimenoy na ginei sosta to malloc
+    dioti ta Query pou exoun idio filtro exoun kai idio arithmo ACTUAL geitonon*/
+    for(int i = 0; i < filters; i++){
+        for(int j = 0; j < Querys_with_Filter[i]; j++){
+            
+            if(fread(&index,sizeof(int),1,file) != 1) goto fread_error; /* Read the Query_index */
+            K = Actual_KNN_with_Filter[i];
+
+            array[index].K = K;
+            array[index].K_NBH_array = (int *)malloc(sizeof(int) * K);
+            if(array[index].K_NBH_array == NULL) goto memmory_error;
+
+            if(fread(array[index].K_NBH_array,sizeof(int),K,file) != (size_t)K) goto fread_error; /* Read the Actual K closest neighbor (their INDEX) */
+        }
+    }
+
+    GT->array = array;
+    GT->Size = tottal_querys;
+
+    free(Querys_with_Filter);
+    free(Actual_KNN_with_Filter);
 
     fclose(file);
     return 0;
 
+memmory_error:
+    fclose(file);
+    perror("Error in Init_Ground_Truth (new,malloc)");
+    return 1;
+
 fread_error:
+    fclose(file);
     perror("Error in Init_Ground_Truth (fopen)");
     return 1;
 }
