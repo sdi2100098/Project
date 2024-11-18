@@ -5,7 +5,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 
     /* Initialize L <- 0 and V <- 0 */
     std::set<std::pair<double, int>> L_kal = {{}};
-    std::set<std::pair<double, int>> Temp = {{}};
+    std::set<std::pair<double, int>> Temp = {{}},MedoidSet = {{}};
     std::set<int> V = {};
     std::set<int> Difference_L_V = {};
 
@@ -21,18 +21,21 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 
 
     for(int s = 0; s < G->Filters_Size; s++){ /* For every starting point in Medoids (only filters)*/
+        distance = EuclideanDistance(G->index_array[s].vector,vector,G->dimension);
         if(Q == NULL && s == G->index_array[xq].filter){/* Not Graound Truth and F_s ∩ F_x */ 
-            L_kal.insert({0,S[s]});/* L <- L U {s} */
+            L_kal.insert({distance,S[s]});/* L <- L U {s} */
         }
         else if(Q != NULL){/* Graound Truth */
             if(Q->index_array[xq].filter == -1){ /* Has no filter F_s ∩ F_x */
-                L_kal.insert({0,S[s]});/* L <- L U {s} */
+                L_kal.insert({distance,S[s]});/* L <- L U {s} */
             }
             else if(s == Q->index_array[xq].filter){ /* Has filter F_s ∩ F_x */
-                L_kal.insert({0,S[s]});/* L <- L U {s} */
+                L_kal.insert({distance,S[s]});/* L <- L U {s} */
             }
         }
     }
+    for(auto &element :L_kal)
+        MedoidSet.insert({element.first,element.second}); // To store the Medoid starting nodes so we don't remove them later
 
     Set_Difference(&L_kal,&V,&Difference_L_V); /* Update diff */
 
@@ -59,7 +62,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             }
             /* NOW WE MUST DO THE SAME IN CASE WE ARE IN GROUND TRUTH */
             else if(Q){
-                if(G->index_array[*it].filter == Q->index_array[xq].filter && V.find(*it) == V.end()){ /* Fp' ∩ Fq != 0 ,p' not in V */
+                if((G->index_array[*it].filter == Q->index_array[xq].filter || Q->index_array[xq].filter == -1) && V.find(*it) == V.end()){ /* Fp' ∩ Fq != 0 ,p' not in V */
                     distance = EuclideanDistance(G->index_array[*it].vector,vector,G->dimension);
                     Temp.insert({distance,*it});
                 }
@@ -73,6 +76,8 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
         if ((int)L_kal.size() > L){ /* |L kaligrafiko| > L */
 
             Temp.clear();
+            for(auto &element : MedoidSet)
+                Temp.insert(element);
             /* L kaligrafiko retain closest L points to Xq */
             for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; i++, it++){
                 Temp.insert({it->first, it->second});

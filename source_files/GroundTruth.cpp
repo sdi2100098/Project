@@ -22,13 +22,9 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
 
     for (int i = 0; i < Q.number_of_indexes; i++)
     {
-        if(Q.index_array[i].filter == -1)
-            continue;
-
         sum = 0;
         Result = Filtered_Greedy_Search(G, i, k, L, S,&Q); // Use for each vector of the graph the greedy search function
-        if(!Result->L.size())
-            continue;
+
 
         Temp_Set.clear();
         for (std::set<std::pair<double, int>>::iterator it = Result->L.begin(); it != Result->L.end(); it++)
