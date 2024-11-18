@@ -6,36 +6,45 @@
 
 #define NO_FILTER -1
 
-typedef struct node{ /* node of each graph */
+typedef struct node
+{ /* node of each graph */
     int filter;
     float *vector;
     std::set<int> edges; // use set to have unique edges for every vector
-}node;
+} node;
 
-typedef struct graph{
-    node *index_array;   /* WTF HASH MAP */
-    int R;               /* out-degree number */
-    int number_of_indexes; /* rows */
-    int dimension;       /* columns */
-    std::vector<int> *Filters; /*An array to hold vectors base on their filters */ 
+typedef struct graph
+{
+    node *index_array;         /* WTF HASH MAP */
+    int R;                     /* out-degree number */
+    int number_of_indexes;     /* rows */
+    int dimension;             /* columns */
+    std::vector<int> *Filters; /*An array to hold vectors base on their filters */
     int Filters_Size;
-    //double **Distances;  /* Array to hold Distances*/
-}Graph;
+    // double **Distances;  /* Array to hold Distances*/
+} Graph;
 
-typedef struct query_node{
+typedef struct query_node
+{
     int filter;
     float *vector;
-}query_node;
+} query_node;
 
-typedef struct query{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */ // not true !
+typedef struct query
+{ /* DELULU IS NOT THE SOLULU ! STRUCTES > CLASSES */ // not true !
     query_node *index_array;
-    int number_of_indexes; /* rows */
-    int dimension;         /* columns */
+    int number_of_indexes;     /* rows */
+    int dimension;             /* columns */
     std::vector<int> *Filters; /*An array to hold vectors base on their filters */
     int Filters_Size;
     int NO_FILTERS_POTITION;
-    //double **Distances;
-}Query;
+    // double **Distances;
+} Query;
 
+typedef struct result_GreedySearch
+{
+    std::set<int> V;
+    std::set<std::pair<double, int>> L;
+} result_greedy;
 
 #endif

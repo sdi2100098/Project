@@ -13,7 +13,8 @@ void Delete_Graph(Graph *);
 void Delete_Query(Query *);
 
 double EuclideanDistance(const float *, const float *, const int);
-int Argument_Min_Distance(Graph *, std::set<int> *, int);
+int Argument_Min_Distance(Graph *, std::set<int> *, float *);
+void Set_Difference(std::set<std::pair<double, int>> *, std::set<int> *, std::set<int> *);
 std::vector<int> RandomPermutation(Graph *);
 void CreateKNNGraphBruteForce(Graph, int, const char *, const char *);
 
@@ -22,6 +23,9 @@ int *FindMedoid(Graph *, float);
 
 /*Robust Function*/
 void Filtered_Robust_Prune(int, std::set<int> *, float, Graph *);
+
+/*Greedy Search Function*/
+result_greedy *Greedy_Search(Graph *, int, int, int, int *, Query *);
 
 int Filtered_Vamana(const char *, Graph *, int, int, double);
 
