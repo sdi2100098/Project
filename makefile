@@ -2,6 +2,7 @@
 CXX = g++
 
 CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+#CXXFLAGS = -pg -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 
 # Output filename after compilation 
 TARGET = build

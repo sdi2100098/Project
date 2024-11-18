@@ -27,3 +27,15 @@ void Delete_Query(Query *Q){
     free(Q->index_array);
     delete [] Q->Filters;
 }
+
+void Delete_Ground_Truth(Ground_Truth *GT){
+
+    //printf("Dealocate memmory for Ground Truth!\n");
+    
+    for(int i = 0; i < GT->Size; i++){
+        free(GT->array[i].K_NBH_array);
+    }
+
+    free(GT->array);
+
+}

@@ -40,37 +40,72 @@ int main()
     Query Q;
     Ground_Truth GT;
 
-    if (Filtered_Vamana(base_path, &G, L, R, a) == 1)
-        return 1;
+
+
+    // if (Filtered_Vamana(base_path, &G, L, R, a) == 1)
+    //     return 1;
 
     // printf("filters %d\n",G.Filters_Size);
 
-    if (Init_Query_Data(&Q, query_path, G.Filters_Size) == 1)
+    if(Init_Graph_Data(&G,base_path) == 1)
         return 1;
 
-    int sum = 0;
-    for (int i = 0; i < Q.Filters_Size; i++)
-    {
-        sum += Q.Filters[i].size();
-        if (Q.Filters[i].size() != 0)
-            printf("%d = %d\n", i, (int)Q.Filters[i].size());
-    }
-    printf("\nSum = %d\n", sum);
+    if(Init_Query_Data(&Q, query_path, G.Filters_Size) == 1)
+        return 1;
 
-    // CreateKNNGraphBruteForce(G,100,"Datasets/Small_Set/dummy-groundtruth.txt","Datasets/Small_Set/dummy-groundtruth.bin");
-    int *Vamana_Map;
-    int Vamana_Map_Size = G.Filters_Size;
-    Vamana_Map = FindMedoid(&G, 0.9);
-    for (int i = 0; i < Vamana_Map_Size; i++)
-    {
-        std::cout << "Key : " << i << " Value : " << Vamana_Map[i] << std::endl;
-    }
+    if(Init_Ground_Truth_Data(&GT,binary_output_path) == 1)
+        return 1;
+
+
+    // int x;
+    // for(int i = 0; i < Q.Filters_Size; i++){
+    //     printf("\n\nFilter %d\n",i);
+    //     for(int j = 0; j < (int)Q.Filters[i].size(); j++){
+    //         x = Q.Filters[i][j];
+    //         printf("Query %d| ",x);
+    //         for(int k = 0; k < GT.array[x].K; k++){
+    //             printf("%d ",GT.array[x].K_NBH_array[k]);
+    //         }
+    //         printf("\n");
+    //     }
+    // }
+
+    // for(int i = 0; i < GT.Size; i++){
+    //     printf("Query %d|",i);
+    //     for(int j = 0; j < GT.array[i].K; j++){
+    //         printf("%d ",GT.array[i].K_NBH_array[j]);
+    //     }
+    //     printf("\n");
+    // }
+    // printf("\n");
+
+    // for(int i = 0; i < Q.number_of_indexes; i++)
+    //     printf("%d ",Q.index_array[i].filter);
+    // printf("\n");
+
+    // int sum = 0;
+    // for (int i = 0; i < Q.Filters_Size; i++)
+    // {
+    //     sum += Q.Filters[i].size();
+    //     if (Q.Filters[i].size() != 0)
+    //         printf("%d = %d\n", i, (int)Q.Filters[i].size());
+    // }
+    // printf("\nSum = %d\n", sum);
+
+    // int *Vamana_Map;
+    // int Vamana_Map_Size = G.Filters_Size;
+    // Vamana_Map = FindMedoid(&G, 0.9);
+    // for (int i = 0; i < Vamana_Map_Size; i++)
+    // {
+    //     std::cout << "Key : " << i << " Value : " << Vamana_Map[i] << std::endl;
+    // }
+
+
 
 
     //Done
     //CreateKNNGraphBruteForce(&G,&Q,100,output_path,binary_output_path);
 
-    Init_Ground_Truth_Data(&GT,binary_output_path);
 
 
     //printf("%d\n",Q.usefull_number_of_indexes);
@@ -84,6 +119,7 @@ int main()
     
     Delete_Query(&Q);
     Delete_Graph(&G);
+    Delete_Ground_Truth(&GT);
     //free(Vamana_Map);
 
     return 0;
