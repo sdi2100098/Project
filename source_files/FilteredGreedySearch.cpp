@@ -25,13 +25,9 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
         if(Q == NULL && s == G->index_array[xq].filter){/* Not Graound Truth and F_s ∩ F_x */ 
             L_kal.insert({distance,S[s]});/* L <- L U {s} */
         }
-        else if(Q != NULL){/* Graound Truth */
-            if(Q->index_array[xq].filter == -1){ /* Has no filter F_s ∩ F_x */
-                L_kal.insert({distance,S[s]});/* L <- L U {s} */
-            }
-            else if(s == Q->index_array[xq].filter){ /* Has filter F_s ∩ F_x */
-                L_kal.insert({distance,S[s]});/* L <- L U {s} */
-            }
+        else if(Q != NULL && (s == Q->index_array[xq].filter || Q->index_array[xq].filter == -1)){/* Graound Truth */
+            /* Has filter(or not) F_s ∩ F_x */
+            L_kal.insert({distance,S[s]});/* L <- L U {s} */
         }
     }
     for(auto &element :L_kal)
@@ -76,14 +72,14 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
         if ((int)L_kal.size() > L){ /* |L kaligrafiko| > L */
 
             Temp.clear();
-            for(auto &element : MedoidSet)
-                Temp.insert(element);
             /* L kaligrafiko retain closest L points to Xq */
             for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; i++, it++){
                 Temp.insert({it->first, it->second});
             }
 
             L_kal.clear();
+            for(auto &element : MedoidSet)
+                L_kal.insert(element);
             for (std::set<std::pair<double, int>>::iterator it = Temp.begin(); it != Temp.end(); it++)
             {
                 L_kal.insert({it->first, it->second});

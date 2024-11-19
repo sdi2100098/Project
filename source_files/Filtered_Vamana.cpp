@@ -29,12 +29,12 @@ int* Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     RandomPerm = RandomPermutation(G);
 
 
-    int flag = 1000,kappa = 0;
+    int flag = 999,kappa = 0;
     for (int i = 0; i < G->number_of_indexes; i++,kappa++)
     {
 
         if(kappa == flag){
-            printf("%.0f %%\n",((float)flag/G->number_of_indexes) * 100);
+            printf("%.0f %%\n",((float)(flag+1)/G->number_of_indexes) * 100);
             flag += 1000;
         }
         
