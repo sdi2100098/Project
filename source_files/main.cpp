@@ -33,7 +33,7 @@ int main()
     const char *base_path = "Datasets/Small_Set/dummy-data.bin";
     const char *query_path = "Datasets/Small_Set/dummy-queries.bin";
 
-    //const char *output_path = "Datasets/Small_Set/dummy-groundtruth.txt";
+    //const char *output_path = "Datasets/Small_Set/groundtruth.txt";
     const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
 
     Graph G;
