@@ -1,6 +1,7 @@
 #include "fun.hpp"
 #include <iostream>
 #include <stdlib.h>
+#include <unistd.h>
 
 Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Query *Q){
 
@@ -22,8 +23,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     else{
         vector = Q->index_array[xq].vector;
         filter = Q->index_array[xq].filter;
-        if(filter == -1)
-            filter = rand() % (Q->Filters_Size-1);
     }
 
 
@@ -31,27 +30,28 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
         distance = EuclideanDistance(G->index_array[s].vector,vector,G->dimension);
         if(Q == NULL && s == G->index_array[xq].filter){/* Not Graound Truth and F_s ∩ F_x */ 
             L_kal.insert({distance,S[s]});/* L <- L U {s} */
+            break;
         }
         else if(Q != NULL && (s == Q->index_array[xq].filter || Q->index_array[xq].filter == -1)){/* Graound Truth */
             /* Has filter(or not) F_s ∩ F_x */
             L_kal.insert({distance,S[s]});/* L <- L U {s} */
+            if(filter!=-1)
+                break;
         }
     }
-    for(auto &element :L_kal)
+    for(auto &element :L_kal){
         MedoidSet.insert({element.first,element.second}); // To store the Medoid starting nodes so we don't remove them later
+    }
+
 
     Set_Difference(&L_kal,&V,&Difference_L_V); /* Update diff */
 
     /* while L\V != 0 */
     while (Difference_L_V.size() != 0)
     {
-        i = 0;
 
         /* p* <- atg min d(Xp,Xq) for p in L\V */
         p_star = Argument_Min_Distance(G, &Difference_L_V, vector);
-        
-        if(p_star == -1)
-            p_star = S[filter];
 
         /* V <- V U {p*} */
         V.insert(p_star);
@@ -83,19 +83,29 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 
             Temp.clear();
             /* L kaligrafiko retain closest L points to Xq */
-            for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; i++, it++){
+            i = 0 ;
+            for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; it++, i++){
                 Temp.insert({it->first, it->second});
             }
 
             L_kal.clear();
-            for(auto &element : MedoidSet){
-                if(V.find(element.second) == V.end())
-                    L_kal.insert({element.first,element.second});
+
+            
+            i = 0 ;
+            if(filter == -1){
+                for(auto &element : MedoidSet){
+                    if(V.find(element.second) == V.end()){
+                        L_kal.insert({element.first,element.second});
+                        i++;
+                    }
+                }
             }
-            for (std::set<std::pair<double, int>>::iterator it = Temp.begin(); it != Temp.end(); it++)
+
+            for (std::set<std::pair<double, int>>::iterator it = Temp.begin(); it != Temp.end() && i < L; it++ , i++)
             {
                 L_kal.insert({it->first, it->second});
             }
+            
         }
         Difference_L_V.clear();
         Set_Difference(&L_kal, &V, &Difference_L_V);
