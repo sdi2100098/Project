@@ -21,6 +21,7 @@ int* Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
         perror("Error in Init_Graph");
         return NULL;
     }
+    G->R = R;
 
     /*Let s denote the Medoid of P*/
     s = FindMedoid(G, threshold);

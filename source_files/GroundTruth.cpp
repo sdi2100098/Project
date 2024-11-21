@@ -46,10 +46,10 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
         }
         else
             printf("\033[0;31m");
-        std::cout << "Accuracy index" << i << " : " << (double)sum / GT.array[i].K * 100<< "%" << std::endl;
+        //std::cout << "Accuracy index" << i << " : " << (double)sum / (int)GT.array[i].K * 100<< "%" << std::endl;
         delete Result;
     }
-    if (accuracy >= 0.9 * (double)Q.number_of_indexes)
+    if ((double)accuracy/Q.number_of_indexes >= 0.9)
         printf("\033[0;32m");
     else
         printf("\033[0;31m");
