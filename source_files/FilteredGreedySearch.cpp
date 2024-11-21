@@ -1,4 +1,5 @@
 #include "fun.hpp"
+#include <iostream>
 #include <stdlib.h>
 
 Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Query *Q){
@@ -9,15 +10,21 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     std::set<int> V = {};
     std::set<int> Difference_L_V = {};
 
-    int p_star, i;
+    int p_star, i,filter;
     double distance;
     float *vector;
 
     /* Ground Truth */
-    if (Q == NULL)
+    if (Q == NULL){
         vector = G->index_array[xq].vector;
-    else
+        filter = G->index_array[xq].filter;
+    }
+    else{
         vector = Q->index_array[xq].vector;
+        filter = Q->index_array[xq].filter;
+        if(filter == -1)
+            filter = rand() % (Q->Filters_Size-1);
+    }
 
 
     for(int s = 0; s < G->Filters_Size; s++){ /* For every starting point in Medoids (only filters)*/
@@ -42,6 +49,9 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 
         /* p* <- atg min d(Xp,Xq) for p in L\V */
         p_star = Argument_Min_Distance(G, &Difference_L_V, vector);
+        
+        if(p_star == -1)
+            p_star = S[filter];
 
         /* V <- V U {p*} */
         V.insert(p_star);
@@ -78,8 +88,10 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             }
 
             L_kal.clear();
-            for(auto &element : MedoidSet)
-                L_kal.insert(element);
+            for(auto &element : MedoidSet){
+                if(V.find(element.second) == V.end())
+                    L_kal.insert({element.first,element.second});
+            }
             for (std::set<std::pair<double, int>>::iterator it = Temp.begin(); it != Temp.end(); it++)
             {
                 L_kal.insert({it->first, it->second});
