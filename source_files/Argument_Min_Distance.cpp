@@ -3,7 +3,7 @@
 
 int Argument_Min_Distance(Graph *G, std::set<int> *Argument_Set, float *Arg_1)
 {
-    int min_index = 0;
+    int min_index = -1;
     double min_distance, temp_distance;
     min_distance = std::numeric_limits<double>::max();
     // Finding from the set the node with the smallest distance and returning it's location on the graph
