@@ -103,7 +103,7 @@ int Find_Usefull_NumberofIndexes(FILE *file, int *number_of_indexes, int number_
         if(fread(&dimension_values,sizeof(Dimension_values),1,file) != 1) goto fread_error;
         if(fread(vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error; //skip the vector
 
-        if(dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f /*|| dimension_values.d2 > (float)number_of_filters*/){ //in case exist filter with value more than 128
+        if(dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f || dimension_values.d2 > (float)number_of_filters){ //in case exist filter with value more than 128
             continue;
         }
 
