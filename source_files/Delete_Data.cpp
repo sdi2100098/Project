@@ -4,11 +4,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void Delete_Graph(Graph *G){
+void Delete_Graph(Graph *G)
+{
 
-    //printf("Dealocate memmory for Graph!\n");
+    // printf("Dealocate memmory for Graph!\n");
 
-    for(int i = 0; i < G->number_of_indexes; i++){
+    for (int i = 0; i < G->number_of_indexes; i++)
+    {
         free(G->index_array[i].vector);
     }
 
@@ -16,26 +18,29 @@ void Delete_Graph(Graph *G){
     delete[] G->Filters;
 }
 
-void Delete_Query(Query *Q){
+void Delete_Query(Query *Q)
+{
 
-    //printf("Dealocate memmory for Query!\n");
+    // printf("Dealocate memmory for Query!\n");
 
-    for(int i = 0; i < Q->number_of_indexes; i++){
+    for (int i = 0; i < Q->number_of_indexes; i++)
+    {
         free(Q->index_array[i].vector);
     }
 
     free(Q->index_array);
-    delete [] Q->Filters;
+    delete[] Q->Filters;
 }
 
-void Delete_Ground_Truth(Ground_Truth *GT){
+void Delete_Ground_Truth(Ground_Truth *GT)
+{
 
-    //printf("Dealocate memmory for Ground Truth!\n");
-    
-    for(int i = 0; i < GT->Size; i++){
+    // printf("Dealocate memmory for Ground Truth!\n");
+
+    for (int i = 0; i < GT->Size; i++)
+    {
         free(GT->array[i].K_NBH_array);
     }
 
     free(GT->array);
-
 }

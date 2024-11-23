@@ -33,21 +33,18 @@ int main()
     const char *base_path = "Datasets/Small_Set/dummy-data.bin";
     const char *query_path = "Datasets/Small_Set/dummy-queries.bin";
 
-    //const char *output_path = "Datasets/Small_Set/groundtruth.txt";
+    // const char *output_path = "Datasets/Small_Set/dummy-groundtruth.txt";
     const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
 
     Graph G;
     int *Map;
 
-
-
     Map = Filtered_Vamana(base_path, &G, L, R, a);
-    if(!Map)
+    if (!Map)
         return 1;
-    if(GroundTruth(query_path,binary_output_path,&G,k,L,Map)==1)
+    if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
         return 1;
 
-    
     Delete_Graph(&G);
     free(Map);
 
