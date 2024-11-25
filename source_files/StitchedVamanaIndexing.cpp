@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-int* StichedVamanaIndexing(const char *file_path,const char *filter_file_path, Graph *G, int L_small, int R_small,int R_stitched, double a) {
+int* StichedVamanaIndexing(const char *file_path, Graph *G, int L_small, int R_small,int R_stitched, double a) {
     int *s = NULL;
     Result_greedy *result_greedy = NULL;
     /*Initialize G to an Empty Graph*/
