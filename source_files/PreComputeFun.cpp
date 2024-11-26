@@ -127,7 +127,6 @@ int CreateKNNGraphBruteForce(Graph *G, Query *Q, int K, const char *binary_filen
 
 int Graph_Graph_Dinstance_Precompute(Graph *G)
 {
-
     const char *binary_path = "Datasets/Small_Set/Graph_Graph_Precompute.bin";
 
     FILE *binary_file = fopen(binary_path, "wb");
@@ -143,7 +142,7 @@ int Graph_Graph_Dinstance_Precompute(Graph *G)
     distances = (float *)malloc(sizeof(float) * G->number_of_indexes);
     if (distances == NULL)
     {
-        perror("Error in Graph_Graph_Dinstance_Precompute (new,malloc)");
+        perror("Error in Graph_Graph_Dinstance_Precompute (malloc)");
         fclose(binary_file);
         return 1;
     }
@@ -155,16 +154,19 @@ int Graph_Graph_Dinstance_Precompute(Graph *G)
 
     for (int i = 0; i < G->number_of_indexes; i++)
     {
-        for (int j = 0; j < G->number_of_indexes; j++)
+        for (int j = 0; j <= i; j++) // Only compute for j <= i (lower triangular)
         {
             distance = EuclideanDistance(G->index_array[i].vector, G->index_array[j].vector, G->dimension);
-            distances[j] = distance;
+            distances[j] = distance; // Store distance
         }
-        if (fwrite(distances, sizeof(float), G->number_of_indexes, binary_file) != (size_t)G->number_of_indexes)
+
+        if (fwrite(distances, sizeof(float), i + 1, binary_file) != (size_t)(i + 1))
             goto fwrite_error;
     }
 
+    // Free memory and close files
     free(distances);
+    fclose(binary_file);
     return 0;
 
 fwrite_error:

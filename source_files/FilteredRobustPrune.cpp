@@ -2,7 +2,7 @@
 
 void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 {
-    int p_star;
+    int p_star, first_calc_first_index, first_calc_second_index, second_calc_first_index, second_calc_second_index;
 
     std::set<int> Temp_V = {};
 
@@ -37,7 +37,12 @@ void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
             if (G->index_array[p].filter == G->index_array[*it].filter && G->index_array[p].filter != G->index_array[p_star].filter)
                 continue;
 
-            if ((a * G->memo.Distances[p_star][*it]) <= G->memo.Distances[p][*it])
+            first_calc_first_index = (p_star >= (*it)) ? p_star : (*it);
+            first_calc_second_index = (first_calc_first_index == p_star) ? (*it) : p_star;
+            second_calc_first_index = (p >= (*it)) ? p : (*it);
+            second_calc_second_index = (second_calc_first_index == p) ? (*it) : p;
+
+            if ((a * G->memo.Distances[first_calc_first_index][first_calc_second_index]) <= G->memo.Distances[second_calc_first_index][second_calc_second_index])
             {
                 V->erase(*it);
             }
