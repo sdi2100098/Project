@@ -9,17 +9,29 @@ int Init_Graph_Data(Graph *, const char *);
 int Init_Query_Data(Query *, const char *, int);
 int Init_Ground_Truth_Data(Ground_Truth *, const char *);
 
+/* Read The .bin Data for the Above Fucntions */
+/* return 0:succes,1:fail */
+int Init_Precompute_Dinstance(Graph *,Query *);
+
+
 /* For free memmory for the structs */
 void Delete_Graph(Graph *);
 void Delete_Query(Query *);
 void Delete_Ground_Truth(Ground_Truth *);
 
 double EuclideanDistance(const float *, const float *, const int);
-int Argument_Min_Distance(Graph *, std::set<int> *, float *);
+int Argument_Min_Distance(Graph *, Query *, std::set<int> *, int);
 void Set_Difference(std::set<std::pair<double, int>> *, std::set<int> *, std::set<int> *);
 std::vector<int> RandomPermutation(Graph *);
-int CreateKNNGraphBruteForce(Graph *, Query *, int, const char *, const char *);
 int GroundTruth(const char *, const char *, Graph *, int, int, int *);
+
+/* For PreComputeFun.cpp */
+int CreateKNNGraphBruteForce(Graph *, Query *, int, const char *, const char *);
+int Graph_Graph_Dinstance_Precompute(Graph *);
+int Graph_Query_Dinstance_Precompute(Graph *, Query *);
+
+
+
 
 /*Medoid Function*/
 int *FindMedoid(Graph *, int);

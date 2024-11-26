@@ -3,8 +3,8 @@
 #include <limits>
 #include <iostream>
 
-int *FindMedoid(Graph *G, int t)
-{
+int *FindMedoid(Graph *G, int t){
+    
     /*Initiaalize M be an empty map*/
     int RandomNum, RandomIndex;
     int *M = (int *)malloc(sizeof(int) * G->Filters_Size);

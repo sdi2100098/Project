@@ -6,16 +6,19 @@
 
 void Delete_Graph(Graph *G)
 {
-
     // printf("Dealocate memmory for Graph!\n");
 
     for (int i = 0; i < G->number_of_indexes; i++)
-    {
         free(G->index_array[i].vector);
-    }
 
     delete[] G->index_array;
     delete[] G->Filters;
+
+    for(int i = 0; i < G->memo.rows; i++)
+        free(G->memo.Distances[i]);
+    
+    free(G->memo.Distances);
+
 }
 
 void Delete_Query(Query *Q)
@@ -24,12 +27,16 @@ void Delete_Query(Query *Q)
     // printf("Dealocate memmory for Query!\n");
 
     for (int i = 0; i < Q->number_of_indexes; i++)
-    {
         free(Q->index_array[i].vector);
-    }
 
     free(Q->index_array);
     delete[] Q->Filters;
+
+    for(int i = 0; i < Q->memo.rows; i++)
+        free(Q->memo.Distances[i]);
+    
+    free(Q->memo.Distances);
+
 }
 
 void Delete_Ground_Truth(Ground_Truth *GT)

@@ -12,7 +12,7 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     std::set<int> TempSet = {};
     Result_greedy *result_greedy = NULL;
 
-    // srand(time(0));
+    
 
     /*Initialize G to an Empty Graph*/
     result = Init_Graph_Data(G, file_path);

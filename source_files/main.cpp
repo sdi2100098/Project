@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+
 #include <iterator>
 
 using json = nlohmann::json;
@@ -37,7 +38,12 @@ int main()
     const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
 
     Graph G;
+    Query Q;
     int *Map;
+
+    // if(Init_Graph_Data(&G,base_path) == 1) return 1;
+    // if(Init_Query_Data(&Q,query_path,G.Filters_Size) == 1) return 1;
+    
 
     Map = Filtered_Vamana(base_path, &G, L, R, a);
     if (!Map)
