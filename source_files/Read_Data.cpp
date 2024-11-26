@@ -5,54 +5,66 @@
 #include <stdlib.h>
 #include <string.h>
 
-int Init_Graph_Data(Graph *G,const char *file_path){
+int Init_Graph_Data(Graph *G, const char *file_path, bool Precompute_Done)
+{
 
-    //printf("Try to initialize the Graph data...\n");
+    // printf("Try to initialize the Graph data...\n");
 
-    FILE *file = fopen(file_path,"rb");
-    if(file == NULL){
+    FILE *file = fopen(file_path, "rb");
+    if (file == NULL)
+    {
         perror("Error in Init_Graph_Data (fopen)");
         return 1;
     }
 
-    int dimension = 100, number_of_indexes = 0,filter=0;
-    float garbage = 0.0f,filter_float = 0.0f;
+    int dimension = 100, number_of_indexes = 0, filter = 0;
+    float garbage = 0.0f, filter_float = 0.0f;
     node *index_array = NULL;
-    std::set<int> Temp_Filters={};
+    std::set<int> Temp_Filters = {};
     std::vector<int> *Filters = NULL;
 
-    if(fread(&number_of_indexes,sizeof(int),1,file) != 1) goto fread_error;
+    if (fread(&number_of_indexes, sizeof(int), 1, file) != 1)
+        goto fread_error;
 
     /* Alocate the nececery memmory */
     index_array = new node[number_of_indexes]();
-    if(index_array == NULL) goto memmory_error;
+    if (index_array == NULL)
+        goto memmory_error;
 
-    for(int i = 0; i < number_of_indexes; i++){
-        index_array[i].vector = (float*)malloc(dimension * sizeof(float));
-        if(index_array[i].vector == NULL) goto memmory_error;
+    for (int i = 0; i < number_of_indexes; i++)
+    {
+        index_array[i].vector = (float *)malloc(dimension * sizeof(float));
+        if (index_array[i].vector == NULL)
+            goto memmory_error;
     }
-
 
     /* Read the Data */
-    for(int i = 0; i < number_of_indexes; i++){
-        if(fread(&filter_float,sizeof(float),1,file) != 1) goto fread_error;
-        
+    for (int i = 0; i < number_of_indexes; i++)
+    {
+        if (fread(&filter_float, sizeof(float), 1, file) != 1)
+            goto fread_error;
+
         filter = (int)filter_float;
         index_array[i].filter = filter;
-        try{
+        try
+        {
             Temp_Filters.insert(filter);
         }
-        catch(const std::bad_alloc &error){
+        catch (const std::bad_alloc &error)
+        {
             goto memmory_error;
         }
-        
-        if(fread(&garbage,sizeof(float),1,file) != 1) goto fread_error;
-        if(fread(index_array[i].vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error;
+
+        if (fread(&garbage, sizeof(float), 1, file) != 1)
+            goto fread_error;
+        if (fread(index_array[i].vector, sizeof(float), dimension, file) != (size_t)dimension)
+            goto fread_error;
     }
-       
+
     Filters = new std::vector<int>[Temp_Filters.size()]();
 
-    for(int i = 0; i < number_of_indexes; i++){
+    for (int i = 0; i < number_of_indexes; i++)
+    {
         Filters[index_array[i].filter].push_back(i);
     }
 
@@ -63,13 +75,14 @@ int Init_Graph_Data(Graph *G,const char *file_path){
     G->Filters = Filters;
 
     /* Init memo DATA */
-    if(Init_Precompute_Dinstance(G,NULL) == 1){
+    if (Precompute_Done && Init_Precompute_Dinstance(G, NULL) == 1)
+    {
         fclose(file);
         return 1;
     }
 
     fclose(file);
-    //printf("Initialize the Graph data succefuly!\n");
+    // printf("Initialize the Graph data succefuly!\n");
     return 0;
 
 /* In case something goes wrong in (fread) */
@@ -85,42 +98,46 @@ memmory_error:
     return 1;
 }
 
-typedef struct Dimension_values{
+typedef struct Dimension_values
+{
     float d1;
     float d2;
     float d3;
     float d4;
-}Dimension_values;
+} Dimension_values;
 
 /* Go and find the Number of querys that we want to (only this with type 0 or 1) */
-int Find_Usefull_NumberofIndexes(FILE *file, int *number_of_indexes, int number_of_filters, int dimension){
+int Find_Usefull_NumberofIndexes(FILE *file, int *number_of_indexes, int number_of_filters, int dimension)
+{
 
-    int temp_indexes  = 0;
+    int temp_indexes = 0;
     float vector[dimension];
 
     Dimension_values dimension_values{
         .d1 = -1.0f,
         .d2 = -1.0f,
         .d3 = -1.0f,
-        .d4 = -1.0f
-    };   
+        .d4 = -1.0f};
 
-    for(int i = 0; i < *number_of_indexes; i++){
+    for (int i = 0; i < *number_of_indexes; i++)
+    {
 
-        if(fread(&dimension_values,sizeof(Dimension_values),1,file) != 1) goto fread_error;
-        if(fread(vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error; //skip the vector
+        if (fread(&dimension_values, sizeof(Dimension_values), 1, file) != 1)
+            goto fread_error;
+        if (fread(vector, sizeof(float), dimension, file) != (size_t)dimension)
+            goto fread_error; // skip the vector
 
-        if(dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f || dimension_values.d2 > (float)number_of_filters){ //in case exist filter with value more than 128
+        if (dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f || dimension_values.d2 > (float)number_of_filters)
+        { // in case exist filter with value more than 128
             continue;
         }
 
         temp_indexes++;
-
     }
 
     *number_of_indexes = temp_indexes;
 
-    fseek(file,sizeof(int),SEEK_SET); /* Skip the first value */
+    fseek(file, sizeof(int), SEEK_SET); /* Skip the first value */
     return 0;
 
 fread_error:
@@ -128,17 +145,19 @@ fread_error:
     return 1;
 }
 
-int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
+int Init_Query_Data(Query *Q, const char *file_path, int number_of_filters, bool Precompute_Done)
+{
 
-    //printf("Try to initialize the Query data...\n");
+    // printf("Try to initialize the Query data...\n");
 
-    FILE *file = fopen(file_path,"rb");
-    if(file == NULL){
+    FILE *file = fopen(file_path, "rb");
+    if (file == NULL)
+    {
         perror("Error in Init_Query_Data (fopen)");
         return 1;
     }
 
-    int Filters_Size = number_of_filters+1; //+1 to save nodes with no FILTER in the (number_of_filters) potition,(the last one)
+    int Filters_Size = number_of_filters + 1; //+1 to save nodes with no FILTER in the (number_of_filters) potition,(the last one)
     int dimension = 100, number_of_indexes = 0, No_filter_potition = number_of_filters, entry_potition = 0, usefull_number_of_indexes = 0, all_number_of_indexes;
     float garbage_vector[dimension];
 
@@ -146,55 +165,63 @@ int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
         .d1 = -1.0f,
         .d2 = -1.0f,
         .d3 = -1.0f,
-        .d4 = -1.0f
-    };    
+        .d4 = -1.0f};
 
     std::vector<int> *Filters = NULL;
     query_node *index_array = NULL;
 
     try
     {
-        Filters = new  std::vector<int>[Filters_Size];
+        Filters = new std::vector<int>[Filters_Size];
     }
-    catch(const std::bad_alloc &error)
+    catch (const std::bad_alloc &error)
     {
         goto memmory_error;
     }
-   
-    if(fread(&all_number_of_indexes,sizeof(int),1,file) != 1) goto fread_error;
-    number_of_indexes = all_number_of_indexes;
-    if(Find_Usefull_NumberofIndexes(file,&number_of_indexes,number_of_filters,dimension) == 1) goto fread_error;
 
+    if (fread(&all_number_of_indexes, sizeof(int), 1, file) != 1)
+        goto fread_error;
+    number_of_indexes = all_number_of_indexes;
+    if (Find_Usefull_NumberofIndexes(file, &number_of_indexes, number_of_filters, dimension) == 1)
+        goto fread_error;
 
     index_array = (query_node *)malloc(number_of_indexes * sizeof(query_node));
-    if(index_array == NULL) goto memmory_error;
+    if (index_array == NULL)
+        goto memmory_error;
 
     /* Alocate memmory for the Query struct */
-    for(int i = 0; i < number_of_indexes; i++){
+    for (int i = 0; i < number_of_indexes; i++)
+    {
         index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        if(index_array[i].vector == NULL) goto memmory_error;
+        if (index_array[i].vector == NULL)
+            goto memmory_error;
     }
 
     /* Time to read some data */
-    for(int i = 0; i < all_number_of_indexes; i++,usefull_number_of_indexes++){
-        if(fread(&dimension_values,sizeof(Dimension_values),1,file) != 1) goto fread_error;
-        
+    for (int i = 0; i < all_number_of_indexes; i++, usefull_number_of_indexes++)
+    {
+        if (fread(&dimension_values, sizeof(Dimension_values), 1, file) != 1)
+            goto fread_error;
+
         /* skip the type 2,3 querys (we do not need them) */
-        if(dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f || dimension_values.d2 > (float)number_of_filters){ //in case exist filter with value more than 128
-            if(fread(garbage_vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error; //skip the vector
-            usefull_number_of_indexes--; //keep track only for the INDEX of the usefull Vectors 
+        if (dimension_values.d1 == 2.0f || dimension_values.d1 == 3.0f || dimension_values.d2 > (float)number_of_filters)
+        { // in case exist filter with value more than 128
+            if (fread(garbage_vector, sizeof(float), dimension, file) != (size_t)dimension)
+                goto fread_error;        // skip the vector
+            usefull_number_of_indexes--; // keep track only for the INDEX of the usefull Vectors
             continue;
         }
 
         /* if is type 0 ,I save it in Last potition of (Filters MAP),couse this mean i do not have filters */
         /* if is type 1 ,I save it in the (i-th) potition of (Filters MAP) */
         entry_potition = (dimension_values.d1 == 0.0f) ? No_filter_potition : dimension_values.d2;
-    
+
         Filters[entry_potition].push_back(usefull_number_of_indexes);
 
         index_array[usefull_number_of_indexes].filter = (int)dimension_values.d2;
 
-        if(fread(index_array[usefull_number_of_indexes].vector,sizeof(float),dimension,file) != (size_t)dimension) goto fread_error;
+        if (fread(index_array[usefull_number_of_indexes].vector, sizeof(float), dimension, file) != (size_t)dimension)
+            goto fread_error;
     }
 
     Q->index_array = index_array;
@@ -204,13 +231,14 @@ int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
     Q->Filters_Size = Filters_Size;
     Q->NO_FILTERS_POTITION = No_filter_potition;
 
-    if(Init_Precompute_Dinstance(NULL,Q) == 1){
+    if (Precompute_Done && Init_Precompute_Dinstance(NULL, Q) == 1)
+    {
         fclose(file);
         return 1;
     }
 
     fclose(file);
-    //printf("Initialize the Graph data succefuly!\n");
+    // printf("Initialize the Graph data succefuly!\n");
     return 0;
 
 /* In case something goes wrong in (fread) */
@@ -226,10 +254,12 @@ memmory_error:
     return 1;
 }
 
-int Init_Ground_Truth_Data(Ground_Truth *GT,const char *file_path){
+int Init_Ground_Truth_Data(Ground_Truth *GT, const char *file_path)
+{
 
-    FILE *file = fopen(file_path,"rb");
-    if(file == NULL){
+    FILE *file = fopen(file_path, "rb");
+    if (file == NULL)
+    {
         perror("Error in Init_Ground_Truth (fopen)");
         return 1;
     }
@@ -237,36 +267,47 @@ int Init_Ground_Truth_Data(Ground_Truth *GT,const char *file_path){
     int filters, tottal_querys, index, K;
     int *Querys_with_Filter = NULL, *Actual_KNN_with_Filter = NULL;
     Neighbor *array = NULL;
-    
 
-    if(fread(&filters,sizeof(int),1,file) != 1) goto fread_error;
-    if(fread(&tottal_querys,sizeof(int),1,file) != 1) goto fread_error;
+    if (fread(&filters, sizeof(int), 1, file) != 1)
+        goto fread_error;
+    if (fread(&tottal_querys, sizeof(int), 1, file) != 1)
+        goto fread_error;
 
     Querys_with_Filter = (int *)malloc(sizeof(int) * filters);
-    if(Querys_with_Filter == NULL) goto memmory_error;
+    if (Querys_with_Filter == NULL)
+        goto memmory_error;
 
     Actual_KNN_with_Filter = (int *)malloc(sizeof(int) * filters);
-    if(Actual_KNN_with_Filter == NULL) goto memmory_error;
+    if (Actual_KNN_with_Filter == NULL)
+        goto memmory_error;
 
     array = (Neighbor *)malloc(sizeof(Neighbor) * tottal_querys);
-    if(array == NULL) goto memmory_error;
+    if (array == NULL)
+        goto memmory_error;
 
-    if(fread(Querys_with_Filter,sizeof(int),filters,file) != (size_t)filters) goto fread_error;
-    if(fread(Actual_KNN_with_Filter,sizeof(int),filters,file) != (size_t)filters) goto fread_error;
+    if (fread(Querys_with_Filter, sizeof(int), filters, file) != (size_t)filters)
+        goto fread_error;
+    if (fread(Actual_KNN_with_Filter, sizeof(int), filters, file) != (size_t)filters)
+        goto fread_error;
 
     /* Pao kai blepo kathe filtro posa stixiea query exei dioti tha kano loop osa einai ta stixia tou prokeimenoy na ginei sosta to malloc
     dioti ta Query pou exoun idio filtro exoun kai idio arithmo ACTUAL geitonon*/
-    for(int i = 0; i < filters; i++){
-        for(int j = 0; j < Querys_with_Filter[i]; j++){
-            
-            if(fread(&index,sizeof(int),1,file) != 1) goto fread_error; /* Read the Query_index */
+    for (int i = 0; i < filters; i++)
+    {
+        for (int j = 0; j < Querys_with_Filter[i]; j++)
+        {
+
+            if (fread(&index, sizeof(int), 1, file) != 1)
+                goto fread_error; /* Read the Query_index */
             K = Actual_KNN_with_Filter[i];
 
             array[index].K = K;
             array[index].K_NBH_array = (int *)malloc(sizeof(int) * K);
-            if(array[index].K_NBH_array == NULL) goto memmory_error;
+            if (array[index].K_NBH_array == NULL)
+                goto memmory_error;
 
-            if(fread(array[index].K_NBH_array,sizeof(int),K,file) != (size_t)K) goto fread_error; /* Read the Actual K closest neighbor (their INDEX) */
+            if (fread(array[index].K_NBH_array, sizeof(int), K, file) != (size_t)K)
+                goto fread_error; /* Read the Actual K closest neighbor (their INDEX) */
         }
     }
 
@@ -291,53 +332,61 @@ fread_error:
 }
 
 /* For the Precompute */
-int Init_Precompute_Dinstance(Graph *G,Query *Q){
+int Init_Precompute_Dinstance(Graph *G, Query *Q)
+{
 
     char binary_path[100];
 
-    if(G != NULL)
-        strcpy(binary_path,"Datasets/Small_Set/Graph_Graph_Precompute.bin");
+    if (G != NULL)
+        strcpy(binary_path, "Datasets/Small_Set/Graph_Graph_Precompute.bin");
     else
-       strcpy(binary_path,"Datasets/Small_Set/Graph_Query_Precompute.bin");         
+        strcpy(binary_path, "Datasets/Small_Set/Graph_Query_Precompute.bin");
 
-
-    FILE *binary_file = fopen(binary_path,"rb");
-    if(binary_file == NULL){
+    FILE *binary_file = fopen(binary_path, "rb");
+    if (binary_file == NULL)
+    {
         perror("Error in Init_Precompute_Dinstance (fopen)");
         return 1;
     }
 
-    int rows,columns;
+    int rows, columns;
     double **Distances = NULL;
 
-    if(fread(&rows,sizeof(int),1,binary_file) != 1) goto fread_error;
-    if(fread(&columns,sizeof(int),1,binary_file) != 1) goto fread_error;
+    if (fread(&rows, sizeof(int), 1, binary_file) != 1)
+        goto fread_error;
+    if (fread(&columns, sizeof(int), 1, binary_file) != 1)
+        goto fread_error;
 
     Distances = (double **)malloc(rows * sizeof(double *));
-    if(Distances == NULL) goto memmory_error;
+    if (Distances == NULL)
+        goto memmory_error;
 
-    for(int i = 0; i < rows; i++){
+    for (int i = 0; i < rows; i++)
+    {
         Distances[i] = (double *)malloc(columns * sizeof(double));
-        if(Distances[i] == NULL) goto memmory_error;
+        if (Distances[i] == NULL)
+            goto memmory_error;
     }
 
     /* Read DATA */
-    for(int i = 0; i < rows; i++){
-        if(fread(Distances[i],sizeof(double),columns,binary_file) != (size_t)columns) goto fread_error;
+    for (int i = 0; i < rows; i++)
+    {
+        if (fread(Distances[i], sizeof(double), columns, binary_file) != (size_t)columns)
+            goto fread_error;
     }
 
-
-    if(G != NULL){
+    if (G != NULL)
+    {
         G->memo.rows = rows;
         G->memo.columns = columns;
         G->memo.Distances = Distances;
     }
-    else{
+    else
+    {
         Q->memo.rows = rows;
         Q->memo.columns = columns;
-        Q->memo.Distances = Distances;        
+        Q->memo.Distances = Distances;
     }
-
 
     fclose(binary_file);
     return 0;

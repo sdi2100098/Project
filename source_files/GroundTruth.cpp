@@ -1,7 +1,8 @@
 #include "fun.hpp"
 #include <iostream>
 
-int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G, int k, int L, int *S){
+int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G, int k, int L, int *S)
+{
 
     std::cout << std::endl;
     std::set<int> Temp_Set = {};
@@ -9,7 +10,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     Ground_Truth GT;
     Query Q;
 
-    result = Init_Query_Data(&Q, Query_path, G->Filters_Size);
+    result = Init_Query_Data(&Q, Query_path, G->Filters_Size, true);
     if (result == 1)
         return 1;
 

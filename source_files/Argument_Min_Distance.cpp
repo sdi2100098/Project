@@ -1,7 +1,7 @@
 #include "fun.hpp"
 #include <limits>
 
-int Argument_Min_Distance(Graph *G, Query *Q ,std::set<int> *Argument_Set, int x)
+int Argument_Min_Distance(Graph *G, Query *Q, std::set<int> *Argument_Set, int x)
 {
     int min_index = -1;
     double min_distance, temp_distance;

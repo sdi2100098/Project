@@ -22,7 +22,6 @@ void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 
         G->index_array[p].edges.insert(p_star); /* Nout(p) <- Nout(p) U {p*} */
 
-
         if ((int)G->index_array[p].edges.size() == G->R) /* |Nout(p)| = R */
             break;
 
