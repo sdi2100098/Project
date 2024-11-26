@@ -18,9 +18,10 @@ void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
     { /* V != 0 */
 
         /* p* <- arg min[for p'in V compute d(p,p')] */
-        p_star = Argument_Min_Distance(G, V, G->index_array[p].vector);
+        p_star = Argument_Min_Distance(G, NULL, V, p);
 
         G->index_array[p].edges.insert(p_star); /* Nout(p) <- Nout(p) U {p*} */
+
 
         if ((int)G->index_array[p].edges.size() == G->R) /* |Nout(p)| = R */
             break;
@@ -37,7 +38,7 @@ void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
             if (G->index_array[p].filter == G->index_array[*it].filter && G->index_array[p].filter != G->index_array[p_star].filter)
                 continue;
 
-            if ((a * EuclideanDistance(G->index_array[p_star].vector, G->index_array[*it].vector, G->dimension)) <= EuclideanDistance(G->index_array[p].vector, G->index_array[*it].vector, G->dimension))
+            if ((a * G->memo.Distances[p_star][*it]) <= G->memo.Distances[p][*it])
             {
                 V->erase(*it);
             }

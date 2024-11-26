@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int Init_Graph_Data(Graph *G,const char *file_path){
 
@@ -60,6 +61,12 @@ int Init_Graph_Data(Graph *G,const char *file_path){
     G->dimension = dimension;
     G->Filters_Size = (int)Temp_Filters.size();
     G->Filters = Filters;
+
+    /* Init memo DATA */
+    if(Init_Precompute_Dinstance(G,NULL) == 1){
+        fclose(file);
+        return 1;
+    }
 
     fclose(file);
     //printf("Initialize the Graph data succefuly!\n");
@@ -197,6 +204,11 @@ int Init_Query_Data(Query *Q,const char *file_path,int number_of_filters){
     Q->Filters_Size = Filters_Size;
     Q->NO_FILTERS_POTITION = No_filter_potition;
 
+    if(Init_Precompute_Dinstance(NULL,Q) == 1){
+        fclose(file);
+        return 1;
+    }
+
     fclose(file);
     //printf("Initialize the Graph data succefuly!\n");
     return 0;
@@ -213,7 +225,6 @@ memmory_error:
     perror("Error in Init_Query_Data (new,malloc)");
     return 1;
 }
-
 
 int Init_Ground_Truth_Data(Ground_Truth *GT,const char *file_path){
 
@@ -276,5 +287,68 @@ memmory_error:
 fread_error:
     fclose(file);
     perror("Error in Init_Ground_Truth (fopen)");
+    return 1;
+}
+
+/* For the Precompute */
+int Init_Precompute_Dinstance(Graph *G,Query *Q){
+
+    char binary_path[100];
+
+    if(G != NULL)
+        strcpy(binary_path,"Datasets/Small_Set/Graph_Graph_Precompute.bin");
+    else
+       strcpy(binary_path,"Datasets/Small_Set/Graph_Query_Precompute.bin");         
+
+
+    FILE *binary_file = fopen(binary_path,"rb");
+    if(binary_file == NULL){
+        perror("Error in Init_Precompute_Dinstance (fopen)");
+        return 1;
+    }
+
+    int rows,columns;
+    double **Distances = NULL;
+
+    if(fread(&rows,sizeof(int),1,binary_file) != 1) goto fread_error;
+    if(fread(&columns,sizeof(int),1,binary_file) != 1) goto fread_error;
+
+    Distances = (double **)malloc(rows * sizeof(double *));
+    if(Distances == NULL) goto memmory_error;
+
+    for(int i = 0; i < rows; i++){
+        Distances[i] = (double *)malloc(columns * sizeof(double));
+        if(Distances[i] == NULL) goto memmory_error;
+    }
+
+    /* Read DATA */
+    for(int i = 0; i < rows; i++){
+        if(fread(Distances[i],sizeof(double),columns,binary_file) != (size_t)columns) goto fread_error;
+    }
+
+
+    if(G != NULL){
+        G->memo.rows = rows;
+        G->memo.columns = columns;
+        G->memo.Distances = Distances;
+    }
+    else{
+        Q->memo.rows = rows;
+        Q->memo.columns = columns;
+        Q->memo.Distances = Distances;        
+    }
+
+
+    fclose(binary_file);
+    return 0;
+
+fread_error:
+    fclose(binary_file);
+    perror("Error in Init_Precompute_Dinstance (fread)");
+    return 1;
+
+memmory_error:
+    fclose(binary_file);
+    perror("Error in Init_Precompute_Dinstance (new,malloc)");
     return 1;
 }

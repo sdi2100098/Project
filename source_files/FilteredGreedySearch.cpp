@@ -12,25 +12,17 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     std::set<int> V = {};
     std::set<int> Difference_L_V = {};
 
-    int p_star, i, filter;
+    int p_star, i;
     double distance;
-    float *vector;
+    double **Distances = NULL;
 
-    /* Ground Truth */
-    if (Q == NULL)
-    {
-        vector = G->index_array[xq].vector;
-        filter = G->index_array[xq].filter;
-    }
-    else
-    {
-        vector = Q->index_array[xq].vector;
-        filter = Q->index_array[xq].filter;
-    }
+    /*  */
+    Distances = (Q == NULL) ? G->memo.Distances : Q->memo.Distances;
+
 
     for (int s = 0; s < G->Filters_Size; s++)
     { /* For every starting point in Medoids (only filters)*/
-        distance = EuclideanDistance(G->index_array[s].vector, vector, G->dimension);
+        distance = Distances[s][xq];
         if (Q == NULL && s == G->index_array[xq].filter)
         {                                   /* Not Graound Truth and F_s ∩ F_x */
             L_kal.insert({distance, S[s]}); /* L <- L U {s} */
@@ -56,7 +48,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     {
 
         /* p* <- atg min d(Xp,Xq) for p in L\V */
-        p_star = Argument_Min_Distance(G, &Difference_L_V, vector);
+        p_star = Argument_Min_Distance(G, Q, &Difference_L_V, xq);
 
         /* V <- V U {p*} */
         V.insert(p_star);
@@ -69,7 +61,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             { /* Not Ground Truth */
                 if (G->index_array[*it].filter == G->index_array[xq].filter && V.find(*it) == V.end())
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
-                    distance = EuclideanDistance(G->index_array[*it].vector, G->index_array[xq].vector, G->dimension);
+                    distance = Distances[*it][xq];
                     Temp.insert({distance, *it});
                 }
             }
@@ -78,7 +70,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             {
                 if ((G->index_array[*it].filter == Q->index_array[xq].filter || Q->index_array[xq].filter == -1) && V.find(*it) == V.end())
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
-                    distance = EuclideanDistance(G->index_array[*it].vector, Q->index_array[xq].vector, G->dimension);
+                    distance = Distances[*it][xq];
                     Temp.insert({distance, *it});
                 }
             }

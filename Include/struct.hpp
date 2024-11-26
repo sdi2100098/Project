@@ -6,6 +6,12 @@
 
 #define NO_FILTER -1
 
+typedef struct memoize{
+    int rows;
+    int columns;
+    double **Distances;  /* Array to hold Distances*/
+}Memoize;
+
 typedef struct node
 { /* node of each graph */
     int filter;
@@ -19,9 +25,9 @@ typedef struct graph
     int R;                     /* out-degree number */
     int number_of_indexes;     /* rows */
     int dimension;             /* columns */
-    std::vector<int> *Filters; /*An array to hold vectors base on their filters */
+    std::vector<int> *Filters; /*An array to hold vectors base on their filters*/
     int Filters_Size;
-    // double **Distances;  /* Array to hold Distances*/
+    Memoize memo;
 } Graph;
 
 typedef struct query_node
@@ -38,7 +44,7 @@ typedef struct query
     std::vector<int> *Filters; /*An array to hold vectors base on their filters */
     int Filters_Size;
     int NO_FILTERS_POTITION;
-    // double **Distances;
+    Memoize memo;
 } Query;
 
 typedef struct result_GreedySearch
