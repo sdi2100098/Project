@@ -7,21 +7,26 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 {
 
     /* Initialize L <- 0 and V <- 0 */
-    std::set<std::pair<double, int>> L_kal = {{}};
-    std::set<std::pair<double, int>> Temp = {{}}, MedoidSet = {{}};
+    std::set<std::pair<float, int>> L_kal = {{}};
+    std::set<std::pair<float, int>> Temp = {{}}, MedoidSet = {{}};
     std::set<int> V = {};
     std::set<int> Difference_L_V = {};
 
-    int p_star, i;
-    double distance;
-    double **Distances = NULL;
+    int p_star, i, first_index, second_index;
+    float distance;
 
     /*  */
-    Distances = (Q == NULL) ? G->memo.Distances : Q->memo.Distances;
 
     for (int s = 0; s < G->Filters_Size; s++)
     { /* For every starting point in Medoids (only filters)*/
-        distance = Distances[s][xq];
+        first_index = (s >= xq) ? s : xq;
+        second_index = (first_index == s) ? xq : s;
+
+        first_index = s;
+        second_index = xq;
+
+        distance = (Q == NULL) ? G->memo.Distances[first_index][second_index] : Q->memo.Distances[s][xq];
+
         if (Q == NULL && s == G->index_array[xq].filter)
         {                                   /* Not Graound Truth and F_s ∩ F_x */
             L_kal.insert({distance, S[s]}); /* L <- L U {s} */
@@ -35,7 +40,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
                 break;
         }
     }
-    for (std::set<std::pair<double, int>>::iterator element = L_kal.begin(); element != L_kal.end(); element++)
+    for (std::set<std::pair<float, int>>::iterator element = L_kal.begin(); element != L_kal.end(); element++)
     {
         MedoidSet.insert({element->first, element->second}); // To store the Medoid starting nodes so we don't remove them later
     }
@@ -60,7 +65,10 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             { /* Not Ground Truth */
                 if (G->index_array[*it].filter == G->index_array[xq].filter && V.find(*it) == V.end())
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
-                    distance = Distances[*it][xq];
+                    first_index = ((*it) >= xq) ? (*it) : xq;
+                    second_index = (first_index == (*it)) ? xq : (*it);
+
+                    distance = G->memo.Distances[first_index][second_index];
                     Temp.insert({distance, *it});
                 }
             }
@@ -69,13 +77,13 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             {
                 if ((G->index_array[*it].filter == Q->index_array[xq].filter || Q->index_array[xq].filter == -1) && V.find(*it) == V.end())
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
-                    distance = Distances[*it][xq];
+                    distance = Q->memo.Distances[*it][xq];
                     Temp.insert({distance, *it});
                 }
             }
         }
 
-        for (std::set<std::pair<double, int>>::iterator it = Temp.begin(); it != Temp.end(); it++)
+        for (std::set<std::pair<float, int>>::iterator it = Temp.begin(); it != Temp.end(); it++)
         { /* L <- L U Nout'(p*) */
             L_kal.insert({it->first, it->second});
         }
@@ -86,7 +94,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             Temp.clear();
             /* L kaligrafiko retain closest L points to Xq */
             i = 0;
-            for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; it++)
+            for (std::set<std::pair<float, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < L; it++)
             {
                 if (MedoidSet.find({it->first, it->second}) == MedoidSet.end())
                 {
@@ -98,7 +106,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             L_kal.clear();
 
             i = 0;
-            for (std::set<std::pair<double, int>>::iterator element = MedoidSet.begin(); element != MedoidSet.end(); element++)
+            for (std::set<std::pair<float, int>>::iterator element = MedoidSet.begin(); element != MedoidSet.end(); element++)
             {
                 if (V.find(element->second) == V.end())
                 {
@@ -107,7 +115,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
                 }
             }
 
-            for (std::set<std::pair<double, int>>::iterator it = Temp.begin(); it != Temp.end() && i < L; it++, i++)
+            for (std::set<std::pair<float, int>>::iterator it = Temp.begin(); it != Temp.end() && i < L; it++, i++)
             {
                 L_kal.insert({it->first, it->second});
             }
@@ -120,7 +128,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 
     i = 0;
     /* closect k points from L kaligrafiko + V */
-    for (std::set<std::pair<double, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < k; i++, it++)
+    for (std::set<std::pair<float, int>>::iterator it = L_kal.begin(); it != L_kal.end() && i < k; i++, it++)
     {
         RG->L.insert({it->first, it->second});
     }

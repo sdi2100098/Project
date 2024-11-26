@@ -26,7 +26,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
         Result = Filtered_Greedy_Search(G, i, k, L, S, &Q); // Use for each vector of the graph the greedy search function
 
         Temp_Set.clear();
-        for (std::set<std::pair<double, int>>::iterator it = Result->L.begin(); it != Result->L.end(); it++)
+        for (std::set<std::pair<float, int>>::iterator it = Result->L.begin(); it != Result->L.end(); it++)
         {
             Temp_Set.insert(it->second);
         }
@@ -56,7 +56,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     std::cout << " ~= " << (int)((accuracy / (double)Q.number_of_indexes) * 100) << "%" << std::endl;
     printf("\033[0m");
 
-    Delete_Query(&Q);
+    Delete_Query(&Q, true);
     Delete_Ground_Truth(&GT);
     return 0;
 }

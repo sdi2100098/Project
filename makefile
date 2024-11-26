@@ -64,6 +64,11 @@ valgrind_main: $(TARGET)
 	@echo "Running the build with Valgrind..."
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
 
+# Run valgrind for precompute executable
+valgrind_precompute: $(TARGET)
+	@echo "Running the precompute build with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./precompute_executable
+
 # Run valgrind for test executable
 valgrind_test: test
 	@echo "Running tests with Valgrind..."
@@ -72,5 +77,5 @@ valgrind_test: test
 # Clean up object files and executables
 clean:
 	rm -rf $(TARGET) $(OBJ_DIR) test_executable precompute_executable
-	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute
+	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute.bin
 	rm -f Datasets/Small_Set/*.txt

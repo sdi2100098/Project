@@ -10,7 +10,7 @@ typedef struct memoize
 {
     int rows;
     int columns;
-    double **Distances; /* Array to hold Distances*/
+    float **Distances; /* Array to hold Distances*/
 } Memoize;
 
 typedef struct node
@@ -51,7 +51,7 @@ typedef struct query
 typedef struct result_GreedySearch
 {
     std::set<int> V;
-    std::set<std::pair<double, int>> L;
+    std::set<std::pair<float, int>> L;
 } Result_greedy;
 
 typedef struct neighbor

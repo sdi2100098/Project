@@ -334,7 +334,6 @@ fread_error:
 /* For the Precompute */
 int Init_Precompute_Dinstance(Graph *G, Query *Q)
 {
-
     char binary_path[100];
 
     if (G != NULL)
@@ -350,41 +349,60 @@ int Init_Precompute_Dinstance(Graph *G, Query *Q)
     }
 
     int rows, columns;
-    double **Distances = NULL;
+    float **Distances = NULL;
 
+    /* Read dimensions from the file */
     if (fread(&rows, sizeof(int), 1, binary_file) != 1)
         goto fread_error;
     if (fread(&columns, sizeof(int), 1, binary_file) != 1)
         goto fread_error;
 
-    Distances = (double **)malloc(rows * sizeof(double *));
+    /* Allocate memory for lower triangular matrix */
+    Distances = (float **)malloc(rows * sizeof(float *));
     if (Distances == NULL)
-        goto memmory_error;
+        goto memory_error;
 
     for (int i = 0; i < rows; i++)
     {
-        Distances[i] = (double *)malloc(columns * sizeof(double));
+        /* Allocate only i + 1 elements for each row (lower triangular part) */
+        if (Q == NULL)
+        {
+            Distances[i] = (float *)malloc((i + 1) * sizeof(float));
+        }
+        else
+        {
+            Distances[i] = (float *)malloc(columns * sizeof(float));
+        }
         if (Distances[i] == NULL)
-            goto memmory_error;
+            goto memory_error;
     }
 
-    /* Read DATA */
+    /* Read data for the lower triangular matrix */
     for (int i = 0; i < rows; i++)
     {
-        if (fread(Distances[i], sizeof(double), columns, binary_file) != (size_t)columns)
-            goto fread_error;
+        if (Q == NULL)
+        {
+            if (fread(Distances[i], sizeof(float), i + 1, binary_file) != (size_t)(i + 1))
+                goto fread_error;
+        }
+        else
+        {
+            if (fread(Distances[i], sizeof(float), columns, binary_file) != (size_t)columns)
+                goto fread_error;
+        }
     }
 
+    /* Assign the distances to the correct structure */
     if (G != NULL)
     {
         G->memo.rows = rows;
-        G->memo.columns = columns;
+        G->memo.columns = rows; // Square matrix
         G->memo.Distances = Distances;
     }
     else
     {
         Q->memo.rows = rows;
-        Q->memo.columns = columns;
+        Q->memo.columns = rows; // Square matrix
         Q->memo.Distances = Distances;
     }
 
@@ -396,8 +414,8 @@ fread_error:
     perror("Error in Init_Precompute_Dinstance (fread)");
     return 1;
 
-memmory_error:
+memory_error:
     fclose(binary_file);
-    perror("Error in Init_Precompute_Dinstance (new,malloc)");
+    perror("Error in Init_Precompute_Dinstance (malloc)");
     return 1;
 }

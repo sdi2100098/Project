@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void Delete_Graph(Graph *G)
+void Delete_Graph(Graph *G, bool Precompute_Done)
 {
     // printf("Dealocate memmory for Graph!\n");
 
@@ -14,13 +14,16 @@ void Delete_Graph(Graph *G)
     delete[] G->index_array;
     delete[] G->Filters;
 
+    if (!Precompute_Done)
+        return;
+
     for (int i = 0; i < G->memo.rows; i++)
         free(G->memo.Distances[i]);
 
     free(G->memo.Distances);
 }
 
-void Delete_Query(Query *Q)
+void Delete_Query(Query *Q, bool Precompute_Done)
 {
 
     // printf("Dealocate memmory for Query!\n");
@@ -30,6 +33,9 @@ void Delete_Query(Query *Q)
 
     free(Q->index_array);
     delete[] Q->Filters;
+
+    if (!Precompute_Done)
+        return;
 
     for (int i = 0; i < Q->memo.rows; i++)
         free(Q->memo.Distances[i]);
