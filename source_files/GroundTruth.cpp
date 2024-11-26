@@ -56,7 +56,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     std::cout << " ~= " << (int)((accuracy / (double)Q.number_of_indexes) * 100) << "%" << std::endl;
     printf("\033[0m");
 
-    Delete_Query(&Q);
+    Delete_Query(&Q, true);
     Delete_Ground_Truth(&GT);
     return 0;
 }

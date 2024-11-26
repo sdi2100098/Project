@@ -64,6 +64,11 @@ valgrind_main: $(TARGET)
 	@echo "Running the build with Valgrind..."
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
 
+# Run valgrind for precompute executable
+valgrind_precompute: $(TARGET)
+	@echo "Running the precompute build with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./precompute_executable
+
 # Run valgrind for test executable
 valgrind_test: test
 	@echo "Running tests with Valgrind..."

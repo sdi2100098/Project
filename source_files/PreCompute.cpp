@@ -54,13 +54,13 @@ int main()
     if (Graph_Query_Dinstance_Precompute(&G, &Q) == 1)
         goto precompute_error;
 
-    // Delete_Graph(&G);
-    // Delete_Query(&Q);
+    Delete_Graph(&G, false);
+    Delete_Query(&Q, false);
 
     return 0;
 
 precompute_error:
-    // Delete_Graph(&G);
-    // Delete_Query(&Q);
+    Delete_Graph(&G, false);
+    Delete_Query(&Q, false);
     return 1;
 }
