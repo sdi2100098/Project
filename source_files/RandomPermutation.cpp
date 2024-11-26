@@ -1,8 +1,9 @@
 #include "struct.hpp"
 #include "stdlib.h"
 
-std::vector<int> RandomPermutation(Graph *G){
-    
+std::vector<int> RandomPermutation(Graph *G)
+{
+
     int maxVal = G->number_of_indexes;    // Total number of nodes
     std::vector<int> permutation(maxVal); // Vector to store the permutation
 

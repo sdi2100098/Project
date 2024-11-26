@@ -14,11 +14,10 @@ void Delete_Graph(Graph *G)
     delete[] G->index_array;
     delete[] G->Filters;
 
-    for(int i = 0; i < G->memo.rows; i++)
+    for (int i = 0; i < G->memo.rows; i++)
         free(G->memo.Distances[i]);
-    
-    free(G->memo.Distances);
 
+    free(G->memo.Distances);
 }
 
 void Delete_Query(Query *Q)
@@ -32,11 +31,10 @@ void Delete_Query(Query *Q)
     free(Q->index_array);
     delete[] Q->Filters;
 
-    for(int i = 0; i < Q->memo.rows; i++)
+    for (int i = 0; i < Q->memo.rows; i++)
         free(Q->memo.Distances[i]);
-    
-    free(Q->memo.Distances);
 
+    free(Q->memo.Distances);
 }
 
 void Delete_Ground_Truth(Ground_Truth *GT)

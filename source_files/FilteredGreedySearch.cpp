@@ -19,7 +19,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     /*  */
     Distances = (Q == NULL) ? G->memo.Distances : Q->memo.Distances;
 
-
     for (int s = 0; s < G->Filters_Size; s++)
     { /* For every starting point in Medoids (only filters)*/
         distance = Distances[s][xq];

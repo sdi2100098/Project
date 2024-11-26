@@ -6,11 +6,12 @@
 
 #define NO_FILTER -1
 
-typedef struct memoize{
+typedef struct memoize
+{
     int rows;
     int columns;
-    double **Distances;  /* Array to hold Distances*/
-}Memoize;
+    double **Distances; /* Array to hold Distances*/
+} Memoize;
 
 typedef struct node
 { /* node of each graph */
