@@ -34,6 +34,7 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
         if (kappa == flag)
         {
             printf("%.0f %%\n", ((float)(flag + 1) / G->number_of_indexes) * 100);
+            fflush(stdout);
             flag += 1000;
         }
 

@@ -35,7 +35,6 @@ int main()
     const char *base_path = "Datasets/Small_Set/dummy-data.bin";
     const char *query_path = "Datasets/Small_Set/dummy-queries.bin";
 
-    const char *output_path = "Datasets/Small_Set/dummy-groundtruth.txt";
     const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
 
     Query Q;
@@ -46,7 +45,7 @@ int main()
     if (Init_Query_Data(&Q, query_path, G.Filters_Size, false) == 1)
         return 1;
 
-    if (CreateKNNGraphBruteForce(&G, &Q, k, output_path, binary_output_path) == 1)
+    if (CreateKNNGraphBruteForce(&G, &Q, k, binary_output_path) == 1)
         goto precompute_error;
 
     if (Graph_Graph_Dinstance_Precompute(&G) == 1)

@@ -350,20 +350,20 @@ int Init_Precompute_Dinstance(Graph *G, Query *Q)
     }
 
     int rows, columns;
-    double **Distances = NULL;
+    float **Distances = NULL;
 
     if (fread(&rows, sizeof(int), 1, binary_file) != 1)
         goto fread_error;
     if (fread(&columns, sizeof(int), 1, binary_file) != 1)
         goto fread_error;
 
-    Distances = (double **)malloc(rows * sizeof(double *));
+    Distances = (float **)malloc(rows * sizeof(float *));
     if (Distances == NULL)
         goto memmory_error;
 
     for (int i = 0; i < rows; i++)
     {
-        Distances[i] = (double *)malloc(columns * sizeof(double));
+        Distances[i] = (float *)malloc(columns * sizeof(float));
         if (Distances[i] == NULL)
             goto memmory_error;
     }
@@ -371,7 +371,7 @@ int Init_Precompute_Dinstance(Graph *G, Query *Q)
     /* Read DATA */
     for (int i = 0; i < rows; i++)
     {
-        if (fread(Distances[i], sizeof(double), columns, binary_file) != (size_t)columns)
+        if (fread(Distances[i], sizeof(float), columns, binary_file) != (size_t)columns)
             goto fread_error;
     }
 
