@@ -6,6 +6,13 @@
 
 #define NO_FILTER -1
 
+typedef struct memoize
+{
+    int rows;
+    int columns;
+    float **Distances; /* Array to hold Distances*/
+} Memoize;
+
 typedef struct node
 { /* node of each graph */
     int filter;
@@ -19,9 +26,9 @@ typedef struct graph
     int R;                     /* out-degree number */
     int number_of_indexes;     /* rows */
     int dimension;             /* columns */
-    std::vector<int> *Filters; /*An array to hold vectors base on their filters */
+    std::vector<int> *Filters; /*An array to hold vectors base on their filters*/
     int Filters_Size;
-    // double **Distances;  /* Array to hold Distances*/
+    Memoize memo;
 } Graph;
 
 typedef struct query_node
@@ -38,23 +45,25 @@ typedef struct query
     std::vector<int> *Filters; /*An array to hold vectors base on their filters */
     int Filters_Size;
     int NO_FILTERS_POTITION;
-    // double **Distances;
+    Memoize memo;
 } Query;
 
 typedef struct result_GreedySearch
 {
     std::set<int> V;
-    std::set<std::pair<double, int>> L;
+    std::set<std::pair<float, int>> L;
 } Result_greedy;
 
-typedef struct neighbor{
+typedef struct neighbor
+{
     int K;
-    int *K_NBH_array; //neighbor
-}Neighbor;
+    int *K_NBH_array; // neighbor
+} Neighbor;
 
-typedef struct ground_truth{
+typedef struct ground_truth
+{
     Neighbor *array;
     int Size;
-}Ground_Truth;
+} Ground_Truth;
 
 #endif

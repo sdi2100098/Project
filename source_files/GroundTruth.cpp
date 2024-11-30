@@ -10,7 +10,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     Ground_Truth GT;
     Query Q;
 
-    result = Init_Query_Data(&Q, Query_path, G->Filters_Size);
+    result = Init_Query_Data(&Q, Query_path, G->Filters_Size, true);
     if (result == 1)
         return 1;
 
@@ -23,11 +23,10 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     for (int i = 0; i < Q.number_of_indexes; i++)
     {
         sum = 0;
-        Result = Filtered_Greedy_Search(G, i, k, L, S,&Q); // Use for each vector of the graph the greedy search function
-
+        Result = Filtered_Greedy_Search(G, i, k, L, S, &Q); // Use for each vector of the graph the greedy search function
 
         Temp_Set.clear();
-        for (std::set<std::pair<double, int>>::iterator it = Result->L.begin(); it != Result->L.end(); it++)
+        for (std::set<std::pair<float, int>>::iterator it = Result->L.begin(); it != Result->L.end(); it++)
         {
             Temp_Set.insert(it->second);
         }
@@ -41,22 +40,23 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
         }
         if ((double)sum / GT.array[i].K >= 0.9)
         {
-            printf("\033[0;32m");
+            // printf("\033[0;32m");
             accuracy++;
         }
         else
-            printf("\033[0;31m");
-        //std::cout << "Accuracy index" << i << " : " << (double)sum / (int)GT.array[i].K * 100<< "%" << std::endl;
-        delete Result;
+            // printf("\033[0;31m");
+            // std::cout << "Accuracy index" << i << " : " << (double)sum / (int)GT.array[i].K * 100 << "%" << std::endl;
+            delete Result;
     }
-    if ((double)accuracy/Q.number_of_indexes >= 0.9)
+    if ((double)accuracy / Q.number_of_indexes >= 0.9)
         printf("\033[0;32m");
     else
         printf("\033[0;31m");
-    printf("%d/%d Passed Test \n", accuracy,Q.number_of_indexes); // Accuracy needs to be > 0.9*number_of_indexes
+    printf("%d/%d Passed Test", accuracy, Q.number_of_indexes); // Accuracy needs to be > 0.9*number_of_indexes
+    std::cout << " ~= " << (int)((accuracy / (double)Q.number_of_indexes) * 100) << "%" << std::endl;
     printf("\033[0m");
 
-    Delete_Query(&Q);
+    Delete_Query(&Q, true);
     Delete_Ground_Truth(&GT);
     return 0;
 }

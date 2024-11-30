@@ -1,8 +1,8 @@
 # C++ compiler we use
 CXX = g++
 
-CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
-#CXXFLAGS = -pg -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+# CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+CXXFLAGS =  -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 
 # Output filename after compilation 
 TARGET = build
@@ -17,12 +17,12 @@ SRC = source_files/Read_Data.cpp\
 		source_files/EuclideanDistance.cpp \
 		source_files/RandomPermutation.cpp \
 		source_files/Set_Difference.cpp\
-		source_files/CreateKNNG.cpp \
 		source_files/FilteredRobustPrune.cpp\
 		source_files/FilteredGreedySearch.cpp\
 		source_files/Argument_Min_Distance.cpp\
 		source_files/GroundTruth.cpp\
-		source_files/Filtered_Vamana.cpp 
+		source_files/Filtered_Vamana.cpp\
+		source_files/PreComputeFun.cpp
 
 # Test file
 TEST_SRC = test/Test_All.cpp
@@ -42,6 +42,14 @@ $(OBJ_DIR)/%.o: source_files/%.cpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Target for PreCompute
+precompute: source_files/PreCompute.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o precompute_executable source_files/PreCompute.cpp $(OBJ)
+
+# Run the PreCompute executable
+run_precompute: precompute
+	./precompute_executable
+
 # Run main executable
 run: $(TARGET)
 	./$(TARGET)
@@ -56,6 +64,11 @@ valgrind_main: $(TARGET)
 	@echo "Running the build with Valgrind..."
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
 
+# Run valgrind for precompute executable
+valgrind_precompute: $(TARGET)
+	@echo "Running the precompute build with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./precompute_executable
+
 # Run valgrind for test executable
 valgrind_test: test
 	@echo "Running tests with Valgrind..."
@@ -63,4 +76,6 @@ valgrind_test: test
 
 # Clean up object files and executables
 clean:
-	rm -rf $(TARGET) $(OBJ_DIR) test_executable
+	rm -rf $(TARGET) $(OBJ_DIR) test_executable precompute_executable
+	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute.bin
+	rm -f Datasets/Small_Set/*.txt
