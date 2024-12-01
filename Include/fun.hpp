@@ -22,7 +22,7 @@ void Delete_Ground_Truth(Ground_Truth *);
 double EuclideanDistance(const float *, const float *, const int);
 int Argument_Min_Distance(Graph *, Query *, std::set<int> *, int);
 void Set_Difference(std::set<std::pair<float, int>> *, std::set<int> *, std::set<int> *);
-std::vector<int> RandomPermutation(Graph *);
+std::vector<int> RandomPermutation(Graph *, bool, int);
 int GroundTruth(const char *, const char *, Graph *, int, int, int *);
 
 /* For PreComputeFun.cpp */
@@ -40,6 +40,16 @@ void Filtered_Robust_Prune(int, std::set<int> *, float, Graph *);
 Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *);
 
 int *Filtered_Vamana(const char *, Graph *, int, int, double);
+
+int* StichedVamana(const char *, Graph *, int , int ,int , double );
+
+int Vamana(const char *, Graph *, int , int ,float , int);
+
+Result_greedy *Greedy_Search(Graph *, int , int , int , int ,Query *);
+
+void Robust_Prune(int , std::set<int> *, float , Graph *);
+
+int Medoid(Graph *,int );
 
 /*Test Functions*/
 void Test_EuclideanDistance();
