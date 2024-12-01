@@ -21,6 +21,8 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     }
     G->R = R;
 
+    srand(time(NULL));
+
     /*Let s denote the Medoid of P*/
     s = FindMedoid(G, threshold);
 
