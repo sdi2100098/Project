@@ -23,7 +23,11 @@ SRC = source_files/Read_Data.cpp\
 		source_files/GroundTruth.cpp\
 		source_files/Filtered_Vamana.cpp\
 		source_files/PreComputeFun.cpp\
-		source_files/StitchedVamana.cpp
+		source_files/StitchedVamana.cpp\
+		source_files/Vamana.cpp\
+		source_files/GreedySearch.cpp\
+		source_files/RobustPrune.cpp\
+		source_files/Medoid.cpp
 
 # Test file
 TEST_SRC = test/Test_All.cpp
