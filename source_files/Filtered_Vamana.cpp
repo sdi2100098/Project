@@ -25,7 +25,7 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     s = FindMedoid(G, threshold);
 
     /*Let σ denote be a random permutation of [n] */
-    RandomPerm = RandomPermutation(G);
+    RandomPerm = RandomPermutation(G,false,-1);
 
     int flag = 999, kappa = 0;
     for (int i = 0; i < G->number_of_indexes; i++, kappa++)

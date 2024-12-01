@@ -16,14 +16,14 @@ int* StichedVamana(const char *file_path, Graph *G, int L_small, int R_small,int
     // Create a stitched graph over points
     for (int f = 0; f < G->Filters_Size; f++) {
         std::vector<int> &Pf = G->Filters[f]; // Set of points with label f
-        Graph Gf = {}; // Temporary subgraph for the current filter
+        Graph Gf; // Temporary subgraph for the current filter
 
         Init_Graph_Data(&Gf, file_path, true); // Initialize Gf for the subset
         Gf.Filters_Size = 1; // Only one filter active in this subgraph
         Gf.R = R_small;
 
         // Call Vamana on the subset of points
-        Filtered_Vamana(file_path, &Gf, L_small, R_small, a);
+        Vamana(file_path, &Gf, L_small, R_small, a, G->Filters[f]);
 
         // Merge edges into the main graph
         for (int i = 0; i < Pf.size(); i++) {
@@ -40,5 +40,7 @@ int* StichedVamana(const char *file_path, Graph *G, int L_small, int R_small,int
     }
 
     std::cout << "Stitched Vamana completed successfully." << std::endl;
-    return NULL;
+    return s;
 }
+
+
