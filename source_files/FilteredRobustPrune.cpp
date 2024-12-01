@@ -1,4 +1,5 @@
 #include "fun.hpp"
+#include <stdlib.h>
 
 void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 {

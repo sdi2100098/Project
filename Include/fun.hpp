@@ -41,7 +41,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *);
 
 int *Filtered_Vamana(const char *, Graph *, int, int, double);
 
-int* StichedVamanaIndexing(const char *, Graph *, int , int ,int , double );
+int* StichedVamana(const char *, Graph *, int , int ,int , double );
 
 /*Test Functions*/
 void Test_EuclideanDistance();
