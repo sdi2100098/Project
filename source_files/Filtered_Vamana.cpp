@@ -47,7 +47,7 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
         result_greedy = Filtered_Greedy_Search(G, RandomPermutationIndex, 0, L, s, NULL);
 
         /*Run FilteredRobustPrune(σ(i),VF_x_σ(i),a,R) to update out-neighbors of σ(i)*/
-        Filtered_Robust_Prune(RandomPermutationIndex, &(result_greedy->V), a, G);
+        Filtered_Robust_Prune(RandomPermutationIndex, (result_greedy->V), a, G);
 
         for (auto &j : G->index_array[RandomPermutationIndex].edges)
         {
@@ -59,7 +59,7 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
 
             if (Size > R)
                 /*Run FilteredRobustPrune(j,Nout(j),a,R) to update out-neighbors of j*/;
-            Filtered_Robust_Prune(j, &(TempSet), a, G);
+            Filtered_Robust_Prune(j, (TempSet), a, G);
         }
         // delete STRUCT
         delete result_greedy;

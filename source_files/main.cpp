@@ -57,11 +57,11 @@ int main()
         return 1;
     }
 
-    // Delete_Graph(&G, true);
+    Delete_Graph(&G, true);
 
-    // StichedVamana(base_path, &G, L_small, R_small, R_stitched, a);
-    // if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
-    //     return 1;
+    StichedVamana(base_path, &G, L_small, R_small, R_stitched, a);
+    if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
+        return 1;
 
     Delete_Graph(&G, true);
     free(Map);

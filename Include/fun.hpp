@@ -35,7 +35,7 @@ int Graph_Query_Dinstance_Precompute(Graph *, Query *);
 int *FindMedoid(Graph *, int);
 
 /*Robust Function*/
-void Filtered_Robust_Prune(int, std::set<int> *, float, Graph *);
+void Filtered_Robust_Prune(int, std::set<int>, float, Graph *);
 
 /*Greedy Search Function*/
 Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *);
