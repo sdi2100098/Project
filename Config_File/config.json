@@ -1,9 +1,9 @@
 {
     "k": 100,
     "L": 200,
-    "R": 20,
+    "R": 30,
     "a": 1.1,
     "L_small": 100,
-    "R_small": 32,
-    "R_stitched": 64
+    "R_small": 20,
+    "R_stitched": 30
 }

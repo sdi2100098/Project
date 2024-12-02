@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 
-Result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s,Query *Q)
+Result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s, Query *Q)
 {
 
     /* Initialize L <- {s} and V <- 0 */
@@ -27,18 +27,16 @@ Result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s,Query *Q)
         {
 
             if (Q == NULL)
-            { 
+            {
                 first_index = ((*it) >= xq) ? (*it) : xq;
                 second_index = (first_index == (*it)) ? xq : (*it);
                 distance = G->memo.Distances[first_index][second_index];
-                L_kal.insert({distance, *it});
             }
             /* NOW WE MUST DO THE SAME IN CASE WE ARE IN GROUND TRUTH */
             else if (Q)
-            {
                 distance = Q->memo.Distances[*it][xq];
-                L_kal.insert({distance, *it});
-            }
+
+            L_kal.insert({distance, (*it)});
         }
 
         /* V <- V U {p*} */
@@ -61,6 +59,7 @@ Result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s,Query *Q)
                 L_kal.insert({it->first, it->second});
             }
         }
+
         Difference_L_V.clear();
         Set_Difference(&L_kal, &V, &Difference_L_V);
     }
