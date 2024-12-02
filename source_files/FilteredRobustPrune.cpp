@@ -1,7 +1,7 @@
 #include "fun.hpp"
 #include <stdlib.h>
 
-void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G,int R)
+void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 {
     int p_star, first_calc_first_index, first_calc_second_index, second_calc_first_index, second_calc_second_index;
 
@@ -23,7 +23,7 @@ void Filtered_Robust_Prune(int p, std::set<int> *V, float a, Graph *G,int R)
 
         G->index_array[p].edges.insert(p_star); /* Nout(p) <- Nout(p) U {p*} */
 
-        if ((int)G->index_array[p].edges.size() == R) /* |Nout(p)| = R */
+        if ((int)G->index_array[p].edges.size() == G->R) /* |Nout(p)| = R */
             break;
 
         Temp_V.clear();

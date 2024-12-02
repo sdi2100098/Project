@@ -22,9 +22,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
         first_index = (s >= xq) ? s : xq;
         second_index = (first_index == s) ? xq : s;
 
-        first_index = s;
-        second_index = xq;
-
         distance = (Q == NULL) ? G->memo.Distances[first_index][second_index] : Q->memo.Distances[s][xq];
 
         if (Q == NULL && s == G->index_array[xq].filter)
