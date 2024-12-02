@@ -14,8 +14,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R, float a, int filter)
 
     RandomPerm = RandomPermutation(G,true,filter);      // Get a Random Permutation
 
-    std::cout << "Vamana Start" << std::endl;
-    for (int i = 0; i < G->Filters[filter].size();i++)
+    for (int i = 0; i < (int)G->Filters[filter].size();i++)
     {
         Random_Permutation_Index = RandomPerm[i];
         GreedyReturnValue = Greedy_Search(G, Random_Permutation_Index, 1, L, s,NULL); // [L,V] <- GreedySearch(s,x_s(i),1,L)
@@ -39,6 +38,5 @@ int Vamana(const char *file_path, Graph *G, int L, int R, float a, int filter)
                 G->index_array[j].edges.insert(Random_Permutation_Index); // Nout(j) <- Nout(j) U σ(i)
         }
     }
-    std::cout << "Vamana Ended Succesfully" << std::endl;
     return s;
 }

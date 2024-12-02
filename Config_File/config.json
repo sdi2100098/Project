@@ -3,7 +3,7 @@
     "L": 200,
     "R": 20,
     "a": 1.1,
-    "L_small": 100,
-    "R_small": 32,
-    "R_stitched": 64
+    "L_small": 25,
+    "R_small": 20,
+    "R_stitched": 20
 }

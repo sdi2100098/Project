@@ -28,6 +28,9 @@ int main()
 
     int R = config["R"];
     int L = config["L"];
+    int L_small = config["L_small"];
+    int R_small = config["R_small"];
+    int R_stitched = config["R_stitched"];
     int k = config["k"];
     double a = config["a"];
 
@@ -46,6 +49,15 @@ int main()
     Map = Filtered_Vamana(base_path, &G, L, R, a);
     if (!Map)
         return 1;
+    if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1){
+        free(Map);
+        return 1;
+    }
+
+    Delete_Graph(&G, true);
+    
+
+    StichedVamana(base_path,&G,L_small,R_small,R_stitched,a);
     if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
         return 1;
 

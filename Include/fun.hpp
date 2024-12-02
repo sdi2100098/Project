@@ -34,14 +34,14 @@ int Graph_Query_Dinstance_Precompute(Graph *, Query *);
 int *FindMedoid(Graph *, int);
 
 /*Robust Function*/
-void Filtered_Robust_Prune(int, std::set<int> *, float, Graph *);
+void Filtered_Robust_Prune(int, std::set<int> *, float, Graph *,int);
 
 /*Greedy Search Function*/
 Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *);
 
 int *Filtered_Vamana(const char *, Graph *, int, int, double);
 
-int* StichedVamana(const char *, Graph *, int , int ,int , double );
+int StichedVamana(const char *, Graph *, int , int ,int , double );
 
 int Vamana(const char *, Graph *, int , int ,float , int);
 
