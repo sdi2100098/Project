@@ -27,7 +27,8 @@ SRC = source_files/Read_Data.cpp\
 		source_files/Vamana.cpp\
 		source_files/GreedySearch.cpp\
 		source_files/RobustPrune.cpp\
-		source_files/Medoid.cpp
+		source_files/Medoid.cpp\
+		source_files/RandomNum.cpp
 
 # Test file
 TEST_SRC = test/Test_All.cpp

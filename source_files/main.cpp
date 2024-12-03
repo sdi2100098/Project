@@ -28,6 +28,9 @@ int main()
 
     int R = config["R"];
     int L = config["L"];
+    int L_small = config["L_small"];
+    int R_small = config["R_small"];
+    int R_stitched = config["R_stitched"];
     int k = config["k"];
     double a = config["a"];
 
@@ -42,10 +45,21 @@ int main()
 
     // if(Init_Graph_Data(&G,base_path) == 1) return 1;
     // if(Init_Query_Data(&Q,query_path,G.Filters_Size) == 1) return 1;
-
+    // Init_Graph_Data(&G, base_path, true);
+    // G.R = R_small;
+    // Map = FindMedoid(&G, 1);
     Map = Filtered_Vamana(base_path, &G, L, R, a);
-    if (!Map)
+
+    // //   std::cout << std::endl;
+    if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
+    {
+        free(Map);
         return 1;
+    }
+
+    Delete_Graph(&G, true);
+
+    StichedVamana(base_path, &G, L_small, R_small, R_stitched, a);
     if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
         return 1;
 
