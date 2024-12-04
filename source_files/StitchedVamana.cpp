@@ -3,17 +3,14 @@
 #include <stdlib.h>
 #include <iostream>
 
-int StichedVamana(const char *file_path, Graph *G, int L_small, int R_small, int R_stitched, double a)
+#define Flag 999
+#define Kappa 0
+
+int StichedVamana( Graph *G, int L_small, int R_small, int R_stitched, double a)
 {
     srand(time(NULL));
-    /*Initialize G to an Empty Graph*/
-    int result = Init_Graph_Data(G, file_path, true);
-
-    if (result == 1)
-    {
-        perror("Error in Init_Graph");
-        return 1;
-    }
+    G->kappa =Kappa;
+    G->flag = Flag;
     std::cout << "\nSTART STITCHED VAMANA"<<std::endl;
     fflush(stdout);
     std::cout << "PROGRESS : ";
@@ -22,7 +19,7 @@ int StichedVamana(const char *file_path, Graph *G, int L_small, int R_small, int
     for (int f = 0; f < G->Filters_Size; f++)
     {
         // Call Vamana on the subset of points
-        Vamana(file_path, G, L_small, R_small, a, f);
+        Vamana( G, L_small, R_small, a, f);
     }
 
     G->R = R_stitched;
