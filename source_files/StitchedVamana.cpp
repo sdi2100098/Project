@@ -14,6 +14,10 @@ int StichedVamana(const char *file_path, Graph *G, int L_small, int R_small, int
         perror("Error in Init_Graph");
         return 1;
     }
+    std::cout << "\nSTART STITCHED VAMANA"<<std::endl;
+    fflush(stdout);
+    std::cout << "PROGRESS : ";
+    fflush(stdout);
     // Create a stitched graph over points
     for (int f = 0; f < G->Filters_Size; f++)
     {
@@ -28,6 +32,7 @@ int StichedVamana(const char *file_path, Graph *G, int L_small, int R_small, int
         Filtered_Robust_Prune(v, (G->index_array[v].edges), a, G);
     }
 
-    std::cout << "Stitched Vamana completed successfully." << std::endl;
+    std::cout << "\nEND STITCHED VAMANA" << std::endl;
+    fflush(stdout);
     return 0;
 }

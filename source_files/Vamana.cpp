@@ -28,8 +28,14 @@ int Vamana(const char *file_path, Graph *G, int L, int R, float a, int filter)
 
     RandomPerm = RandomPermutation(G, true, filter); // Get a Random Permutation
 
-    for (int i = 0; i < (int)G->Filters[filter].size(); i++)
-    {
+    for (int i = 0; i < (int)G->Filters[filter].size(); i++ , G->kappa ++)
+    {   
+         if (G->kappa == G->flag)
+        {
+            printf("%.0f %% ", ((float)(G->flag + 1) / G->number_of_indexes) * 100);
+            fflush(stdout);
+            G->flag += 1000;
+        }
         Random_Permutation_Index = RandomPerm[i];
 
         GreedyReturnValue = Greedy_Search(G, Random_Permutation_Index, 1, L, s, NULL); // [L,V] <- GreedySearch(s,x_s(i),1,L)

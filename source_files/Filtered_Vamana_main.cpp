@@ -45,6 +45,8 @@ int main()
         return 1;
     }
 
+    std::cout << "CALCULATING ACCURACY ....";
+    fflush(stdout);
     if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
     {
         free(Map);

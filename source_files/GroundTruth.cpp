@@ -40,12 +40,9 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
         }
         if ((double)sum / GT.array[i].K >= 0.9)
         {
-            // printf("\033[0;32m");
             accuracy++;
         }
         else
-            // printf("\033[0;31m");
-            // std::cout << "Accuracy index" << i << " : " << (double)sum / (int)GT.array[i].K * 100 << "%" << std::endl;
             delete Result;
     }
     if ((double)accuracy / Q.number_of_indexes >= 0.9)
@@ -53,7 +50,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     else
         printf("\033[0;31m");
     printf("%d/%d Passed Test", accuracy, Q.number_of_indexes); // Accuracy needs to be > 0.9*number_of_indexes
-    std::cout << " ~= " << (int)((accuracy / (double)Q.number_of_indexes) * 100) << "%" << std::endl;
+    std::cout << " ~= " << (int)((accuracy / (double)Q.number_of_indexes) * 100) << "%\n" << std::endl;
     printf("\033[0m");
 
     Delete_Query(&Q, true);
