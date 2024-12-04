@@ -2,15 +2,16 @@
 CXX = g++
 
 # CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
-CXXFLAGS =  -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 
-# Output filename after compilation 
-TARGET = build
+# Output filenames after compilation
+TARGET1 = build_Filtered
+TARGET2 = build_Stitched
 
 # Directory for object files
 OBJ_DIR = obj
 
-# Source files (without main.cpp)
+# Source files (without Filtered_Vamana_main.cpp && Stitched_Vamana_main.cpp)
 SRC = source_files/Read_Data.cpp\
 		source_files/Delete_Data.cpp\
 		source_files/FindMedoid.cpp \
@@ -27,9 +28,8 @@ SRC = source_files/Read_Data.cpp\
 		source_files/Vamana.cpp\
 		source_files/GreedySearch.cpp\
 		source_files/RobustPrune.cpp\
-		source_files/Medoid.cpp\
-		source_files/RandomNum.cpp
-
+		source_files/Medoid.cpp
+		
 # Test file
 TEST_SRC = test/Test_All.cpp
 
@@ -37,11 +37,15 @@ TEST_SRC = test/Test_All.cpp
 OBJ = $(SRC:source_files/%.cpp=$(OBJ_DIR)/%.o)
 
 # Main target
-all: $(TARGET)
+all: build_filtered build_stitched
 
-# Build main executable
-$(TARGET): source_files/main.cpp $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) source_files/main.cpp $(OBJ)
+# Build Filtered_Vamana_main executable
+build_filtered: source_files/Filtered_Vamana_main.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET1) source_files/Filtered_Vamana_main.cpp $(OBJ)
+
+# Build Stitched_Vamana_main executable
+build_stitched: source_files/Stitched_Vamana_main.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET2) source_files/Stitched_Vamana_main.cpp $(OBJ)
 
 # Build object files (without main.cpp)
 $(OBJ_DIR)/%.o: source_files/%.cpp
@@ -56,22 +60,30 @@ precompute: source_files/PreCompute.cpp $(OBJ)
 run_precompute: precompute
 	./precompute_executable
 
-# Run main executable
-run: $(TARGET)
-	./$(TARGET)
+# Run Filtered_Vamana_main executable
+run_filtered: build_filtered
+	./$(TARGET1)
+
+# Run Stitched_Vamana_main executable
+run_stitched: build_stitched
+	./$(TARGET2)
 
 # Run the tests (compile and run the tests directly without creating a separate executable)
 test: $(TEST_SRC) $(OBJ)
 	$(CXX) $(CXXFLAGS) -o test_executable $(TEST_SRC) $(OBJ)
 	./test_executable
 
-# Run valgrind for main executable
-valgrind_main: $(TARGET)
-	@echo "Running the build with Valgrind..."
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
+# Run valgrind for main executables
+valgrind_filtered: build_filtered
+	@echo "Running Filtered build with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET1)
+
+valgrind_stitched: build_stitched
+	@echo "Running Stitched build with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET2)
 
 # Run valgrind for precompute executable
-valgrind_precompute: $(TARGET)
+valgrind_precompute: precompute
 	@echo "Running the precompute build with Valgrind..."
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./precompute_executable
 
@@ -82,6 +94,6 @@ valgrind_test: test
 
 # Clean up object files and executables
 clean:
-	rm -rf $(TARGET) $(OBJ_DIR) test_executable precompute_executable
+	rm -rf $(TARGET1) $(TARGET2) $(OBJ_DIR) test_executable precompute_executable
 	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute.bin
 	rm -f Datasets/Small_Set/*.txt
