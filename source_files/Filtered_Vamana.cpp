@@ -29,16 +29,18 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
     /*Let σ denote be a random permutation of [n] */
     RandomPerm = RandomPermutation(G, false, -1);
 
-    int flag = 999, kappa = 0;
-    std::cout << "START FILTERED VAMANA";
+    std::cout << "\nSTART FILTERED VAMANA"<<std::endl;
+    fflush(stdout);
     std::cout << "PROGRESS : ";
-    for (int i = 0; i < G->number_of_indexes; i++, kappa++)
+    fflush(stdout);
+    for (int i = 0; i < G->number_of_indexes; i++, G->kappa++)
     {
 
-        if (kappa == flag)
+        if (G->kappa == G->flag)
         {
-            printf("%.0f %% ", ((float)(flag + 1) / G->number_of_indexes) * 100);
-            flag += 1000;
+            printf("%.0f %% ", ((float)(G->flag + 1) / G->number_of_indexes) * 100);
+            fflush(stdout);
+            G->flag += 1000;
         }
 
         RandomPermutationIndex = RandomPerm[i];
@@ -65,6 +67,7 @@ int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
         // delete STRUCT
         delete result_greedy;
     }
-    std::cout << "END FILTERED VAMANA" << std::endl;
+    std::cout << "\nEND FILTERED VAMANA" << std::endl;
+    fflush(stdout);
     return s;
 }

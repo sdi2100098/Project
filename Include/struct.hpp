@@ -26,6 +26,8 @@ typedef struct graph
     int R;                     /* out-degree number */
     int number_of_indexes;     /* rows */
     int dimension;             /* columns */
+    int flag;
+    int kappa;
     std::vector<int> *Filters; /*An array to hold vectors base on their filters*/
     int Filters_Size;
     Memoize memo;

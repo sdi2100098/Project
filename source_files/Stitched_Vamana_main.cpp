@@ -41,6 +41,7 @@ int main()
     Graph G;
     int *Map;
 
+
     StichedVamana(base_path, &G, L_small, R_small, R_stitched, a);
     Map = FindMedoid(&G, threshold);
     if (!Map)
@@ -49,6 +50,8 @@ int main()
         return 1;
     }
 
+    std::cout << "CALCULATING ACCURACY ....";
+    fflush(stdout);
     if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
     {
         free(Map);
