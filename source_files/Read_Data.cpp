@@ -73,7 +73,7 @@ int Init_Graph_Data(Graph *G, const char *file_path, bool Precompute_Done)
     G->dimension = dimension;
     G->Filters_Size = (int)Temp_Filters.size();
     G->Filters = Filters;
-    G->flag = 999;
+    G->flag = 0;
     G->kappa = 0;
 
     /* Init memo DATA */

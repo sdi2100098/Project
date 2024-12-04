@@ -41,8 +41,16 @@ int main()
     Graph G;
     int *Map;
 
+    /*Initialize G to an Empty Graph*/
+    int result = Init_Graph_Data(&G, base_path, true);
 
-    StichedVamana(base_path, &G, L_small, R_small, R_stitched, a);
+    if (result == 1)
+    {
+        perror("Error in Init_Graph");
+        return 1;
+    }
+    
+    StichedVamana(&G, L_small, R_small, R_stitched, a);
     Map = FindMedoid(&G, threshold);
     if (!Map)
     {

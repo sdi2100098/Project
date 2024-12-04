@@ -2,23 +2,22 @@
 #include <time.h>
 #include <stdlib.h>
 #include <iostream>
+#define Flag 999
+#define Kappa 0
 
-int *Filtered_Vamana(const char *file_path, Graph *G, int L, int R, double a)
+int *Filtered_Vamana(Graph *G, int L, int R, double a)
 {
-    int RandomPermutationIndex, result, Size;
+    int RandomPermutationIndex, Size;
     int *s = NULL;
     int threshold = 1;
     std::vector<int> RandomPerm;
     std::set<int> TempSet = {};
     Result_greedy *result_greedy = NULL;
+    
+    G->kappa =Kappa;
+    G->flag = Flag;
 
-    /*Initialize G to an Empty Graph*/
-    result = Init_Graph_Data(G, file_path, true);
-    if (result == 1)
-    {
-        perror("Error in Init_Graph");
-        return NULL;
-    }
+    
     G->R = R;
 
     srand(time(NULL));

@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int Vamana(const char *file_path, Graph *G, int L, int R, float a, int filter)
+
+int Vamana( Graph *G, int L, int R, float a, int filter)
 {
     int s, Random_Permutation_Index, Size, Random_Num, Random_Index;
     std::set<int> TempSet = {};
@@ -30,7 +31,7 @@ int Vamana(const char *file_path, Graph *G, int L, int R, float a, int filter)
 
     for (int i = 0; i < (int)G->Filters[filter].size(); i++ , G->kappa ++)
     {   
-         if (G->kappa == G->flag)
+        if (G->kappa == G->flag)
         {
             printf("%.0f %% ", ((float)(G->flag + 1) / G->number_of_indexes) * 100);
             fflush(stdout);

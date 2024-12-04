@@ -7,10 +7,10 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 {
 
     /* Initialize L <- 0 and V <- 0 */
-    std::set<std::pair<float, int>> L_kal = {{}};
-    std::set<std::pair<float, int>> Temp = {{}}, MedoidSet = {{}};
-    std::set<int> V = {};
-    std::set<int> Difference_L_V = {};
+    std::set<std::pair<float, int>> L_kal;
+    std::set<std::pair<float, int>> Temp , MedoidSet;
+    std::set<int> V ;
+    std::set<int> Difference_L_V ;
 
     int p_star, i, first_index, second_index;
     float distance;

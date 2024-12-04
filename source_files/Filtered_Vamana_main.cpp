@@ -36,9 +36,16 @@ int main()
     const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
 
     Graph G;
+    /*Initialize G to an Empty Graph*/
+    int result = Init_Graph_Data(&G, base_path, true);
+    if (result == 1)
+    {
+        perror("Error in Init_Graph");
+        return 1;
+    }
     int *Map;
 
-    Map = Filtered_Vamana(base_path, &G, L, R, a);
+    Map = Filtered_Vamana(&G, L, R, a);
     if (!Map)
     {
         Delete_Graph(&G, true);
