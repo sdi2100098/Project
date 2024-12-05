@@ -19,7 +19,7 @@ int StichedVamana( Graph *G, int L_small, int R_small, int R_stitched, double a)
     for (int f = 0; f < G->Filters_Size; f++)
     {
         // Call Vamana on the subset of points
-        Vamana( G, L_small, R_small, a, f);
+        Vamana( G, L_small, R_small, a, f,false);
     }
 
     G->R = R_stitched;

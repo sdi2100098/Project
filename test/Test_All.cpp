@@ -523,7 +523,7 @@ void Test_Vamana(){
     TEST_ASSERT(Map!=NULL);
     for(int i = 0; i < 10; i++){
         TEST_ASSERT(Map[i] == i);
-        Vamana(&G,L,R,a,i);
+        Vamana(&G,L,R,a,i,true);
         Return_Val = Filtered_Greedy_Search(&G,i,k,L,Map,NULL);
         TEST_ASSERT(Return_Val->L.begin()->second == i);
         delete Return_Val;

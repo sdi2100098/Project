@@ -4,8 +4,12 @@
 #include <stdio.h>
 
 
-int Vamana( Graph *G, int L, int R, float a, int filter)
+int Vamana( Graph *G, int L, int R, float a, int filter,bool test)
 {
+    if(test){
+        G->kappa = 0;
+        G->flag = 0;
+    }
     int s, Random_Permutation_Index, Size, Random_Num, Random_Index;
     std::set<int> TempSet = {};
     std::vector<int> RandomPerm;

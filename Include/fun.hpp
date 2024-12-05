@@ -43,7 +43,7 @@ int *Filtered_Vamana(Graph *, int, int, double);
 
 int StichedVamana( Graph *, int, int, int, double);
 
-int Vamana( Graph *, int, int, float, int);
+int Vamana( Graph *, int, int, float, int,bool);
 
 Result_greedy *Greedy_Search(Graph *, int, int, int, int, Query *);
 
