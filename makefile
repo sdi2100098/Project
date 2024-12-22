@@ -7,6 +7,8 @@ CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 # Output filenames after compilation
 TARGET1 = build_Filtered
 TARGET2 = build_Stitched
+TARGET3 = build_Filtered_Recall
+TARGET4 = build_Stitched_Recall
 
 # Directory for object files
 OBJ_DIR = obj
@@ -28,7 +30,8 @@ SRC = source_files/Read_Data.cpp\
 		source_files/Vamana.cpp\
 		source_files/GreedySearch.cpp\
 		source_files/RobustPrune.cpp\
-		source_files/Medoid.cpp
+		source_files/Medoid.cpp\
+		source_files/Save_Load_Graph_Binary.cpp
 		
 # Test file
 TEST_SRC = test/Test_All.cpp

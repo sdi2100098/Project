@@ -30,6 +30,10 @@ int CreateKNNGraphBruteForce(Graph *, Query *, int, const char *);
 int Graph_Graph_Dinstance_Precompute(Graph *);
 int Graph_Query_Dinstance_Precompute(Graph *, Query *);
 
+/* For Saving the Graph in Binary and Loading it again for Recall*/
+void saveGraphToBinaryFile(Graph *, int *,  const char *);
+void loadGraphFromBinaryFile(Graph *, int **,  const char *);
+
 /*Medoid Function*/
 int *FindMedoid(Graph *, int);
 
