@@ -27,19 +27,14 @@ int main()
     configFile.close();
 
     int threshold = 1;
-    int k = config["k"];
     int L_small = config["L_small"];
-    int L = config["L"];
     int R_small = config["R_small"];
     int R_stitched = config["R_stitched"];
     double a = config["a"];
 
     std::string base_path_string = config["base_path"].get<std::string>();
     const char *base_path = base_path_string.c_str();
-    std::string query_path_string = config["query_path"].get<std::string>();
-    const char *query_path =  query_path_string.c_str();
-    std::string binary_output_path_string = config["binary_output_path"].get<std::string>();
-    const char *binary_output_path = binary_output_path_string.c_str();
+    
     std::string graph_binary_path_string = config["graph_binary_path"].get<std::string>();
     const char *graph_binary_path = graph_binary_path_string.c_str();
 
