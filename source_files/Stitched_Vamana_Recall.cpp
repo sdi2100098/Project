@@ -34,19 +34,21 @@ int main(){
     const char *query_path =  query_path_string.c_str();
     std::string binary_output_path_string = config["binary_output_path"].get<std::string>();
     const char *binary_output_path = binary_output_path_string.c_str();
+    std::string graph_binary_path_string = config["graph_binary_path"].get<std::string>();
+    const char *graph_binary_path = graph_binary_path_string.c_str();
 
     Graph G;
     int *Map=NULL;
 
-    loadGraphFromBinaryFile(&G,&Map,binary_output_path);
-    // std::cout << "CALCULATING ACCURACY FOR STITCHED VAMANA ....";
-    // fflush(stdout);
-    // if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
-    // {
-    //     free(Map);
-    //     Delete_Graph(&G, true);
-    //     return 1;
-    // }
+    loadGraphFromBinaryFile(&G,&Map,graph_binary_path);
+    std::cout << "CALCULATING ACCURACY FOR STITCHED VAMANA ....";
+    fflush(stdout);
+    if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
+    {
+        free(Map);
+        Delete_Graph(&G, true);
+        return 1;
+    }
 
     free(Map);
     delete [] G.index_array;

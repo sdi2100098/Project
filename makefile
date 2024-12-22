@@ -40,7 +40,7 @@ TEST_SRC = test/Test_All.cpp
 OBJ = $(SRC:source_files/%.cpp=$(OBJ_DIR)/%.o)
 
 # Main target
-all: build_filtered build_stitched build_Stitched_Recall
+all: build_filtered build_stitched build_Stitched_Recall build_Filtered_Recall
 
 # Build Filtered_Vamana_main executable
 build_filtered: source_files/Filtered_Vamana_main.cpp $(OBJ)
@@ -49,6 +49,9 @@ build_filtered: source_files/Filtered_Vamana_main.cpp $(OBJ)
 # Build Stitched_Vamana_main executable
 build_stitched: source_files/Stitched_Vamana_main.cpp $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $(TARGET2) source_files/Stitched_Vamana_main.cpp $(OBJ)
+
+build_Filtered_Recall: source_files/Filtered_Vamana_Recall.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET3) source_files/Filtered_Vamana_Recall.cpp $(OBJ)
 
 build_Stitched_Recall: source_files/Stitched_Vamana_Recall.cpp $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $(TARGET4) source_files/Stitched_Vamana_Recall.cpp $(OBJ)
@@ -74,6 +77,9 @@ run_filtered: build_filtered
 run_stitched: build_stitched
 	./$(TARGET2)
 
+run_filtered_recall: build_Filtered_Recall
+	./$(TARGET3)
+
 run_stitched_recall: build_Stitched_Recall
 	./$(TARGET4)
 
@@ -89,6 +95,6 @@ valgrind_test: test
 
 # Clean up object files and executables
 clean:
-	rm -rf $(TARGET1) $(TARGET2) $(TARGET4) $(OBJ_DIR) test_executable precompute_executable
+	rm -rf $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(OBJ_DIR) test_executable precompute_executable
 	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute.bin Datasets/Small_Set/Graph.bin 
 	rm -f Datasets/Small_Set/*.txt

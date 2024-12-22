@@ -38,8 +38,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
         }
 
     }
-        printf("1");
-        fflush(stdout);
 
     for (std::set<std::pair<float, int>>::iterator element = L_kal.begin(); element != L_kal.end(); element++)
     {
@@ -47,8 +45,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     }
 
     Set_Difference(&L_kal, &V, &Difference_L_V); /* Update diff */
-        printf("2");
-        fflush(stdout);
 
     /* while L\V != 0 */
     while (Difference_L_V.size() != 0)
@@ -56,8 +52,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
 
         /* p* <- atg min d(Xp,Xq) for p in L\V */
         p_star = Argument_Min_Distance(G, Q, &Difference_L_V, xq);
-        printf("3");
-        fflush(stdout);
 
         /* V <- V U {p*} */
         V.insert(p_star);
@@ -66,8 +60,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
         Temp.clear();
         for (std::set<int>::iterator it = G->index_array[p_star].edges.begin(); it != G->index_array[p_star].edges.end(); it++)
         { /* p'ε Νout(p*) */
-            printf("4");
-            fflush(stdout);
             if (Q == NULL)
             { /* Not Ground Truth */
                 if (G->index_array[*it].filter == G->index_array[xq].filter && V.find(*it) == V.end())
