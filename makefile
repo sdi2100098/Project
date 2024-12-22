@@ -2,7 +2,7 @@
 CXX = g++
 
 # CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
-CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+CXXFLAGS = -pg -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 
 # Output filenames after compilation
 TARGET1 = build_Filtered
@@ -98,3 +98,4 @@ clean:
 	rm -rf $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(OBJ_DIR) test_executable precompute_executable
 	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute.bin Datasets/Small_Set/Graph.bin 
 	rm -f Datasets/Small_Set/*.txt
+	rm -f analysis.txt gmon.out
