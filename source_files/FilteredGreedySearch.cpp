@@ -12,17 +12,17 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     std::set<int> V ;
     std::set<int> Difference_L_V ;
 
-    int p_star, i, first_index, second_index;
-    float distance;
+    int p_star, i;
+    float distance,*vector_1,*vector_2;
 
     /*  */
 
     for (int s = 0; s < G->Filters_Size; s++)
     { /* For every starting point in Medoids (only filters)*/
-        first_index = (s >= xq) ? s : xq;
-        second_index = (first_index == s) ? xq : s;
+        vector_1 = G->index_array[s].vector;
+        vector_2 = (Q==NULL) ? G->index_array[xq].vector : Q->index_array[xq].vector;
+        distance = EuclideanDistance(vector_1,vector_2,G->dimension);
 
-        distance = (Q == NULL) ? G->memo.Distances[first_index][second_index] : Q->memo.Distances[s][xq];
 
         if (Q == NULL && s == G->index_array[xq].filter)
         {                                   /* Not Graound Truth and F_s ∩ F_x */
@@ -64,10 +64,10 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             { /* Not Ground Truth */
                 if (G->index_array[*it].filter == G->index_array[xq].filter && V.find(*it) == V.end())
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
-                    first_index = ((*it) >= xq) ? (*it) : xq;
-                    second_index = (first_index == (*it)) ? xq : (*it);
+                    vector_1 = G->index_array[*it].vector;
+                    vector_2 = G->index_array[xq].vector;
+                    distance = EuclideanDistance(vector_1,vector_2,G->dimension);
 
-                    distance = G->memo.Distances[first_index][second_index];
                     Temp.insert({distance, *it});
                 }
             }
@@ -76,7 +76,10 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             {
                 if ((G->index_array[*it].filter == Q->index_array[xq].filter || Q->index_array[xq].filter == -1) && V.find(*it) == V.end())
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
-                    distance = Q->memo.Distances[*it][xq];
+                    vector_1 = G->index_array[*it].vector;
+                    vector_2 = Q->index_array[xq].vector;
+                    distance = EuclideanDistance(vector_1,vector_2,G->dimension);
+                    
                     Temp.insert({distance, *it});
                 }
             }

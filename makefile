@@ -96,6 +96,6 @@ valgrind_test: test
 # Clean up object files and executables
 clean:
 	rm -rf $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(OBJ_DIR) test_executable precompute_executable
-	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute.bin Datasets/Small_Set/Graph.bin 
+	rm -f Datasets/Small_Set/Graph_Graph_Precompute.bin Datasets/Small_Set/Graph_Query_Precompute.bin Datasets/Small_Set/dummy-groundtruth.bin Datasets/Small_Set/Graph.bin 
 	rm -f Datasets/Small_Set/*.txt
-	rm -f analysis.txt gmon.out
+	rm -f *.txt gmon.out

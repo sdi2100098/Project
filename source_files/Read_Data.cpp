@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int Init_Graph_Data(Graph *G, const char *file_path, bool Precompute_Done)
+int Init_Graph_Data(Graph *G, const char *file_path)
 {
 
     // printf("Try to initialize the Graph data...\n");
@@ -76,13 +76,6 @@ int Init_Graph_Data(Graph *G, const char *file_path, bool Precompute_Done)
     G->flag = 0;
     G->kappa = 0;
 
-    /* Init memo DATA */
-    if (Precompute_Done && Init_Precompute_Dinstance(G, NULL) == 1)
-    {
-        fclose(file);
-        return 1;
-    }
-
     fclose(file);
     // printf("Initialize the Graph data succefuly!\n");
     return 0;
@@ -147,7 +140,7 @@ fread_error:
     return 1;
 }
 
-int Init_Query_Data(Query *Q, const char *file_path, int number_of_filters, bool Precompute_Done)
+int Init_Query_Data(Query *Q, const char *file_path, int number_of_filters)
 {
 
     // printf("Try to initialize the Query data...\n");
@@ -232,12 +225,6 @@ int Init_Query_Data(Query *Q, const char *file_path, int number_of_filters, bool
     Q->Filters = Filters;
     Q->Filters_Size = Filters_Size;
     Q->NO_FILTERS_POTITION = No_filter_potition;
-
-    if (Precompute_Done && Init_Precompute_Dinstance(NULL, Q) == 1)
-    {
-        fclose(file);
-        return 1;
-    }
 
     fclose(file);
     // printf("Initialize the Graph data succefuly!\n");
@@ -333,91 +320,3 @@ fread_error:
     return 1;
 }
 
-/* For the Precompute */
-int Init_Precompute_Dinstance(Graph *G, Query *Q)
-{
-    char binary_path[100];
-
-    if (G != NULL)
-        strcpy(binary_path, "Datasets/Small_Set/Graph_Graph_Precompute.bin");
-    else
-        strcpy(binary_path, "Datasets/Small_Set/Graph_Query_Precompute.bin");
-
-    FILE *binary_file = fopen(binary_path, "rb");
-    if (binary_file == NULL)
-    {
-        perror("Error in Init_Precompute_Dinstance (fopen)");
-        return 1;
-    }
-
-    int rows, columns;
-    float **Distances = NULL;
-
-    /* Read dimensions from the file */
-    if (fread(&rows, sizeof(int), 1, binary_file) != 1)
-        goto fread_error;
-    if (fread(&columns, sizeof(int), 1, binary_file) != 1)
-        goto fread_error;
-
-    /* Allocate memory for lower triangular matrix */
-    Distances = (float **)malloc(rows * sizeof(float *));
-    if (Distances == NULL)
-        goto memory_error;
-
-    for (int i = 0; i < rows; i++)
-    {
-        /* Allocate only i + 1 elements for each row (lower triangular part) */
-        if (Q == NULL)
-        {
-            Distances[i] = (float *)malloc((i + 1) * sizeof(float));
-        }
-        else
-        {
-            Distances[i] = (float *)malloc(columns * sizeof(float));
-        }
-        if (Distances[i] == NULL)
-            goto memory_error;
-    }
-
-    /* Read data for the lower triangular matrix */
-    for (int i = 0; i < rows; i++)
-    {
-        if (Q == NULL)
-        {
-            if (fread(Distances[i], sizeof(float), i + 1, binary_file) != (size_t)(i + 1))
-                goto fread_error;
-        }
-        else
-        {
-            if (fread(Distances[i], sizeof(float), columns, binary_file) != (size_t)columns)
-                goto fread_error;
-        }
-    }
-
-    /* Assign the distances to the correct structure */
-    if (G != NULL)
-    {
-        G->memo.rows = rows;
-        G->memo.columns = rows; // Square matrix
-        G->memo.Distances = Distances;
-    }
-    else
-    {
-        Q->memo.rows = rows;
-        Q->memo.columns = rows; // Square matrix
-        Q->memo.Distances = Distances;
-    }
-
-    fclose(binary_file);
-    return 0;
-
-fread_error:
-    fclose(binary_file);
-    perror("Error in Init_Precompute_Dinstance (fread)");
-    return 1;
-
-memory_error:
-    fclose(binary_file);
-    perror("Error in Init_Precompute_Dinstance (malloc)");
-    return 1;
-}

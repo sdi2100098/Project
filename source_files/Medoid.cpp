@@ -7,17 +7,14 @@
 int Medoid(Graph *G, int filter)
 {
     float SumDistances, MinDistance = std::numeric_limits<float>::max();
-    int MedoidIndex = -1, first_index, second_index;
+    int MedoidIndex = -1;
     std::vector<float> array(G->Filters[filter].size(), 0.0f);
     for (int i = 0; i < (int)G->Filters[filter].size(); i++)
     {
         SumDistances = 0.0f;
         for (int j = 0; j < (int)G->Filters[filter].size(); j++)
-        {
-            first_index = (G->Filters[filter][i] >= G->Filters[filter][j]) ? G->Filters[filter][i] : G->Filters[filter][j];
-            second_index = (first_index == G->Filters[filter][i]) ? G->Filters[filter][j] : G->Filters[filter][i];
-            SumDistances += G->memo.Distances[first_index][second_index];
-        }
+            SumDistances += EuclideanDistance(G->index_array[G->Filters[filter][i]].vector,G->index_array[G->Filters[filter][j]].vector,G->dimension);
+
         array[i] = SumDistances;
     }
 

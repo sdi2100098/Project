@@ -5,7 +5,7 @@
 void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 {
 
-    int p_star, first_calc_first_index, first_calc_second_index, second_calc_first_index, second_calc_second_index;
+    int p_star;
 
     std::set<int> Temp_V = {};
 
@@ -36,12 +36,8 @@ void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
 
         for (std::set<int>::iterator it = Temp_V.begin(); it != Temp_V.end(); it++)
         {
-            first_calc_first_index = (p_star >= (*it)) ? p_star : (*it);
-            first_calc_second_index = (first_calc_first_index == p_star) ? (*it) : p_star;
-            second_calc_first_index = (p >= (*it)) ? p : (*it);
-            second_calc_second_index = (second_calc_first_index == p) ? (*it) : p;
 
-            if ((a * G->memo.Distances[first_calc_first_index][first_calc_second_index]) <= G->memo.Distances[second_calc_first_index][second_calc_second_index])
+            if ((a * EuclideanDistance(G->index_array[p_star].vector,G->index_array[*it].vector,G->dimension)) <= EuclideanDistance(G->index_array[p].vector,G->index_array[*it].vector,G->dimension))
             {
                 V->erase(*it);
             }

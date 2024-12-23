@@ -37,7 +37,7 @@ int main()
 
     Graph G;
     /*Initialize G to an Empty Graph*/
-    int result = Init_Graph_Data(&G, base_path, true);
+    int result = Init_Graph_Data(&G, base_path);
     if (result == 1)
     {
         perror("Error in Init_Graph");
@@ -48,11 +48,11 @@ int main()
     Map = Filtered_Vamana(&G, L, R, a);
     if (!Map)
     {
-        Delete_Graph(&G, true);
+        Delete_Graph(&G);
         return 1;
     }
     saveGraphToBinaryFile(&G,Map,graph_binary_path);
-    Delete_Graph(&G, true);
+    Delete_Graph(&G);
 
     return 0;
 }

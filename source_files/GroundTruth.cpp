@@ -10,7 +10,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     Ground_Truth GT;
     Query Q;
 
-    result = Init_Query_Data(&Q, Query_path, G->Filters_Size, true);
+    result = Init_Query_Data(&Q, Query_path, G->Filters_Size);
     if (result == 1)
         return 1;
 
@@ -53,7 +53,7 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     std::cout << " ~= " << (int)((accuracy / (double)Q.number_of_indexes) * 100) << "%\n" << std::endl;
     printf("\033[0m");
 
-    Delete_Query(&Q, true);
+    Delete_Query(&Q);
     Delete_Ground_Truth(&GT);
     return 0;
 }
