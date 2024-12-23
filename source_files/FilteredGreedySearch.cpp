@@ -36,7 +36,9 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             if (Q->index_array[xq].filter != -1)
                 break;
         }
+
     }
+
     for (std::set<std::pair<float, int>>::iterator element = L_kal.begin(); element != L_kal.end(); element++)
     {
         MedoidSet.insert({element->first, element->second}); // To store the Medoid starting nodes so we don't remove them later

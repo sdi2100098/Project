@@ -27,9 +27,11 @@ The above is (int) couse we are talking about INDEX potition in EURETIRIO
 ΠΩΣ ΝΑ ΤΡΈΞΕΤΕ ΤΟ ΠΡΟΓΡΑΜΜΑ : 
 
 1) make run_precompute : Δημιουργεί τα binary αρχεία με τις αποστάσεις. Λόγος αυτής της παραδοχής είναι η μείωση του run time του προγράμματος μας.
-2) make run_filtered : Τρέχει τον Filtered Vamana και εξετάζει την αποδόση του με βάση τα GroundTruth τα οποία δημιουργήσαμε.
-3) make run_stitched : Τρέχει τον Stitched Vamana και εξετάζει την αποδόση του με βάση τα GroundTruth τα οποία δημιουργήσαμε.
-4) make test : Τρέχει τα test τα οποία εξετάζουν την ορθή λειτουργία των συναρτήσεων μας.
-5) make valgrind_test : Τρέχει με valgrind τα test για τον έλεγχο των memory leaks και τυχόν λαθών κατά την εκτέλεση του προγράμματος.
+2) make run_filtered : Τρέχει τον Filtered Vamana και δημιουργεί τον αντίστοιχο γράφο σε ένα binary αρχείο.
+3) make run_stitched : Τρέχει τον Stitched Vamana και δημιουργεί τον αντίστοιχο γράφο σε ένα binary αρχείο.
+4) make run_filtered_recall : Εξετάζει το recall για τον αντίστοιχο γράφο που δημιουργήθηκε.
+5) make run_stitched_recall : Εξετάζει το recall για τον αντίστοιχο γράφο που δημιουργήθηκε.
+6) make test : Τρέχει τα test τα οποία εξετάζουν την ορθή λειτουργία των συναρτήσεων μας.s
+7) make valgrind_test : Τρέχει με valgrind τα test για τον έλεγχο των memory leaks και τυχόν λαθών κατά την εκτέλεση του προγράμματος.
 
 Για περαιτέρω απορίες παρακαλούμε μην διστάσετε να μας ρωτήσετε. Ευχαριστούμε εκ των προτέρων!

@@ -28,12 +28,12 @@ int main()
 
     int R = config["R"];
     int L = config["L"];
-    int k = config["k"];
     double a = config["a"];
 
-    const char *base_path = "Datasets/Small_Set/dummy-data.bin";
-    const char *query_path = "Datasets/Small_Set/dummy-queries.bin";
-    const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
+    std::string base_path_string = config["base_path"].get<std::string>();
+    const char *base_path = base_path_string.c_str();
+    std::string graph_binary_path_string = config["graph_binary_path"].get<std::string>();
+    const char *graph_binary_path = graph_binary_path_string.c_str();
 
     Graph G;
     /*Initialize G to an Empty Graph*/
@@ -51,16 +51,7 @@ int main()
         Delete_Graph(&G, true);
         return 1;
     }
-
-    std::cout << "CALCULATING ACCURACY ....";
-    fflush(stdout);
-    if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
-    {
-        free(Map);
-        Delete_Graph(&G, true);
-        return 1;
-    }
-
+    saveGraphToBinaryFile(&G,Map,graph_binary_path);
     Delete_Graph(&G, true);
 
     return 0;

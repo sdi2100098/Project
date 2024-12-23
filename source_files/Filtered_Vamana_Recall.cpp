@@ -8,10 +8,11 @@
 
 #include <iterator>
 
+
 using json = nlohmann::json;
 
-int main()
-{
+
+int main(){
 
     // Open the JSON configuration file
     std::ifstream configFile("Config_File/config.json"); // Ensure this is the correct path to your JSON file
@@ -26,39 +27,30 @@ int main()
     configFile >> config;
     configFile.close();
 
-    int threshold = 1;
-    int L_small = config["L_small"];
-    int R_small = config["R_small"];
-    int R_stitched = config["R_stitched"];
-    double a = config["a"];
+    int k = config["k"];
+    int L = config["L"];
 
-    std::string base_path_string = config["base_path"].get<std::string>();
-    const char *base_path = base_path_string.c_str();
-    
+    std::string query_path_string = config["query_path"].get<std::string>();
+    const char *query_path =  query_path_string.c_str();
+    std::string binary_output_path_string = config["binary_output_path"].get<std::string>();
+    const char *binary_output_path = binary_output_path_string.c_str();
     std::string graph_binary_path_string = config["graph_binary_path"].get<std::string>();
     const char *graph_binary_path = graph_binary_path_string.c_str();
 
     Graph G;
-    int *Map;
+    int *Map=NULL;
 
-    /*Initialize G to an Empty Graph*/
-    int result = Init_Graph_Data(&G, base_path, true);
-
-    if (result == 1)
+    loadGraphFromBinaryFile(&G,&Map,graph_binary_path);
+    std::cout << "CALCULATING ACCURACY FOR FILTERED VAMANA ....";
+    fflush(stdout);
+    if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
     {
-        perror("Error in Init_Graph");
-        return 1;
-    }
-    
-    StichedVamana(&G, L_small, R_small, R_stitched, a);
-    Map = FindMedoid(&G, threshold);
-    if (!Map)
-    {
+        free(Map);
         Delete_Graph(&G, true);
         return 1;
     }
-    saveGraphToBinaryFile(&G,Map,graph_binary_path);
-    Delete_Graph(&G, true);
 
-    return 0;
+    free(Map);
+    delete [] G.index_array;
 }
+
