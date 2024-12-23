@@ -6,8 +6,8 @@
 
 /* For read datas of eny cind */
 /* return 0:succes,1:fail */
-int Init_Graph_Data(Graph *, const char *, bool);
-int Init_Query_Data(Query *, const char *, int, bool);
+int Init_Graph_Data(Graph *, const char *);
+int Init_Query_Data(Query *, const char *, int);
 int Init_Ground_Truth_Data(Ground_Truth *, const char *);
 
 /* Read The .bin Data for the Above Fucntions */
@@ -15,8 +15,8 @@ int Init_Ground_Truth_Data(Ground_Truth *, const char *);
 int Init_Precompute_Dinstance(Graph *, Query *);
 
 /* For free memmory for the structs */
-void Delete_Graph(Graph *, bool);
-void Delete_Query(Query *, bool);
+void Delete_Graph(Graph *);
+void Delete_Query(Query *);
 void Delete_Ground_Truth(Ground_Truth *);
 
 double EuclideanDistance(const float *, const float *, const int);
@@ -27,8 +27,6 @@ int GroundTruth(const char *, const char *, Graph *, int, int, int *);
 
 /* For PreComputeFun.cpp */
 int CreateKNNGraphBruteForce(Graph *, Query *, int, const char *);
-int Graph_Graph_Dinstance_Precompute(Graph *);
-int Graph_Query_Dinstance_Precompute(Graph *, Query *);
  
 /* For Saving the Graph in Binary and Loading it again for Recall*/
 void saveGraphToBinaryFile(Graph *, int *,  const char *);

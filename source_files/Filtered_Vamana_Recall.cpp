@@ -46,7 +46,7 @@ int main(){
     if (GroundTruth(query_path, binary_output_path, &G, k, L, Map) == 1)
     {
         free(Map);
-        Delete_Graph(&G, true);
+        Delete_Graph(&G);
         return 1;
     }
 

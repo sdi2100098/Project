@@ -11,8 +11,8 @@ Result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s, Query *Q)
     std::set<int> V = {};
     std::set<int> Difference_L_V = {s};
 
-    int p_star, i, first_index, second_index;
-    float distance;
+    int p_star, i;
+    float distance,*vector_1,*vector_2;
 
     /* while L\V != 0 */
     while (Difference_L_V.size() != 0)
@@ -26,15 +26,9 @@ Result_greedy *Greedy_Search(Graph *G, int xq, int k, int L, int s, Query *Q)
         for (std::set<int>::iterator it = G->index_array[p_star].edges.begin(); it != G->index_array[p_star].edges.end(); it++)
         {
 
-            if (Q == NULL)
-            {
-                first_index = ((*it) >= xq) ? (*it) : xq;
-                second_index = (first_index == (*it)) ? xq : (*it);
-                distance = G->memo.Distances[first_index][second_index];
-            }
-            /* NOW WE MUST DO THE SAME IN CASE WE ARE IN GROUND TRUTH */
-            else if (Q)
-                distance = Q->memo.Distances[*it][xq];
+            vector_1 = G->index_array[*it].vector;
+            vector_2 = (Q==NULL) ? G->index_array[xq].vector : Q->index_array[xq].vector;
+            distance = EuclideanDistance(vector_1,vector_2,G->dimension);
 
             L_kal.insert({distance, (*it)});
         }

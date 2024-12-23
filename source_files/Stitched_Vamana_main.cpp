@@ -42,7 +42,7 @@ int main()
     int *Map;
 
     /*Initialize G to an Empty Graph*/
-    int result = Init_Graph_Data(&G, base_path, true);
+    int result = Init_Graph_Data(&G, base_path);
 
     if (result == 1)
     {
@@ -54,11 +54,11 @@ int main()
     Map = FindMedoid(&G, threshold);
     if (!Map)
     {
-        Delete_Graph(&G, true);
+        Delete_Graph(&G);
         return 1;
     }
     saveGraphToBinaryFile(&G,Map,graph_binary_path);
-    Delete_Graph(&G, true);
+    Delete_Graph(&G);
 
     return 0;
 }

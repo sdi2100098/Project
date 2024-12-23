@@ -40,27 +40,21 @@ int main()
     Query Q;
     Graph G;
 
-    if (Init_Graph_Data(&G, base_path, false) == 1)
+    if (Init_Graph_Data(&G, base_path) == 1)
         return 1;
-    if (Init_Query_Data(&Q, query_path, G.Filters_Size, false) == 1)
+    if (Init_Query_Data(&Q, query_path, G.Filters_Size) == 1)
         return 1;
 
     if (CreateKNNGraphBruteForce(&G, &Q, k, binary_output_path) == 1)
         goto precompute_error;
 
-    if (Graph_Graph_Dinstance_Precompute(&G) == 1)
-        goto precompute_error;
-
-    if (Graph_Query_Dinstance_Precompute(&G, &Q) == 1)
-        goto precompute_error;
-
-    Delete_Graph(&G, false);
-    Delete_Query(&Q, false);
+    Delete_Graph(&G);
+    Delete_Query(&Q);
 
     return 0;
 
 precompute_error:
-    Delete_Graph(&G, false);
-    Delete_Query(&Q, false);
+    Delete_Graph(&G);
+    Delete_Query(&Q);
     return 1;
 }
