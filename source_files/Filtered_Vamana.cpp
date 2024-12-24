@@ -34,6 +34,10 @@ int *Filtered_Vamana(Graph *G, int L, int R, double a)
     fflush(stdout);
     for (int i = 0; i < G->number_of_indexes; i++, G->kappa++)
     {
+        float *Distances = (float *)malloc(G->number_of_indexes * sizeof(float));
+        for(int j = 0; j< G->number_of_indexes; j++){
+            Distances[j] = -1.0f;
+        }
 
         if (G->kappa == G->flag)
         {
