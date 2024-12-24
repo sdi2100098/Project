@@ -19,7 +19,7 @@ void Delete_Graph(Graph *);
 void Delete_Query(Query *);
 void Delete_Ground_Truth(Ground_Truth *);
 
-float EuclideanDistance(const float *, const float *, const int);
+double EuclideanDistance(const float *, const float *, const int);
 int Argument_Min_Distance(Graph *, Query *, std::set<int> *, int);
 void Set_Difference(std::set<std::pair<float, int>> *, std::set<int> *, std::set<int> *);
 std::vector<int> RandomPermutation(Graph *, bool, int);
@@ -27,10 +27,10 @@ int GroundTruth(const char *, const char *, Graph *, int, int, int *);
 
 /* For PreComputeFun.cpp */
 int CreateKNNGraphBruteForce(Graph *, Query *, int, const char *);
- 
+
 /* For Saving the Graph in Binary and Loading it again for Recall*/
-void saveGraphToBinaryFile(Graph *, int *,  const char *);
-void loadGraphFromBinaryFile(Graph *, int **,  const char *);
+void saveGraphToBinaryFile(Graph *, int *, const char *);
+void loadGraphFromBinaryFile(Graph *, int **, const char *);
 
 /*Medoid Function*/
 int *FindMedoid(Graph *, int);
@@ -43,15 +43,14 @@ Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *);
 
 int *Filtered_Vamana(Graph *, int, int, double);
 
-int StichedVamana( Graph *, int, int, int, double);
+int StichedVamana(Graph *, int, int, int, double);
 
-int Vamana( Graph *, int, int, float, int,bool);
+int Vamana(Graph *, int, int, float, int, bool);
 
 Result_greedy *Greedy_Search(Graph *, int, int, int, int, Query *);
 
 void Robust_Prune(int, std::set<int> *, float, Graph *);
 
 int Medoid(Graph *, int);
-
 
 #endif
