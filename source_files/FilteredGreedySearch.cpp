@@ -51,7 +51,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     {
 
         /* p* <- atg min d(Xp,Xq) for p in L\V */
-        p_star = Argument_Min_Distance(G, Q, &Difference_L_V, xq,Distances,true);
+        p_star = Argument_Min_Distance(G, Q, &Difference_L_V, xq,Distances);
 
         /* V <- V U {p*} */
         V.insert(p_star);

@@ -51,6 +51,7 @@ int *Filtered_Vamana(Graph *G, int L, int R, double a)
 
         /*Let [0;VF_x_σ(i)] <-- FilteredGreedySearch(SF_x_σ(i),x_σ(i),0,L,F_x_σ(i))*/
         result_greedy = Filtered_Greedy_Search(G, RandomPermutationIndex, 0, L, s, NULL,Distances);
+        
 
         /*Run FilteredRobustPrune(σ(i),VF_x_σ(i),a,R) to update out-neighbors of σ(i)*/
         Filtered_Robust_Prune(RandomPermutationIndex, (result_greedy->V), a, G,Distances);
