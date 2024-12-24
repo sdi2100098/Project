@@ -1,6 +1,7 @@
 #include <math.h>
 #include "fun.hpp"
 
+// Keep original Euclidean as the very first program intact
 double EuclideanDistance(const float *vector_1, const float *vector_2, const int vectorSize)
 {
     double sum = 0.0;
