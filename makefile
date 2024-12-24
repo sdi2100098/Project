@@ -40,14 +40,14 @@ TEST_SRC = test/Test_All.cpp
 OBJ = $(SRC:source_files/%.cpp=$(OBJ_DIR)/%.o)
 
 # Main target
-all: build_filtered build_stitched build_Stitched_Recall build_Filtered_Recall
+all: build_Filtered build_Stitched build_Stitched_Recall build_Filtered_Recall
 
 # Build Filtered_Vamana_main executable
-build_filtered: source_files/Filtered_Vamana_main.cpp $(OBJ)
+build_Filtered: source_files/Filtered_Vamana_main.cpp $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $(TARGET1) source_files/Filtered_Vamana_main.cpp $(OBJ)
 
 # Build Stitched_Vamana_main executable
-build_stitched: source_files/Stitched_Vamana_main.cpp $(OBJ)
+build_Stitched: source_files/Stitched_Vamana_main.cpp $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $(TARGET2) source_files/Stitched_Vamana_main.cpp $(OBJ)
 
 build_Filtered_Recall: source_files/Filtered_Vamana_Recall.cpp $(OBJ)
@@ -70,11 +70,11 @@ run_precompute: precompute
 	./precompute_executable
 
 # Run Filtered_Vamana_main executable
-run_filtered: build_filtered
+run_filtered: build_Filtered
 	./$(TARGET1)
 
 # Run Stitched_Vamana_main executable
-run_stitched: build_stitched
+run_stitched: build_Stitched
 	./$(TARGET2)
 
 run_filtered_recall: build_Filtered_Recall
