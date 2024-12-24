@@ -51,6 +51,10 @@ int main(){
     }
 
     free(Map);
+
+    for (int i = 0; i < G.number_of_indexes; i++)
+        free(G.index_array[i].vector);
+        
     delete [] G.index_array;
 }
 
