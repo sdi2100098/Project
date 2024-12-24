@@ -19,7 +19,7 @@ void Delete_Graph(Graph *);
 void Delete_Query(Query *);
 void Delete_Ground_Truth(Ground_Truth *);
 
-double EuclideanDistance(const float *, const float *, const int);
+float EuclideanDistance(const float *, const float *, const int);
 int Argument_Min_Distance(Graph *, Query *, std::set<int> *, int);
 void Set_Difference(std::set<std::pair<float, int>> *, std::set<int> *, std::set<int> *);
 std::vector<int> RandomPermutation(Graph *, bool, int);
