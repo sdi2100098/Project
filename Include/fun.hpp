@@ -48,9 +48,9 @@ int StichedVamana(Graph *, int, int, int, double);
 
 int Vamana(Graph *, int, int, float, int, bool);
 
-Result_greedy *Greedy_Search(Graph *, int, int, int, int, Query *);
+Result_greedy *Greedy_Search(Graph *, int, int, int, int, Query *, float *);
 
-void Robust_Prune(int, std::set<int> *, float, Graph *);
+void Robust_Prune(int, std::set<int> *, float, Graph *, float *);
 
 int Medoid(Graph *, int);
 

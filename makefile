@@ -1,6 +1,7 @@
 # C++ compiler we use
 CXX = g++
 
+
 # CXXFLAGS = -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 CXXFLAGS = -pg  -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 
@@ -27,12 +28,12 @@ SRC = source_files/Read_Data.cpp\
 		source_files/Filtered_Vamana.cpp\
 		source_files/PreComputeFun.cpp\
 		source_files/Save_Load_Graph_Binary.cpp\
-		source_files/Distance_Helper_Function.cpp
-		# source_files/StitchedVamana.cpp\
-		# source_files/Vamana.cpp\
-		# source_files/GreedySearch.cpp\
-		# source_files/RobustPrune.cpp\
-		# source_files/Medoid.cpp\
+		source_files/Distance_Helper_Function.cpp\
+		source_files/StitchedVamana.cpp\
+		source_files/Vamana.cpp\
+		source_files/GreedySearch.cpp\
+		source_files/RobustPrune.cpp\
+		source_files/Medoid.cpp
 		
 # Test file
 TEST_SRC = test/Test_All.cpp

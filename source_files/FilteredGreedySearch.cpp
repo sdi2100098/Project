@@ -2,27 +2,27 @@
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>
+//
 
-Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Query *Q,float *Distances)
+Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Query *Q, float *Distances)
 {
 
     /* Initialize L <- 0 and V <- 0 */
     std::set<std::pair<float, int>> L_kal;
-    std::set<std::pair<float, int>> Temp , MedoidSet;
-    std::set<int> V ;
-    std::set<int> Difference_L_V ;
+    std::set<std::pair<float, int>> Temp, MedoidSet;
+    std::set<int> V;
+    std::set<int> Difference_L_V;
 
     int p_star, i;
-    float distance,*vector_1,*vector_2;
+    float distance, *vector_1, *vector_2;
 
     /*  */
 
     for (int s = 0; s < G->Filters_Size; s++)
     { /* For every starting point in Medoids (only filters)*/
         vector_1 = G->index_array[S[s]].vector;
-        vector_2 = (Q==NULL) ? G->index_array[xq].vector : Q->index_array[xq].vector;
-        distance = Distance_Function(Distances,vector_1,vector_2,S[s],G->dimension);
-
+        vector_2 = (Q == NULL) ? G->index_array[xq].vector : Q->index_array[xq].vector;
+        distance = Distance_Function(Distances, vector_1, vector_2, S[s], G->dimension);
 
         if (Q == NULL && s == G->index_array[xq].filter)
         {                                   /* Not Graound Truth and F_s ∩ F_x */
@@ -36,7 +36,6 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
             if (Q->index_array[xq].filter != -1)
                 break;
         }
-
     }
 
     for (std::set<std::pair<float, int>>::iterator element = L_kal.begin(); element != L_kal.end(); element++)
@@ -51,7 +50,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
     {
 
         /* p* <- atg min d(Xp,Xq) for p in L\V */
-        p_star = Argument_Min_Distance(G, Q, &Difference_L_V, xq,Distances);
+        p_star = Argument_Min_Distance(G, Q, &Difference_L_V, xq, Distances);
 
         /* V <- V U {p*} */
         V.insert(p_star);
@@ -66,7 +65,7 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
                     vector_1 = G->index_array[*it].vector;
                     vector_2 = G->index_array[xq].vector;
-                    distance = Distance_Function(Distances,vector_1,vector_2,*it,G->dimension);
+                    distance = Distance_Function(Distances, vector_1, vector_2, *it, G->dimension);
 
                     Temp.insert({distance, *it});
                 }
@@ -78,8 +77,8 @@ Result_greedy *Filtered_Greedy_Search(Graph *G, int xq, int k, int L, int *S, Qu
                 { /* Fp' ∩ Fq != 0 ,p' not in V */
                     vector_1 = G->index_array[*it].vector;
                     vector_2 = Q->index_array[xq].vector;
-                    distance = Distance_Function(Distances,vector_1,vector_2,*it,G->dimension);
-                    
+                    distance = Distance_Function(Distances, vector_1, vector_2, *it, G->dimension);
+
                     Temp.insert({distance, *it});
                 }
             }
