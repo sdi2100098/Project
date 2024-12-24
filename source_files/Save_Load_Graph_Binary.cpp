@@ -20,6 +20,8 @@ void saveGraphToBinaryFile(Graph *G, int *Map, const char *graph_binary_path) {
     // Write the dimension
     fwrite(&(G->dimension), sizeof(int), 1, file);
 
+    fwrite(&(G->R),sizeof(int),1,file);
+
     // Write the contents of the Map array
     fwrite(Map, sizeof(int), G->Filters_Size, file);
 
@@ -67,6 +69,12 @@ void loadGraphFromBinaryFile(Graph *G, int **Map, const char *graph_binary_path)
 
     if (fread(&(G->dimension), sizeof(int), 1, file) != 1) {
         perror("Error reading dimension");
+        fclose(file);
+        return;
+    }
+
+    if (fread(&(G->R), sizeof(int), 1, file) != 1) {
+        perror("Error reading R");
         fclose(file);
         return;
     }

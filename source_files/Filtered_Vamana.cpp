@@ -50,10 +50,10 @@ int *Filtered_Vamana(Graph *G, int L, int R, double a)
         /*Let SF_x_σ(i) = {st(f) : f ε F_x_σ(i) }*/
 
         /*Let [0;VF_x_σ(i)] <-- FilteredGreedySearch(SF_x_σ(i),x_σ(i),0,L,F_x_σ(i))*/
-        result_greedy = Filtered_Greedy_Search(G, RandomPermutationIndex, 0, L, s, NULL);
+        result_greedy = Filtered_Greedy_Search(G, RandomPermutationIndex, 0, L, s, NULL,Distances);
 
         /*Run FilteredRobustPrune(σ(i),VF_x_σ(i),a,R) to update out-neighbors of σ(i)*/
-        Filtered_Robust_Prune(RandomPermutationIndex, (result_greedy->V), a, G);
+        Filtered_Robust_Prune(RandomPermutationIndex, (result_greedy->V), a, G,Distances);
 
         for (auto &j : G->index_array[RandomPermutationIndex].edges)
         {
@@ -63,11 +63,19 @@ int *Filtered_Vamana(Graph *G, int L, int R, double a)
             TempSet.insert(RandomPermutationIndex);
             Size = (int)TempSet.size();
 
-            if (Size > R)
+            if (Size > R){
                 /*Run FilteredRobustPrune(j,Nout(j),a,R) to update out-neighbors of j*/;
-            Filtered_Robust_Prune(j, (TempSet), a, G);
+                float *Neighbor_Distances = (float *)malloc(G->number_of_indexes * sizeof(float));
+
+                for(int j = 0; j<G->number_of_indexes; j++)
+                    Neighbor_Distances[j] = -1.0f;
+
+                Filtered_Robust_Prune(j, (TempSet), a, G,Neighbor_Distances);
+                free(Neighbor_Distances);
+            }
         }
         // delete STRUCT
+        free(Distances);
         delete result_greedy;
     }
     std::cout << "\nEND FILTERED VAMANA" << std::endl;

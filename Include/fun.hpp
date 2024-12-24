@@ -20,7 +20,8 @@ void Delete_Query(Query *);
 void Delete_Ground_Truth(Ground_Truth *);
 
 double EuclideanDistance(const float *, const float *, const int);
-int Argument_Min_Distance(Graph *, Query *, std::set<int> *, int);
+float Distance_Function(float *,const float *, const float *,const int, const int);
+int Argument_Min_Distance(Graph *, Query *, std::set<int> *, int,float *,bool);
 void Set_Difference(std::set<std::pair<float, int>> *, std::set<int> *, std::set<int> *);
 std::vector<int> RandomPermutation(Graph *, bool, int);
 int GroundTruth(const char *, const char *, Graph *, int, int, int *);
@@ -36,10 +37,10 @@ void loadGraphFromBinaryFile(Graph *, int **,  const char *);
 int *FindMedoid(Graph *, int);
 
 /*Robust Function*/
-void Filtered_Robust_Prune(int, std::set<int>, float, Graph *);
+void Filtered_Robust_Prune(int, std::set<int>, float, Graph *,float *);
 
 /*Greedy Search Function*/
-Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *);
+Result_greedy *Filtered_Greedy_Search(Graph *, int, int, int, int *, Query *,float *);
 
 int *Filtered_Vamana(Graph *, int, int, double);
 

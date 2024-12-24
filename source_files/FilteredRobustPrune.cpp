@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-void Filtered_Robust_Prune(int p, std::set<int> V, float a, Graph *G)
+void Filtered_Robust_Prune(int p, std::set<int> V, float a, Graph *G,float *Distances)
 {
     int p_star;
 
@@ -20,7 +20,7 @@ void Filtered_Robust_Prune(int p, std::set<int> V, float a, Graph *G)
     { /* V != 0 */
 
         /* p* <- arg min[for p'in V compute d(p,p')] */
-        p_star = Argument_Min_Distance(G, NULL, &V, p);
+        p_star = Argument_Min_Distance(G, NULL, &V, p,Distances,false);
 
         G->index_array[p].edges.insert(p_star); /* Nout(p) <- Nout(p) U {p*} */
 
