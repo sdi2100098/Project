@@ -1,8 +1,9 @@
 #include "fun.hpp"
 #include <iostream>
 #include <stdlib.h>
+//
 
-void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
+void Robust_Prune(int p, std::set<int> *V, float a, Graph *G, float *Distances)
 {
 
     int p_star;
@@ -21,7 +22,7 @@ void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
     { /* V != 0 */
 
         /* p* <- arg min[for p'in V compute d(p,p')] */
-        p_star = Argument_Min_Distance(G, NULL, V, p);
+        p_star = Argument_Min_Distance(G, NULL, V, p, Distances);
 
         G->index_array[p].edges.insert(p_star); /* Nout(p) <- Nout(p) U {p*} */
 
@@ -37,7 +38,7 @@ void Robust_Prune(int p, std::set<int> *V, float a, Graph *G)
         for (std::set<int>::iterator it = Temp_V.begin(); it != Temp_V.end(); it++)
         {
 
-            if ((a * EuclideanDistance(G->index_array[p_star].vector,G->index_array[*it].vector,G->dimension)) <= EuclideanDistance(G->index_array[p].vector,G->index_array[*it].vector,G->dimension))
+            if ((a * EuclideanDistance(G->index_array[p_star].vector, G->index_array[*it].vector, G->dimension)) <= Distance_Function(Distances, G->index_array[p].vector, G->index_array[*it].vector, *it, G->dimension))
             {
                 V->erase(*it);
             }

@@ -2,11 +2,12 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
+//
 
-
-int Vamana( Graph *G, int L, int R, float a, int filter,bool test)
+int Vamana(Graph *G, int L, int R, float a, int filter, bool test)
 {
-    if(test){
+    if (test)
+    {
         G->kappa = 0;
         G->flag = 0;
     }
@@ -32,9 +33,13 @@ int Vamana( Graph *G, int L, int R, float a, int filter,bool test)
     s = Medoid(G, filter); // Use the slow medoid
 
     RandomPerm = RandomPermutation(G, true, filter); // Get a Random Permutation
+    float *Distances = (float *)malloc(G->number_of_indexes * sizeof(float));
+    for (int i = 0; i < (int)G->Filters[filter].size(); i++, G->kappa++)
+    {
 
-    for (int i = 0; i < (int)G->Filters[filter].size(); i++ , G->kappa ++)
-    {   
+        for (int j = 0; j < G->number_of_indexes; j++)
+            Distances[j] = -1.0f;
+
         if (G->kappa == G->flag)
         {
             printf("%.0f %% ", ((float)(G->flag + 1) / G->number_of_indexes) * 100);
@@ -43,9 +48,9 @@ int Vamana( Graph *G, int L, int R, float a, int filter,bool test)
         }
         Random_Permutation_Index = RandomPerm[i];
 
-        GreedyReturnValue = Greedy_Search(G, Random_Permutation_Index, 1, L, s, NULL); // [L,V] <- GreedySearch(s,x_s(i),1,L)
+        GreedyReturnValue = Greedy_Search(G, Random_Permutation_Index, 1, L, s, NULL, Distances); // [L,V] <- GreedySearch(s,x_s(i),1,L)
 
-        Robust_Prune(Random_Permutation_Index, &(GreedyReturnValue->V), a, G); // RobustPrune(σ(i),V,a,R)
+        Robust_Prune(Random_Permutation_Index, &(GreedyReturnValue->V), a, G, Distances); // RobustPrune(σ(i),V,a,R)
         delete GreedyReturnValue;
         for (auto &j : G->index_array[Random_Permutation_Index].edges) // for all points j in Nout(σ(i))
         {
@@ -57,11 +62,14 @@ int Vamana( Graph *G, int L, int R, float a, int filter,bool test)
 
             if (Size > R)
             { // if |Nout(j) U {σ(i)}| > R
-                Robust_Prune(j, &(TempSet), a, G);
+                for (int j = 0; j < G->number_of_indexes; j++)
+                    Distances[j] = -1.0f;
+                Robust_Prune(j, &(TempSet), a, G, Distances);
             }
             else
                 G->index_array[j].edges.insert(Random_Permutation_Index); // Nout(j) <- Nout(j) U σ(i)
         }
     }
+    free(Distances);
     return s;
 }

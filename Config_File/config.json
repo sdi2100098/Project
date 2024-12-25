@@ -6,8 +6,8 @@
     "L_small": 100,
     "R_small": 20,
     "R_stitched": 30,
-    "base_path" : "Datasets/Small_Set/dummy-data.bin",
-    "query_path" : "Datasets/Small_Set/dummy-queries.bin",
-    "binary_output_path" : "Datasets/Small_Set/dummy-groundtruth.bin",
-    "graph_binary_path" : "Datasets/Small_Set/Graph.bin"
+    "base_path": "Datasets/Small_Set/dummy-data.bin",
+    "query_path": "Datasets/Small_Set/dummy-queries.bin",
+    "binary_output_path": "Datasets/Small_Set/dummy-groundtruth.bin",
+    "graph_binary_path": "Datasets/Small_Set/Graph.bin"
 }
