@@ -1,16 +1,49 @@
 #include "fun.hpp"
 #include <iostream>
+#include <thread>
+#include <vector>
+#include <set>
 
-int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G, int k, int L, int *S)
-{
+void processRange(Query& Q, const Ground_Truth& GT, Graph* G, int k, int L, int* S, int start, int end, int& localAccuracy, float* Distances) {
+    std::set<int> Temp_Set;
+    Result_greedy* Result;
 
+    for (int i = start; i < end; ++i) {
+        int sum = 0;
+
+        // Initialize the Distances array for the current query
+        for (int j = 0; j < G->number_of_indexes; ++j) {
+            Distances[j] = -1.0f;
+        }
+
+        Result = Filtered_Greedy_Search(G, i, k, L, S, &Q, Distances);
+
+        Temp_Set.clear();
+        for (auto it = Result->L.begin(); it != Result->L.end(); ++it) {
+            Temp_Set.insert(it->second);
+        }
+
+        for (int j = 0; j < GT.array[i].K; ++j) {
+            if (Temp_Set.find(GT.array[i].K_NBH_array[j]) != Temp_Set.end()) {
+                sum++;
+            }
+        }
+
+        if ((double)sum / GT.array[i].K >= 0.9) {
+            localAccuracy++;
+        }
+
+        delete Result;
+    }
+}
+
+int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G, int k, int L, int* S) {
     std::cout << std::endl;
-    std::set<int> Temp_Set = {};
-    int result, sum, accuracy = 0;
+
     Ground_Truth GT;
     Query Q;
 
-    result = Init_Query_Data(&Q, Query_path, G->Filters_Size);
+    int result = Init_Query_Data(&Q, Query_path, G->Filters_Size);
     if (result == 1)
         return 1;
 
@@ -18,48 +51,51 @@ int GroundTruth(const char *Query_path, const char *Ground_Truth_path, Graph *G,
     if (result == 1)
         return 1;
 
-    Result_greedy *Result;
-    float *Distances = (float *)malloc(G->number_of_indexes * sizeof(float));
+    // Determine the number of threads and divide the workload
+    int numThreads = std::thread::hardware_concurrency();
+    int totalIndices = Q.number_of_indexes;
+    int chunkSize = (totalIndices + numThreads - 1) / numThreads;
 
-    for (int i = 0; i < Q.number_of_indexes; i++)
-    {
+    // Local accuracy for each thread
+    std::vector<int> localAccuracies(numThreads, 0);
+    std::vector<std::thread> threads;
 
-        for (int j = 0; j < G->number_of_indexes; j++)
-            Distances[j] = -1.0f;
+    // Allocate a separate Distances array for each thread
+    std::vector<std::vector<float>> threadDistances(numThreads, std::vector<float>(G->number_of_indexes, -1.0f));
 
-        sum = 0;
-        Result = Filtered_Greedy_Search(G, i, k, L, S, &Q, Distances); // Use for each vector of the graph the greedy search function
-
-        Temp_Set.clear();
-        for (std::set<std::pair<float, int>>::iterator it = Result->L.begin(); it != Result->L.end(); it++)
-        {
-            Temp_Set.insert(it->second);
+    // Spawn threads
+    for (int t = 0; t < numThreads; ++t) {
+        int start = t * chunkSize;
+        int end = std::min(start + chunkSize, totalIndices);
+        if (start < totalIndices) {
+            threads.emplace_back(processRange, std::ref(Q), std::cref(GT), G, k, L, S, start, end, std::ref(localAccuracies[t]), threadDistances[t].data());
         }
-        // Seeing if the vectors of the groundtruth and the query are the same
-        for (int j = 0; j < GT.array[i].K; j++)
-        {
-            if (Temp_Set.find(GT.array[i].K_NBH_array[j]) != Temp_Set.end())
-            {
-                sum++;
-            }
-        }
-        if ((double)sum / GT.array[i].K >= 0.9)
-        {
-            accuracy++;
-        }
-        else
-            delete Result;
     }
+
+    // Join threads
+    for (auto& thread : threads) {
+        if (thread.joinable()) {
+            thread.join();
+        }
+    }
+
+    // Combine results
+    int accuracy = 0;
+    for (const auto& localAccuracy : localAccuracies) {
+        accuracy += localAccuracy;
+    }
+
+    // Output results
     if ((double)accuracy / Q.number_of_indexes >= 0.9)
         printf("\033[0;32m");
     else
         printf("\033[0;31m");
+
     printf("%d/%d Passed Test", accuracy, Q.number_of_indexes); // Accuracy needs to be > 0.9*number_of_indexes
     std::cout << " ~= " << (int)((accuracy / (double)Q.number_of_indexes) * 100) << "%\n"
               << std::endl;
     printf("\033[0m");
 
-    free(Distances);
     Delete_Query(&Q);
     Delete_Ground_Truth(&GT);
     return 0;
