@@ -1,6 +1,7 @@
 #include "acutest.h"
 #include "fun.hpp"
 #include <iostream>
+#include <stdlib.h>
 #include <fstream>
 #include <cstdio>
 #include <unistd.h>
@@ -16,162 +17,153 @@ void Test_EuclideanDistance()
     TEST_ASSERT(abs(98.31397043632872 - Distance) < 0.00001); // Ensure that there isn't a big error margin when calculating the Euclidean Distance for two random vectors
 }
 
-
 void Test_FindMedoid()
 {
-    int number_of_indexes = 10,Filters_Size=10,dimension = 2,threshold = 1;
-    int *Map ;
-    std::vector<std::pair<float,float>> Test_Vector = {{5.16,6.36},{9.82,0.71},{2.96,0.30},{7.14,2.95},{3.73,4.44},{0.65,3.34},{2.52,2.29},{1.06,2.95},{9.58,4.75},{6.24,5.11}};
-    std::vector<std::vector<int>> edges = {{3,6},{5,7},{3,5},{2,6},{1,9},{2,7},{0,9},{3,6},{0,6},{2,6}};
+    int number_of_indexes = 10, Filters_Size = 10, dimension = 2, threshold = 1;
+    int *Map;
+    std::vector<std::pair<float, float>> Test_Vector = {{5.16, 6.36}, {9.82, 0.71}, {2.96, 0.30}, {7.14, 2.95}, {3.73, 4.44}, {0.65, 3.34}, {2.52, 2.29}, {1.06, 2.95}, {9.58, 4.75}, {6.24, 5.11}};
+    std::vector<std::vector<int>> edges = {{3, 6}, {5, 7}, {3, 5}, {2, 6}, {1, 9}, {2, 7}, {0, 9}, {3, 6}, {0, 6}, {2, 6}};
     Graph G;
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
-    G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
-    for(int i =0 ; i<number_of_indexes; i++){
+    G.Filters = new std::vector<int>[Filters_Size]();
+    for (int i = 0; i < number_of_indexes; i++)
+    {
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
-        for(auto &ele : edges[i])
+        for (auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
         G.Filters[i].push_back(i);
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0 ; j<dimension; j++){
-            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
+    for (int i = 0; i < number_of_indexes; i++)
+    {
+        for (int j = 0; j < dimension; j++)
+        {
+            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first : Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
-    Map = FindMedoid(&G,threshold);
-    TEST_ASSERT(Map!=NULL);
-    for(int i = 0; i < 10; i++)
+    Map = FindMedoid(&G, threshold);
+    TEST_ASSERT(Map != NULL);
+    for (int i = 0; i < 10; i++)
         TEST_ASSERT(Map[i] == i);
     free(Map);
-    Delete_Graph(&G,true);
+    Delete_Graph(&G);
 }
 
-void Test_Medoid(){
-    int number_of_indexes = 10,Filters_Size=10,dimension = 2,medoid;
-    std::vector<std::pair<float,float>> Test_Vector = {{5.16,6.36},{9.82,0.71},{2.96,0.30},{7.14,2.95},{3.73,4.44},{0.65,3.34},{2.52,2.29},{1.06,2.95},{9.58,4.75},{6.24,5.11}};
-    std::vector<std::vector<int>> edges = {{3,6},{5,7},{3,5},{2,6},{1,9},{2,7},{0,9},{3,6},{0,6},{2,6}};
+void Test_Medoid()
+{
+    int number_of_indexes = 10, Filters_Size = 10, dimension = 2, medoid;
+    std::vector<std::pair<float, float>> Test_Vector = {{5.16, 6.36}, {9.82, 0.71}, {2.96, 0.30}, {7.14, 2.95}, {3.73, 4.44}, {0.65, 3.34}, {2.52, 2.29}, {1.06, 2.95}, {9.58, 4.75}, {6.24, 5.11}};
+    std::vector<std::vector<int>> edges = {{3, 6}, {5, 7}, {3, 5}, {2, 6}, {1, 9}, {2, 7}, {0, 9}, {3, 6}, {0, 6}, {2, 6}};
     Graph G;
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
-    G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
-    for(int i =0 ; i<number_of_indexes; i++){
+    G.Filters = new std::vector<int>[Filters_Size]();
+    for (int i = 0; i < number_of_indexes; i++)
+    {
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
-        for(auto &ele : edges[i])
+        for (auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
         G.Filters[i].push_back(i);
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0 ; j<dimension; j++){
-            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
+    for (int i = 0; i < number_of_indexes; i++)
+    {
+        for (int j = 0; j < dimension; j++)
+        {
+            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first : Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
-    for(int i = 0; i<G.Filters_Size; i++){
-        medoid = Medoid(&G,i);
+    for (int i = 0; i < G.Filters_Size; i++)
+    {
+        medoid = Medoid(&G, i);
         TEST_ASSERT(medoid == i);
     }
-    Delete_Graph(&G,true);
+    Delete_Graph(&G);
 }
 
 void Test_Argument_Min_Distance()
 {
-    int number_of_indexes = 10,Filters_Size=10,dimension = 2;
-    std::vector<std::pair<float,float>> Test_Vector = {{5.16,6.36},{9.82,0.71},{2.96,0.30},{7.14,2.95},{3.73,4.44},{0.65,3.34},{2.52,2.29},{1.06,2.95},{9.58,4.75},{6.24,5.11}};
-    std::vector<std::vector<int>> edges = {{3,6},{5,7},{3,5},{2,6},{1,9},{2,7},{0,9},{3,6},{0,6},{2,6}};
+    int number_of_indexes = 10, Filters_Size = 10, dimension = 2;
+    std::vector<std::pair<float, float>> Test_Vector = {{5.16, 6.36}, {9.82, 0.71}, {2.96, 0.30}, {7.14, 2.95}, {3.73, 4.44}, {0.65, 3.34}, {2.52, 2.29}, {1.06, 2.95}, {9.58, 4.75}, {6.24, 5.11}};
+    std::vector<std::vector<int>> edges = {{3, 6}, {5, 7}, {3, 5}, {2, 6}, {1, 9}, {2, 7}, {0, 9}, {3, 6}, {0, 6}, {2, 6}};
     Graph G;
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
-    G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
-    for(int i =0 ; i<number_of_indexes; i++){
+    G.Filters = new std::vector<int>[Filters_Size]();
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
+    for (int i = 0; i < number_of_indexes; i++)
+    {
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
-        for(auto &ele : edges[i])
+        for (auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
         G.Filters[i].push_back(i);
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0 ; j<dimension; j++){
-            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
+    for (int i = 0; i < number_of_indexes; i++)
+    {
+        for (int j = 0; j < dimension; j++)
+        {
+            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first : Test_Vector[i].second;
         }
-    }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
     }
 
     for (int i = 0; i < G.number_of_indexes; i++)
     {
-        int index = Argument_Min_Distance(&G,NULL, &(G.index_array[i].edges),i);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
+        int index = Argument_Min_Distance(&G, NULL, &(G.index_array[i].edges), i);
         switch (i)
         {
-        case 0 : 
+        case 0:
             TEST_ASSERT(index == 3);
             break;
-        
-        case 1 : 
+
+        case 1:
             TEST_ASSERT(index == 7);
             break;
 
-        case 2 : 
+        case 2:
             TEST_ASSERT(index == 5);
             break;
 
-        case 3 :
+        case 3:
             TEST_ASSERT(index == 6);
             break;
 
-        case 4 : 
+        case 4:
             TEST_ASSERT(index == 9);
             break;
 
-
-        case 5 : 
+        case 5:
             TEST_ASSERT(index == 7);
             break;
 
-
-        case 6 : 
+        case 6:
             TEST_ASSERT(index == 9);
             break;
 
-        case 7 :
+        case 7:
             TEST_ASSERT(index == 6);
             break;
 
-        case 8 :
+        case 8:
             TEST_ASSERT(index == 0);
             break;
 
-        case 9 :
+        case 9:
             TEST_ASSERT(index == 6);
             break;
         }
     }
-    Delete_Graph(&G,true);
+    free(Distances);
+    Delete_Graph(&G);
 }
 
 void Test_Set_Difference()
@@ -190,36 +182,32 @@ void Test_Set_Difference()
 
 void Test_RandomPermutation()
 {
-    int number_of_indexes = 10,Filters_Size=10,dimension = 2;
-    std::vector<std::pair<float,float>> Test_Vector = {{5.16,6.36},{9.82,0.71},{2.96,0.30},{7.14,2.95},{3.73,4.44},{0.65,3.34},{2.52,2.29},{1.06,2.95},{9.58,4.75},{6.24,5.11}};
-    std::vector<std::vector<int>> edges = {{3,6},{5,7},{3,5},{2,6},{1,9},{2,7},{0,9},{3,6},{0,6},{2,6}};
+    int number_of_indexes = 10, Filters_Size = 10, dimension = 2;
+    std::vector<std::pair<float, float>> Test_Vector = {{5.16, 6.36}, {9.82, 0.71}, {2.96, 0.30}, {7.14, 2.95}, {3.73, 4.44}, {0.65, 3.34}, {2.52, 2.29}, {1.06, 2.95}, {9.58, 4.75}, {6.24, 5.11}};
+    std::vector<std::vector<int>> edges = {{3, 6}, {5, 7}, {3, 5}, {2, 6}, {1, 9}, {2, 7}, {0, 9}, {3, 6}, {0, 6}, {2, 6}};
     Graph G;
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
-    G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
-    for(int i =0 ; i<number_of_indexes; i++){
+    G.Filters = new std::vector<int>[Filters_Size]();
+    for (int i = 0; i < number_of_indexes; i++)
+    {
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
-        for(auto &ele : edges[i])
+        for (auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
         G.Filters[i].push_back(i);
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0 ; j<dimension; j++){
-            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
+    for (int i = 0; i < number_of_indexes; i++)
+    {
+        for (int j = 0; j < dimension; j++)
+        {
+            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first : Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
 
-    std::vector<int> permutation = RandomPermutation(&G,false,0);
+    std::vector<int> permutation = RandomPermutation(&G, false, 0);
 
     std::vector<bool> Testvector(G.number_of_indexes, false);
     // check that no number in permutation is out of bounds
@@ -230,11 +218,11 @@ void Test_RandomPermutation()
     }
     for (int i = 0; i < (int)permutation.size(); i++)
         TEST_ASSERT(Testvector[i] == true); // Ensure that all elements exist inside the vector
-    Delete_Graph(&G,true);
+    Delete_Graph(&G);
 }
 
 void Test_Filtered_Greedy_Search()
-{   
+{
     int number_of_indexes = 10,Filters_Size=10,dimension = 2,threshold = 1,k=1,L=2;
     int *Map ;
     std::vector<std::pair<float,float>> Test_Vector = {{5.16,6.36},{9.82,0.71},{2.96,0.30},{7.14,2.95},{3.73,4.44},{0.65,3.34},{2.52,2.29},{1.06,2.95},{9.58,4.75},{6.24,5.11}};
@@ -245,13 +233,10 @@ void Test_Filtered_Greedy_Search()
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
     G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
     for(int i =0 ; i<number_of_indexes; i++){
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
         for(auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
@@ -262,26 +247,23 @@ void Test_Filtered_Greedy_Search()
             G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
     Map = FindMedoid(&G,threshold);
     TEST_ASSERT(Map!=NULL);
-    for(int i = 0; i < 10; i++){
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
+    for(int i = 0; i < G.number_of_indexes; i++){
         TEST_ASSERT(Map[i] == i);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
         Return_Val = Filtered_Greedy_Search(&G,i,k,L,Map,NULL);
         TEST_ASSERT((int)Return_Val->L.size() <= k);
         TEST_ASSERT((int)Return_Val->V.size() <= G.R);
         TEST_ASSERT(*(Return_Val->V.begin()) == i);
         delete Return_Val;
     }
-    
-    
-    
-    free(Map);
 
-    Delete_Graph(&G,true);
+    free(Map);
+    free(Distances);
+    Delete_Graph(&G);
 }
 
 void Test_Filtered_Robust_Prune()
@@ -298,13 +280,10 @@ void Test_Filtered_Robust_Prune()
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
     G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
     for(int i =0 ; i<number_of_indexes; i++){
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
         for(auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
@@ -315,14 +294,13 @@ void Test_Filtered_Robust_Prune()
             G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
     Map = FindMedoid(&G,threshold);
     TEST_ASSERT(Map!=NULL);
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
     for(int i = 0; i < 10; i++){
         TEST_ASSERT(Map[i] == i);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
         Return_Val = Filtered_Greedy_Search(&G,i,k,L,Map,NULL);
         for(auto &ele : G.index_array[i].edges)
             Temp_set.insert(ele);
@@ -333,9 +311,9 @@ void Test_Filtered_Robust_Prune()
         delete Return_Val;
     }
 
-     free(Map);
-
-    Delete_Graph(&G,true);
+    free(Map);
+    free(Distances);
+    Delete_Graph(&G);
 }
 
 void Test_Filtered_Vamana()
@@ -351,13 +329,10 @@ void Test_Filtered_Vamana()
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
     G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
     for(int i =0 ; i<number_of_indexes; i++){
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
         for(auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
@@ -367,10 +342,6 @@ void Test_Filtered_Vamana()
         for(int j =0 ; j<dimension; j++){
             G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
         }
-    }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
     }
      // Save original stream buffers
     std::streambuf* cout_buffer = std::cout.rdbuf();
@@ -389,8 +360,11 @@ void Test_Filtered_Vamana()
     Map = FindMedoid(&G,threshold);
     TEST_ASSERT(Map!=NULL);
     StichedVamana(&G,L_small,R_small,R_stitched,a);
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
     for(int i = 0; i < 10; i++){
         TEST_ASSERT(Map[i] == i);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
         Return_Val = Filtered_Greedy_Search(&G,i,k,L,Map,NULL);
         TEST_ASSERT(Return_Val->L.begin()->second == i);
         delete Return_Val;
@@ -402,45 +376,43 @@ void Test_Filtered_Vamana()
     dup2(stdout_fd, STDOUT_FILENO); // Restore stdout
     close(stdout_fd);
     free(Map);
-
-    Delete_Graph(&G,true);
+    free(Distances);
+    Delete_Graph(&G);
 }
 
-void Test_Stitched_Vamana(){
-    int number_of_indexes = 10,Filters_Size=10,dimension = 2,k=1,L=2,R=2;
-    int *Map ;
+void Test_Stitched_Vamana()
+{
+    int number_of_indexes = 10, Filters_Size = 10, dimension = 2, k = 1, L = 2, R = 2;
+    int *Map;
     double a = 1.1;
-    std::vector<std::pair<float,float>> Test_Vector = {{5.16,6.36},{9.82,0.71},{2.96,0.30},{7.14,2.95},{3.73,4.44},{0.65,3.34},{2.52,2.29},{1.06,2.95},{9.58,4.75},{6.24,5.11}};
-    std::vector<std::vector<int>> edges = {{3,6},{5,7},{3,5},{2,6},{1,9},{2,7},{0,9},{3,6},{0,6},{2,6}};
+    std::vector<std::pair<float, float>> Test_Vector = {{5.16, 6.36}, {9.82, 0.71}, {2.96, 0.30}, {7.14, 2.95}, {3.73, 4.44}, {0.65, 3.34}, {2.52, 2.29}, {1.06, 2.95}, {9.58, 4.75}, {6.24, 5.11}};
+    std::vector<std::vector<int>> edges = {{3, 6}, {5, 7}, {3, 5}, {2, 6}, {1, 9}, {2, 7}, {0, 9}, {3, 6}, {0, 6}, {2, 6}};
     std::set<int> Temp_set;
     Result_greedy *Return_Val;
     Graph G;
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
-    G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
-    for(int i =0 ; i<number_of_indexes; i++){
+    G.Filters = new std::vector<int>[Filters_Size]();
+    for (int i = 0; i < number_of_indexes; i++)
+    {
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
-        for(auto &ele : edges[i])
+        for (auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
         G.Filters[i].push_back(i);
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0 ; j<dimension; j++){
-            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
+    for (int i = 0; i < number_of_indexes; i++)
+    {
+        for (int j = 0; j < dimension; j++)
+        {
+            G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first : Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
-     // Save original stream buffers
-    std::streambuf* cout_buffer = std::cout.rdbuf();
+
+    // Save original stream buffers
+    std::streambuf *cout_buffer = std::cout.rdbuf();
     int stdout_fd = dup(STDOUT_FILENO); // Duplicate stdout file descriptor
 
     // Redirect `std::cout` to /dev/null
@@ -448,28 +420,34 @@ void Test_Stitched_Vamana(){
     std::cout.rdbuf(null_stream.rdbuf());
 
     // Redirect `stdout` (for printf) to /dev/null
-    if (freopen("/dev/null", "w", stdout) == nullptr) {
+    if (freopen("/dev/null", "w", stdout) == nullptr)
+    {
         std::cerr << "Error: Failed to redirect stdout to /dev/null" << std::endl;
         exit(EXIT_FAILURE); // Exit if redirection fails
     }
 
-    Map = Filtered_Vamana(&G,L,R,a);
-    TEST_ASSERT(Map!=NULL);
-    for(int i = 0; i < 10; i++){
+    Map = Filtered_Vamana(&G, L, R, a);
+    TEST_ASSERT(Map != NULL);
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
+    for (int i = 0; i < G.number_of_indexes; i++)
+    {
         TEST_ASSERT(Map[i] == i);
-        Return_Val = Filtered_Greedy_Search(&G,i,k,L,Map,NULL);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
+        Return_Val = Filtered_Greedy_Search(&G, i, k, L, Map, NULL);
         TEST_ASSERT(Return_Val->L.begin()->second == i);
         delete Return_Val;
     }
+    free(Distances);
 
-    //Restore `std::cout` and `stdout`
+    // Restore `std::cout` and `stdout`
     std::cout.rdbuf(cout_buffer);
     fflush(stdout);
     dup2(stdout_fd, STDOUT_FILENO); // Restore stdout
     close(stdout_fd);
     free(Map);
 
-    Delete_Graph(&G,true);
+    Delete_Graph(&G);
 }
 
 void Test_Vamana(){
@@ -484,13 +462,10 @@ void Test_Vamana(){
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
     G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
     for(int i =0 ; i<number_of_indexes; i++){
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
         for(auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
@@ -501,10 +476,7 @@ void Test_Vamana(){
             G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
+
      // Save original stream buffers
     std::streambuf* cout_buffer = std::cout.rdbuf();
     int stdout_fd = dup(STDOUT_FILENO); // Duplicate stdout file descriptor
@@ -521,8 +493,11 @@ void Test_Vamana(){
 
     Map = FindMedoid(&G,threshold);
     TEST_ASSERT(Map!=NULL);
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
     for(int i = 0; i < 10; i++){
         TEST_ASSERT(Map[i] == i);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
         Vamana(&G,L,R,a,i,true);
         Return_Val = Filtered_Greedy_Search(&G,i,k,L,Map,NULL);
         TEST_ASSERT(Return_Val->L.begin()->second == i);
@@ -535,8 +510,8 @@ void Test_Vamana(){
     dup2(stdout_fd, STDOUT_FILENO); // Restore stdout
     close(stdout_fd);
     free(Map);
-
-    Delete_Graph(&G,true);
+    free(Distances);
+    Delete_Graph(&G);
 }
 
 void Test_Robust(){
@@ -552,13 +527,10 @@ void Test_Robust(){
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
     G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
     for(int i =0 ; i<number_of_indexes; i++){
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
         for(auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
@@ -569,14 +541,14 @@ void Test_Robust(){
             G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
+
     Map = FindMedoid(&G,threshold);
     TEST_ASSERT(Map!=NULL);
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
     for(int i = 0; i < 10; i++){
         TEST_ASSERT(Map[i] == i);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
         Return_Val = Filtered_Greedy_Search(&G,i,k,L,Map,NULL);
         for(auto &ele : G.index_array[i].edges)
             Temp_set.insert(ele);
@@ -587,9 +559,9 @@ void Test_Robust(){
         delete Return_Val;
     }
 
-     free(Map);
-
-    Delete_Graph(&G,true);
+    free(Map);
+    free(Distances);
+    Delete_Graph(&G);
 }
 
 void Test_Greedy(){
@@ -602,13 +574,10 @@ void Test_Greedy(){
     G.dimension = dimension;
     G.Filters_Size = Filters_Size;
     G.index_array = new node[number_of_indexes]();
-    G.memo.rows = number_of_indexes;
     G.number_of_indexes = number_of_indexes;
     G.Filters =  new std::vector<int>[Filters_Size]();
-    G.memo.Distances = (float**)malloc(G.memo.rows * sizeof(float *));
     for(int i =0 ; i<number_of_indexes; i++){
         G.index_array[i].vector = (float *)malloc(dimension * sizeof(float));
-        G.memo.Distances[i] = (float*)malloc((i+1)*sizeof(float));
         for(auto &ele : edges[i])
             G.index_array[i].edges.insert(ele);
         G.index_array[i].filter = i;
@@ -619,37 +588,34 @@ void Test_Greedy(){
             G.index_array[i].vector[j] = (!j) ? Test_Vector[i].first:Test_Vector[i].second;
         }
     }
-    for(int i =0; i<number_of_indexes; i++){
-        for(int j =0; j<=i; j++)
-            G.memo.Distances[i][j] = EuclideanDistance(G.index_array[i].vector,G.index_array[j].vector,dimension);    
-    }
-    
-    
+    float *Distances = (float *)malloc(G.number_of_indexes * sizeof(float));
     for(int i = 0; i < 10; i++){
         medoid = Medoid(&G,i);
+        for (int j = 0; j < G.number_of_indexes; j++)
+            Distances[j] = -1.0f;
         TEST_ASSERT(medoid == i);
         Return_Val = Greedy_Search(&G,i,k,L,medoid,NULL);
-        
+
         TEST_ASSERT((int)Return_Val->L.size() <= k);
         for(auto &ele : Return_Val->V)
             TEST_ASSERT(ele >=0 && ele <= 10);
         delete Return_Val;
     }
-
-    Delete_Graph(&G,true);
+    free(Distances);
+    Delete_Graph(&G);
 }
 
 TEST_LIST = {
-    {"EculideanDistance", Test_EuclideanDistance}, 
-    {"FindMedoid", Test_FindMedoid}, 
-    {"Medoid",Test_Medoid},
-    {"Random Permutation", Test_RandomPermutation}, 
-    {"Set_Difference", Test_Set_Difference}, 
-    {"Argument Min Distance", Test_Argument_Min_Distance}, 
-    {"Filtered_Greedy_Search", Test_Filtered_Greedy_Search}, 
-    {"Filtered_Robust Prune", Test_Filtered_Robust_Prune}, 
-    {"Filtered_Vamana", Test_Filtered_Vamana}, 
-    {"Stitched_Vamana",Test_Stitched_Vamana},
+    {"EculideanDistance", Test_EuclideanDistance},
+    {"FindMedoid", Test_FindMedoid},
+    {"Medoid", Test_Medoid},
+    {"Random Permutation", Test_RandomPermutation},
+    {"Set_Difference", Test_Set_Difference},
+    {"Argument Min Distance", Test_Argument_Min_Distance},
+    {"Filtered_Greedy_Search", Test_Filtered_Greedy_Search},
+    {"Filtered_Robust Prune", Test_Filtered_Robust_Prune},
+    {"Filtered_Vamana", Test_Filtered_Vamana},
+    {"Stitched_Vamana", Test_Stitched_Vamana},
     {"Vamana",Test_Vamana},
     {"Robust",Test_Robust},
     {"Greedy",Test_Greedy},
