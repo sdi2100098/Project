@@ -32,10 +32,12 @@ int main()
 
     int k = config["k"];
 
-    const char *base_path = "Datasets/Small_Set/dummy-data.bin";
-    const char *query_path = "Datasets/Small_Set/dummy-queries.bin";
-
-    const char *binary_output_path = "Datasets/Small_Set/dummy-groundtruth.bin";
+    std::string base_path_string = config["base_path"].get<std::string>();
+    const char *base_path = base_path_string.c_str();
+    std::string query_path_string = config["query_path"].get<std::string>();
+    const char *query_path =  query_path_string.c_str();
+    std::string binary_output_path_string = config["binary_output_path"].get<std::string>();
+    const char *binary_output_path = binary_output_path_string.c_str();
 
     Query Q;
     Graph G;

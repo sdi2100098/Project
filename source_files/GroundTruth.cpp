@@ -132,7 +132,7 @@ int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G,
     printf(" ~= %.2f%%\n", (double)accuracyFiltered / (totalIndices - accuracyUnfiltered) * 100);
 
     // Output unfiltered queries accuracy and time
-    printf("\nUnfiltered Queries Accuracy: %d/%d Passed Test", accuracyUnfiltered, accuracyUnfiltered);
+    printf("Unfiltered Queries Accuracy: %d/%d Passed Test", accuracyUnfiltered, accuracyUnfiltered);
     if ((double)accuracyUnfiltered / accuracyUnfiltered >= 0.9)
         printf("\033[0;32m");
     else
@@ -143,7 +143,7 @@ int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G,
     double avgTimeFiltered = (accuracyFiltered > 0) ? totalTimeFiltered / accuracyFiltered : 0.0;
     double avgTimeUnfiltered = (accuracyUnfiltered > 0) ? totalTimeUnfiltered / accuracyUnfiltered : 0.0;
 
-    printf("\nAverage Time per Filtered Query: %.6f seconds\n", avgTimeFiltered);
+    printf("Average Time per Filtered Query: %.6f seconds\n", avgTimeFiltered);
     printf("Average Time per Unfiltered Query: %.6f seconds\n", avgTimeUnfiltered);
 
     // Output total accuracy

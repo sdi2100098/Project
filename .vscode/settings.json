@@ -63,6 +63,15 @@
         "span": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "bitset": "cpp",
+        "charconv": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "format": "cpp",
+        "__nullptr": "cpp"
     }
 }
