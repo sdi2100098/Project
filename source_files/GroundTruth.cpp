@@ -8,7 +8,7 @@
 // Function to process a range of queries in parallel
 void processRange(Query& Q, const Ground_Truth& GT, Graph* G, int k, int L, int* S, int start, int end, 
                   int& localAccuracyFiltered, int& localAccuracyUnfiltered, 
-                  double& localTimeFiltered, double& localTimeUnfiltered, 
+                  double& localTimeFiltered, double& localTimeUnfiltered, int& local_filtered_count, int& local_unfiltered_count,
                   float* Distances) {
     std::set<int> Temp_Set;
     Result_greedy* Result;
@@ -32,6 +32,7 @@ void processRange(Query& Q, const Ground_Truth& GT, Graph* G, int k, int L, int*
 
         // Check if the query is filtered or unfiltered
         if (Q.index_array[i].filter == -1) { // Unfiltered query
+            local_unfiltered_count++;
             for (int j = 0; j < GT.array[i].K; ++j) {
                 if (Temp_Set.find(GT.array[i].K_NBH_array[j]) != Temp_Set.end()) {
                     sum++;
@@ -41,6 +42,7 @@ void processRange(Query& Q, const Ground_Truth& GT, Graph* G, int k, int L, int*
                 localAccuracyUnfiltered++;
             }
         } else { // Filtered query
+            local_filtered_count++;
             for (int j = 0; j < GT.array[i].K; ++j) {
                 if (Temp_Set.find(GT.array[i].K_NBH_array[j]) != Temp_Set.end()) {
                     sum++;
@@ -87,6 +89,8 @@ int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G,
     std::vector<int> localAccuraciesUnfiltered(numThreads, 0);
     std::vector<double> localTimeFiltered(numThreads, 0.0);
     std::vector<double> localTimeUnfiltered(numThreads, 0.0);
+    std::vector<int> localFilteredCounts(numThreads, 0);
+    std::vector<int> localUnfilteredCounts(numThreads, 0);
     std::vector<std::thread> threads;
 
     // Allocate a separate Distances array for each thread
@@ -99,7 +103,7 @@ int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G,
         if (start < totalIndices) {
             threads.emplace_back(processRange, std::ref(Q), std::cref(GT), G, k, L, S, start, end, 
                                  std::ref(localAccuraciesFiltered[t]), std::ref(localAccuraciesUnfiltered[t]), 
-                                 std::ref(localTimeFiltered[t]), std::ref(localTimeUnfiltered[t]), 
+                                 std::ref(localTimeFiltered[t]), std::ref(localTimeUnfiltered[t]),std::ref(localFilteredCounts[t]), std::ref(localUnfilteredCounts[t]), 
                                  threadDistances[t].data());
         }
     }
@@ -113,6 +117,7 @@ int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G,
 
     // Combine results
     int accuracyFiltered = 0, accuracyUnfiltered = 0;
+    int filtered_count = 0, unfiltered_count = 0;
     double totalTimeFiltered = 0.0, totalTimeUnfiltered = 0.0;
 
     for (int t = 0; t < numThreads; ++t) {
@@ -120,28 +125,30 @@ int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G,
         accuracyUnfiltered += localAccuraciesUnfiltered[t];
         totalTimeFiltered += localTimeFiltered[t];
         totalTimeUnfiltered += localTimeUnfiltered[t];
+        filtered_count += localFilteredCounts[t];
+        unfiltered_count += localUnfilteredCounts[t];
     }
 
     // Output filtered queries accuracy and time
     printf("\033[0;32m");
-    printf("\nFiltered Queries Accuracy: %d/%d Passed Test", accuracyFiltered, totalIndices - accuracyUnfiltered);
-    if ((double)accuracyFiltered / (totalIndices - accuracyUnfiltered) >= 0.9)
+    printf("\nFiltered Queries Accuracy: %d/%d Passed Test", accuracyFiltered, filtered_count);
+    if ((double)accuracyFiltered / filtered_count >= 0.9)
         printf("\033[0;32m");
     else
         printf("\033[0;31m");
-    printf(" ~= %.2f%%\n", (double)accuracyFiltered / (totalIndices - accuracyUnfiltered) * 100);
+    printf(" ~= %.2f%%\n", (double)accuracyFiltered / filtered_count * 100);
 
     // Output unfiltered queries accuracy and time
-    printf("Unfiltered Queries Accuracy: %d/%d Passed Test", accuracyUnfiltered, accuracyUnfiltered);
-    if ((double)accuracyUnfiltered / accuracyUnfiltered >= 0.9)
+    printf("Unfiltered Queries Accuracy: %d/%d Passed Test", accuracyUnfiltered, unfiltered_count);
+    if ((double)accuracyUnfiltered / unfiltered_count >= 0.9)
         printf("\033[0;32m");
     else
         printf("\033[0;31m");
-    printf(" ~= %.2f%%\n", (double)accuracyUnfiltered / accuracyUnfiltered * 100);
+    printf(" ~= %.2f%%\n", (double)accuracyUnfiltered / unfiltered_count * 100);
 
     // Calculate average time per query
-    double avgTimeFiltered = (accuracyFiltered > 0) ? totalTimeFiltered / accuracyFiltered : 0.0;
-    double avgTimeUnfiltered = (accuracyUnfiltered > 0) ? totalTimeUnfiltered / accuracyUnfiltered : 0.0;
+    double avgTimeFiltered = (filtered_count > 0) ? totalTimeFiltered / filtered_count : 0.0;
+    double avgTimeUnfiltered = (unfiltered_count > 0) ? totalTimeUnfiltered / unfiltered_count : 0.0;
 
     printf("Average Time per Filtered Query: %.6f seconds\n", avgTimeFiltered);
     printf("Average Time per Unfiltered Query: %.6f seconds\n", avgTimeUnfiltered);
