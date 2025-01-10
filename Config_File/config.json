@@ -1,11 +1,5 @@
 {
-    "k": 100,
-    "L": 200,
-    "R": 30,
-    "a": 1.1,
-    "L_small": 100,
-    "R_small": 20,
-    "R_stitched": 30,
+    "k": 100,"L": 200,"R": 64,"a": 1.1,"L_small": 100,"R_small": 20,"R_stitched": 64,  
     "base_path": "Datasets/Small_Set/dummy-data.bin",
     "query_path": "Datasets/Small_Set/dummy-queries.bin",
     "binary_output_path": "Datasets/Small_Set/dummy-groundtruth.bin",

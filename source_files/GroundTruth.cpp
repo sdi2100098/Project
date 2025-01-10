@@ -150,8 +150,8 @@ int GroundTruth(const char* Query_path, const char* Ground_Truth_path, Graph* G,
     double avgTimeFiltered = (filtered_count > 0) ? totalTimeFiltered / filtered_count : 0.0;
     double avgTimeUnfiltered = (unfiltered_count > 0) ? totalTimeUnfiltered / unfiltered_count : 0.0;
 
-    printf("Average Time per Filtered Query: %.6f seconds\n", avgTimeFiltered);
-    printf("Average Time per Unfiltered Query: %.6f seconds\n", avgTimeUnfiltered);
+    printf("Average Time per Filtered Query: %.12f seconds\n", avgTimeFiltered);
+    printf("Average Time per Unfiltered Query: %.12f seconds\n", avgTimeUnfiltered);
 
     // Output total accuracy
     if ((double)(accuracyFiltered + accuracyUnfiltered) / Q.number_of_indexes >= 0.9)
