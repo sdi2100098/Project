@@ -20,6 +20,9 @@ void processRange(Query& Q, const Ground_Truth& GT, Graph* G, int k, int L, int*
             Distances[j] = -1.0f;
         }
 
+        // Track time for query processing
+        auto start_time = std::chrono::high_resolution_clock::now();
+
         Result = Filtered_Greedy_Search(G, i, k, L, S, &Q, Distances);
 
         Temp_Set.clear();
@@ -27,8 +30,7 @@ void processRange(Query& Q, const Ground_Truth& GT, Graph* G, int k, int L, int*
             Temp_Set.insert(it->second);
         }
 
-        // Track time for query processing
-        auto start_time = std::chrono::high_resolution_clock::now();
+        
 
         // Check if the query is filtered or unfiltered
         if (Q.index_array[i].filter == -1) { // Unfiltered query
